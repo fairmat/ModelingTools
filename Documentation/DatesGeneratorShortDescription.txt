@@ -1,0 +1,5 @@
+Tags: Modeling, Calendar Dates Processing
+
+Description:
+
+Dates generator allows to generate sequences of (payment) dates by specifying Starting Date, Ending Date and the frequency.  Dates can then be manipolated manually and trasformed with adjustments.
