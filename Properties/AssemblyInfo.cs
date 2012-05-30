@@ -24,12 +24,12 @@ using Mono.Addins;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DatesGenerator")]
+[assembly: AssemblyTitle("Dates Generator")]
 [assembly: AssemblyDescription("Dates generator allows to generate sequences of (payment) dates " +
                                "by specifying Starting Date, Ending Date and the frequency.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fairmat SRL")]
-[assembly: AssemblyProduct("Datesgenerator")]
+[assembly: AssemblyProduct("Dates Generator")]
 [assembly: AssemblyCopyright("Copyright © Fairmat SRL 2012")]
 [assembly: AssemblyTrademark("Fairmat")]
 [assembly: AssemblyCulture("")]
