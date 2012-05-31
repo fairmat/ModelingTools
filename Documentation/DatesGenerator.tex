@@ -12,11 +12,11 @@ In the new symbol dialog window, a new symbol type is available.
 After Dates Generator has been installed as a plugin from Settings $\to$ Plugins Settings 
 $\to$ Available online plugins, you can then use it this way: 
 \begin{enumerate}
-\item Go to the Parameters \& Function window
+\item Go to the Parameters \& Functions window
 \item Click Add
-\item Select Dates Generator and press Ok
+\item Select Dates Generator and click Ok
 \end{enumerate}
-As you can see into the figure\label{fig:DG}, is possible set the start date and the end date setting also the right interval in months term, into the gap. 
+As you can see in the figure\label{fig:DG}, it is possible to set the start date and the end date setting also the desidered interval between each date entry (between these options: Daily, Weekly, Bi-Weekly, Montly, Three Months, Six Months, and Year).
 \begin{figure}[h!]
 \includegraphics[width=4cm]{DG_img}
 \centering
@@ -24,9 +24,24 @@ As you can see into the figure\label{fig:DG}, is possible set the start date and
 \caption{\small{\emph{Dates Generator window.}}}
 \label{fig:DG}
 \end{figure}
-Also, is possible to esclude the first date of the series.\\
-\\
-This new features allows to build a vector of date directly in Fairmat avoiding the 
+The export option is used in Fairmat Server and Fairmat Professional to determine if the dates sequence will be shown from the interface and the templates.
+This procedure will make the Dates Generator manage the new parameter at all time. 
+
+In case you want to be able to edit the output of the Dates Generator you'll have to follow a different procedure:
+\begin{enumerate}
+\item Go to the Parameters \& Functions window.
+\item Click Add
+\item Select Vector and click Ok
+\item Give the new vector a name and close it by clicking Ok
+\item Right click on the newly created vector and select Dates Generator
+\item Fill in the dates and frequency and press Ok
+\end{enumerate}
+
+This way the vector will be populated with all the dates in the requested way.
+
+
+
+This new feature allows to build a vector of date directly in Fairmat avoiding the 
 copy and paste from other software (i.e. Excel spreadsheet).
 
 \end{document}
