@@ -56,7 +56,7 @@ namespace DatesGenerator
                 retValue[0, 0] = StartDate;
                 retValue[0, 1] = EndDate;
                 retValue[0, 2] = (int)this.Frequency;
-                return base.Expr;
+                return retValue;
             }
 
             set
