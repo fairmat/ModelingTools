@@ -137,7 +137,10 @@ namespace DatesGenerator
         /// </summary>
         public Type[] ProvidesTo
         {
-            get { return new Type[] { typeof(ModelParameterDateSequence) }; }
+            get
+            {
+                return new Type[] { typeof(ModelParameterDateSequence) };
+            }
         }
 
         /// <summary>

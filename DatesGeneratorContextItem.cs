@@ -42,7 +42,10 @@ namespace DatesGenerator
         /// </summary>
         public object Object
         {
-            set { this.datesVector = value as ModelParameterArray; }
+            set
+            {
+                this.datesVector = value as ModelParameterArray;
+            }
         }
 
         /// <summary>
@@ -50,7 +53,10 @@ namespace DatesGenerator
         /// </summary>
         public string Category
         {
-            get { return "Vector generator"; }
+            get
+            {
+                return "Vector generator";
+            }
         }
 
         /// <summary>
@@ -58,7 +64,10 @@ namespace DatesGenerator
         /// </summary>
         public string ToolTipText
         {
-            get { return "Creates the vector as a series of dates."; }
+            get
+            {
+                return "Creates the vector as a series of dates.";
+            }
         }
 
         /// <summary>
@@ -66,7 +75,10 @@ namespace DatesGenerator
         /// </summary>
         public string Description
         {
-            get { return "Dates generator"; }
+            get
+            {
+                return "Dates generator";
+            }
         }
 
         /// <summary>
@@ -94,7 +106,10 @@ namespace DatesGenerator
         /// </summary>
         public Type[] ProvidesTo
         {
-            get { return new Type[] { typeof(ModelParameterArray) }; }
+            get
+            {
+                return new Type[] { typeof(ModelParameterArray) };
+            }
         }
         #endregion // IProvider implementation
     }

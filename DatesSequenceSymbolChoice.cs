@@ -33,7 +33,10 @@ namespace DatesGenerator
         /// </summary>
         public string Description
         {
-            get { return "Dates sequence"; }
+            get
+            {
+                return "Dates sequence";
+            }
         }
 
         /// <summary>
