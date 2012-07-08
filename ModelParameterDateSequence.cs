@@ -155,10 +155,10 @@ namespace DatesGenerator
 
                 // Set the model parameter array values
                 this.Values = dates;
-                return true;
+                return false;
             }
             else
-                return false;
+                return true;
         }
 
         /// <summary>
