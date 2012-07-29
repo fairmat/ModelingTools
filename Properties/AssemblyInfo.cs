@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 using Mono.Addins;
 
 // The following lines tell that the assembly is an addin
-[assembly: Addin("PFunction2D", "1.0.16", Category = "Functions")]
+[assembly: Addin("PFunction2D", "1.0.0", Category = "Functions")]
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]
 [assembly: AddinDescription("A 2D implementation of Function.")]

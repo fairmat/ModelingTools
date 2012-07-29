@@ -29,5 +29,13 @@ namespace PFunction2D
             : base(type, context)
         {
         }
+
+        static void Main(string[] args)
+        {
+            CPointFunction2D a = new CPointFunction2D();
+            a.fillsomedata();
+            Console.WriteLine(a.Evaluate(50, 100));
+            Console.WriteLine(a.Evaluate(55, 105));
+        }
     }
 }
