@@ -23,15 +23,10 @@ using DVPLDOM;
 
 namespace PFunction2D
 {
-    public class PFunction2D : PFunction
+    public class PFunction2D : Function
     {
-        public PFunction2D(Project project)
-            : base(project)
-        {
-        }
-
-        public PFunction2D(Project project, string variableName)
-            : base(project, variableName)
+        public PFunction2D(EModelParameterType type, Project context)
+            : base(type, context)
         {
         }
     }
