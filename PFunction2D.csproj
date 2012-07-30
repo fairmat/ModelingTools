@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PFunction2D</RootNamespace>
     <AssemblyName>PFunction2D</AssemblyName>
@@ -34,6 +34,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DVPForms">
+      <HintPath>..\DVPLReferences\DVPForms.dll</HintPath>
+    </Reference>
     <Reference Include="DVPLDOM">
       <HintPath>..\DVPLReferences\DVPLDOM.dll</HintPath>
       <Private>False</Private>
@@ -52,6 +55,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,6 +66,7 @@
   <ItemGroup>
     <Compile Include="CPointFunction2D.cs" />
     <Compile Include="PFunction2D.cs" />
+    <Compile Include="PFunction2DSymbolChoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

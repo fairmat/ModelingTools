@@ -31,6 +31,8 @@ namespace PFunction2D
     /// </summary>
     public class CPointFunction2D
     {
+        #region Function Parameters
+
         /// <summary>
         /// The matrix containing the value of the 2d function.
         /// </summary>
@@ -45,6 +47,8 @@ namespace PFunction2D
         /// The y cordinates for the matrix.
         /// </summary>
         private Vector positionsY;
+
+        #endregion Function Parameters
 
         public void fillsomedata()
         {
@@ -95,6 +99,8 @@ namespace PFunction2D
             Console.WriteLine(this.positionsY.ToString());
         }
 
+        #region Constructors
+
         /// <summary>
         /// Default constructor, just initializes the data storage.
         /// </summary>
@@ -104,6 +110,10 @@ namespace PFunction2D
             this.positionsX = new Vector();
             this.positionsY = new Vector();
         }
+
+        #endregion Constructors
+
+        #region Internal functions
 
         /// <summary>
         /// Finds the position of a cordinate in a vector,
@@ -156,16 +166,22 @@ namespace PFunction2D
         /// Calculates the value at the requested cordinates through linear
         /// interpolation.
         /// </summary>
+        /// <remarks>
+        /// The value requested must not be at the margin of the matrix,
+        /// so there must be at least one entry under and on the left of the
+        /// requested value.</remarks>
         /// <param name="x">The x cordinate where to calculate the value.</param>
         /// <param name="y">The y cordinate where to calculate the value.</param>
         /// <returns>The calculated value.</returns>
         private double CalculateLinear(double x, double y)
         {
+            // The indices we will find here will always before the last, so there is no need to
+            // do bound checking for this function.
             int beforeX = FindNearestBefore(ref this.positionsX, x);
             int beforeY = FindNearestBefore(ref this.positionsY, y);
 
             // The denominator of the formula which gives the linear interpolation.
-            // (x2 - x1) * (y2-y1)
+            // (x2 - x1) * (y2 - y1)
             double denominator = (this.positionsX[beforeX + 1] - this.positionsX[beforeX]) *
                              (this.positionsY[beforeY + 1] - this.positionsY[beforeY]);
 
@@ -201,6 +217,10 @@ namespace PFunction2D
             return this.values[selectedX, selectedY];
         }
 
+        #endregion Internal functions
+
+        #region Public functions
+
         /// <summary>
         /// Evaluates the function at the requested x and y point,
         /// using, if necessary, an interpolation.
@@ -210,7 +230,28 @@ namespace PFunction2D
         /// <returns>The value of the function at the requested point.</returns>
         public double Evaluate(double x, double y)
         {
-            // First search for the exact position, if already known.
+            // First of all check if we have any data
+            if(positionsX.Count == 0)
+            {
+                return 0;
+            }
+
+            // Values outside the range of the x and y aren't allowed
+            // in those case we directly reuturn zero.
+            // Note: The bounds are determined by the first and last element
+            //       of the vectors as they rappresent ordered indexes.
+            if (x < this.positionsX[0] || y < positionsY[0] ||
+                x > positionsX[positionsX.Count - 1] ||
+                y > positionsY[positionsY.Count - 1])
+            {
+                return 0;
+            }
+
+            // Bounds check is now done, so it's possible to fetch the requested value.
+
+            // First search for the exact position, if already known. This will
+            // also handle, as a result, the case in which the requested value is at
+            // the margin of the matrix, and will 
             int selectedX = FindPosition(ref this.positionsX, x);
             int selectedY = FindPosition(ref this.positionsY, y);
             if (selectedX != -1 && selectedY != -1)
@@ -226,5 +267,7 @@ namespace PFunction2D
                 return CalculateLinear(x, y);
             }
         }
+
+        #endregion Public functions
     }
 }

@@ -20,14 +20,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DVPLDOM;
+using DVPLI;
+using DVPForms;
 
 namespace PFunction2D
 {
-    public class PFunction2D : Function
+    public class PFunction2D : Function, IEditable
     {
-        public PFunction2D(EModelParameterType type, Project context)
-            : base(type, context)
+        public PFunction2D(Project context)
+            : base(EModelParameterType.POINT_FUNCTION, context)
         {
+            CPointFunction2D a = new CPointFunction2D();
+            a.fillsomedata();
+            Console.WriteLine(a.Evaluate(50, 100));
+            Console.WriteLine(a.Evaluate(55, 105));
+            DVPForms.EditFunctionsForm b = new DVPForms.EditFunctionsForm();
+            b.ShowDialog();
         }
 
         static void Main(string[] args)
@@ -36,6 +44,8 @@ namespace PFunction2D
             a.fillsomedata();
             Console.WriteLine(a.Evaluate(50, 100));
             Console.WriteLine(a.Evaluate(55, 105));
+            DVPForms.EditFunctionsForm b = new DVPForms.EditFunctionsForm();
+            b.ShowDialog();
         }
     }
 }
