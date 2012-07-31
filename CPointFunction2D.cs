@@ -16,9 +16,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DVPLI;
 
 namespace PFunction2D
@@ -112,6 +109,53 @@ namespace PFunction2D
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the vector of the x cordinates in the data.
+        /// </summary>
+        /// <remarks>
+        /// To be used only internally, use Evaluate to get the value at any cordinate.
+        /// </remarks>
+        internal Vector PositionsX
+        {
+            get
+            {
+                return this.positionsX;
+            }
+        }
+
+        /// <summary>
+        /// Gets the vector of the y cordinates in the data.
+        /// </summary>
+        /// <remarks>
+        /// To be used only internally, use Evaluate to get the value at any cordinate.
+        /// </remarks>
+        internal Vector PositionsY
+        {
+            get
+            {
+                return this.positionsY;
+            }
+        }
+
+        /// <summary>
+        /// Gets a specific value determined by the x, y index (not the actual cordinate value).
+        /// </summary>
+        /// <remarks>
+        /// This is similar to a direct access to the underlying matrix. and the x and y values
+        /// are strictly tied with the position in the Y/XCordinates.
+        /// </remarks>
+        /// <param name="x">The x index in the matrix of data.</param>
+        /// <param name="y">The y index in the matrix of data.</param>
+        /// <returns>The value at the specified indices.</returns>
+        internal double PointValue(int x, int y)
+        {
+            return this.values[x, y];
+        }
+
+        #endregion Properties
 
         #region Internal functions
 
@@ -228,10 +272,10 @@ namespace PFunction2D
         /// <param name="x">The x cordinate where to evaluate the function.</param>
         /// <param name="y">The y cordinate where to calculate the value.</param>
         /// <returns>The value of the function at the requested point.</returns>
-        public double Evaluate(double x, double y)
+        internal double Evaluate(double x, double y)
         {
             // First of all check if we have any data
-            if(positionsX.Count == 0)
+            if (this.positionsX.Count == 0)
             {
                 return 0;
             }
@@ -240,9 +284,9 @@ namespace PFunction2D
             // in those case we directly reuturn zero.
             // Note: The bounds are determined by the first and last element
             //       of the vectors as they rappresent ordered indexes.
-            if (x < this.positionsX[0] || y < positionsY[0] ||
-                x > positionsX[positionsX.Count - 1] ||
-                y > positionsY[positionsY.Count - 1])
+            if (x < this.positionsX[0] || y < this.positionsY[0] ||
+                x > this.positionsX[this.positionsX.Count - 1] ||
+                y > this.positionsY[this.positionsY.Count - 1])
             {
                 return 0;
             }
@@ -251,7 +295,8 @@ namespace PFunction2D
 
             // First search for the exact position, if already known. This will
             // also handle, as a result, the case in which the requested value is at
-            // the margin of the matrix, and will 
+            // the margin of the matrix, so it will never be possible the code
+            // which handles interpolation will have to handle this case.
             int selectedX = FindPosition(ref this.positionsX, x);
             int selectedY = FindPosition(ref this.positionsY, y);
             if (selectedX != -1 && selectedY != -1)
