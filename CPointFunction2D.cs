@@ -17,6 +17,7 @@
 
 using System;
 using DVPLI;
+using DVPLUtils;
 
 namespace PFunction2D
 {
@@ -45,23 +46,26 @@ namespace PFunction2D
         /// </summary>
         private Vector positionsY;
 
+        /// <summary>
+        /// Defines the interpolation technique to apply, if required.
+        /// </summary>
+        private EInterpolationType interpolationType;
+
         #endregion Function Parameters
 
         public void fillsomedata()
         {
-            this.positionsX.Resize(5);
+            SetSizes(5, 5);
             this.positionsX[0] = 1;
             this.positionsX[1] = 20;
             this.positionsX[2] = 30;
             this.positionsX[3] = 50;
             this.positionsX[4] = 100;
-            this.positionsY.Resize(5);
             this.positionsY[0] = 1;
             this.positionsY[1] = 40;
             this.positionsY[2] = 70;
             this.positionsY[3] = 100;
             this.positionsY[4] = 1000;
-            this.values.NewSize(5, 5);
             this.values[0, 0] = 145;
             this.values[0, 1] = 45;
             this.values[0, 2] = 90;
@@ -106,6 +110,7 @@ namespace PFunction2D
             this.values = new Matrix();
             this.positionsX = new Vector();
             this.positionsY = new Vector();
+            this.interpolationType = EInterpolationType.LINEAR;
         }
 
         #endregion Constructors
@@ -140,6 +145,80 @@ namespace PFunction2D
             }
         }
 
+        internal double this[int x, int y]
+        {
+            get
+            {
+                if (y != -1 && x != -1)
+                {
+                    return this.values[x, y];
+                }
+                else if (y != -1)
+                {
+                    return this.positionsY[y];
+                }
+                else if (x != -1)
+                {
+                    return this.positionsX[x];
+                }
+
+                return 0;
+            }
+
+            set
+            {
+                if (y != -1 && x != -1)
+                {
+                    this.values[x, y] = value;
+                }
+                else if (y != -1)
+                {
+                    if ((y > 0 && this.positionsY[y - 1] > value) ||
+                       (y < this.positionsY.Count - 1 && this.positionsY[y + 1] < value))
+                    {
+                        throw new Exception("Function integrity wasn't maintained in the y parameters.");
+                    }
+
+                    this.positionsY[y] = value;
+                }
+                else if (x != -1)
+                {
+                    if ((x > 0 && this.positionsX[x - 1] > value) ||
+                       (x < this.positionsX.Count - 1 && this.positionsX[x + 1] < value))
+                    {
+                        throw new Exception("Function integrity wasn't maintained in the x parameters.");
+                    }
+
+                    this.positionsX[x] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the interpolation to use in case the value request
+        /// is not already available.
+        /// </summary>
+        /// <remarks>
+        /// To be used only internally, in order to set the desidered interpolation and
+        /// get what the current one.
+        /// </remarks>
+        internal EInterpolationType Interpolation
+        {
+            get
+            {
+                return this.interpolationType;
+            }
+
+            set
+            {
+                this.interpolationType = value;
+            }
+        }
+
+        #endregion Properties
+
+        #region Getters and Setters
+
         /// <summary>
         /// Gets a specific value determined by the x, y index (not the actual cordinate value).
         /// </summary>
@@ -150,12 +229,29 @@ namespace PFunction2D
         /// <param name="x">The x index in the matrix of data.</param>
         /// <param name="y">The y index in the matrix of data.</param>
         /// <returns>The value at the specified indices.</returns>
-        internal double PointValue(int x, int y)
+        internal double GetPointValue(int x, int y)
         {
             return this.values[x, y];
         }
 
-        #endregion Properties
+        internal void SetPointValue(int x, int y, double value)
+        {
+            this.values[x, y] = value;
+        }
+
+        internal void SetPointValue(int x, int y, RightValue value)
+        {
+            this.values[x, y] = value.fV();
+        }
+
+        internal void SetSizes(int x, int y)
+        {
+            this.positionsX.Resize(x);
+            this.positionsY.Resize(y);
+            this.values.NewSize(x, y);
+        }
+
+        #endregion Getters and Setters
 
         #region Internal functions
 
@@ -246,14 +342,19 @@ namespace PFunction2D
             return factor1 + factor2 + factor3 + factor4;
         }
 
+        private double CalculateSpline(double x, double y)
+        {
+            return 0;
+        }
+
         /// <summary>
-        /// Calculates the constant interpolation, which is just
-        /// the nearest value available.
+        /// Calculates the constant interpolation from left, which is just
+        /// the nearest value available before the requested one (left/up).
         /// </summary>
         /// <param name="x">The x cordinate where to calculate the value.</param>
         /// <param name="y">The y cordinate where to calculate the value.</param>
         /// <returns>The calculated value.</returns>
-        private double CalculateConstant(double x, double y)
+        private double CalculateConstantBefore(double x, double y)
         {
             int selectedX = FindNearestBefore(ref this.positionsX, x);
             int selectedY = FindNearestBefore(ref this.positionsY, y);
@@ -261,9 +362,40 @@ namespace PFunction2D
             return this.values[selectedX, selectedY];
         }
 
+        /// <summary>
+        /// Calculates the constant interpolation from right, which is just
+        /// the nearest value available before the requested one (right/down).
+        /// </summary>
+        /// <param name="x">The x cordinate where to calculate the value.</param>
+        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <returns>The calculated value.</returns>
+        private double CalculateConstantAfter(double x, double y)
+        {
+            int selectedX = FindNearestBefore(ref this.positionsX, x);
+            int selectedY = FindNearestBefore(ref this.positionsY, y);
+
+            // TODO: check bounds.
+            return this.values[selectedX + 1, selectedY + 1];
+        }
+
         #endregion Internal functions
 
         #region Public functions
+
+        /// <summary>
+        /// Copies the data inside this <see cref="CPointFunction2D"/>
+        /// into another <see cref="CPointFunction2D"/>.
+        /// </summary>
+        /// <param name="other">
+        /// The <see cref="CPointFunction2D"/> where to copy the data to.
+        /// </param>
+        internal void CopyTo(CPointFunction2D other)
+        {
+            other.SetSizes(this.positionsX.Count, this.positionsY.Count);
+            this.positionsX.CopyTo(other.positionsX);
+            this.positionsY.CopyTo(other.positionsY);
+            this.values.CopyTo(other.values);
+        }
 
         /// <summary>
         /// Evaluates the function at the requested x and y point,
@@ -281,14 +413,26 @@ namespace PFunction2D
             }
 
             // Values outside the range of the x and y aren't allowed
-            // in those case we directly reuturn zero.
+            // in those case the last value in the bounduary direction
+            // which was exceeded is returned. (Extrapolation)
             // Note: The bounds are determined by the first and last element
             //       of the vectors as they rappresent ordered indexes.
-            if (x < this.positionsX[0] || y < this.positionsY[0] ||
-                x > this.positionsX[this.positionsX.Count - 1] ||
-                y > this.positionsY[this.positionsY.Count - 1])
+            if (x < this.positionsX[0])
             {
-                return 0;
+                x = this.positionsX[0];
+            }
+            else if (x > this.positionsX[this.positionsX.Count - 1])
+            {
+                x = this.positionsX[this.positionsX.Count - 1];
+            }
+
+            if (y < this.positionsY[0])
+            {
+                y = this.positionsY[0];
+            }
+            else if (y > this.positionsY[this.positionsY.Count - 1])
+            {
+                y = this.positionsY[this.positionsY.Count - 1];
             }
 
             // Bounds check is now done, so it's possible to fetch the requested value.
@@ -308,8 +452,31 @@ namespace PFunction2D
             else
             {
                 // If it wasn't possible to find the requested position
-                // try to interpolate it.
-                return CalculateLinear(x, y);
+                // try to interpolate it with the requested interpolation method.
+                switch (this.interpolationType)
+                {
+                    // A linear interpolation.
+                    case EInterpolationType.LINEAR:
+                        return CalculateLinear(x, y);
+
+                    // A spline interpolation.
+                    case EInterpolationType.SPLINE:
+                        return CalculateSpline(x, y);
+
+                    // A constant interpolation (zero order left)
+                    // It interpolates by taking the left up values.
+                    case EInterpolationType.ZERO_ORDER_LEFT:
+                        return CalculateConstantBefore(x, y);
+
+                    // A constant interpolation (zero order)
+                    // It interpolates by taking the right down values.
+                    case EInterpolationType.ZERO_ORDER:
+                        return CalculateConstantAfter(x, y);
+
+                    // Any interpolation type which in't supported will return zero.
+                    default:
+                        return 0;
+                }
             }
         }
 

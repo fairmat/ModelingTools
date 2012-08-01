@@ -49,6 +49,10 @@
       <HintPath>..\DVPLReferences\DVPLInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DVPLUtils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c08731b4bb5a116, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DVPLReferences\DVPLUtils.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Addins">
       <HintPath>..\DVPLReferences\Mono.Addins.dll</HintPath>
       <Private>False</Private>

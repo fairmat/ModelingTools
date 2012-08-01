@@ -96,6 +96,19 @@ namespace PFunction2D
             }
         }
 
+        internal double this[int x, int y]
+        {
+            get
+            {
+                return this.function[x, y];
+            }
+
+            set
+            {
+                this.function[x, y] = value;
+            }
+        }
+
         /// <summary>
         /// Gets a specific value determined by the x, y index (not the actual cordinate value).
         /// </summary>
@@ -106,22 +119,108 @@ namespace PFunction2D
         /// <param name="x">The x index in the matrix of data.</param>
         /// <param name="y">The y index in the matrix of data.</param>
         /// <returns>The value at the specified indices.</returns>
-        internal double PointValue(int x, int y)
+        internal double GetPointValue(int x, int y)
         {
-            return this.function.PointValue(x, y);
+            return this.function.GetPointValue(x, y);
+        }
+
+        internal void SetPointValue(int x, int y, double value)
+        {
+            this.function.SetPointValue(x, y, value);
+        }
+
+        internal void SetPointValue(int x, int y, RightValue value)
+        {
+            this.function.SetPointValue(x, y, value);
+        }
+
+        internal void SetSizes(int x, int y)
+        {
+            this.function.SetSizes(x, y);
+        }
+
+        internal void CopyTo(PFunction2D other)
+        {
+            this.function.CopyTo(other.function);
         }
 
         /// <summary>
         /// Evaluates the 2D Function on the specified cordinates.
         /// </summary>
         /// <param name="x">The x cordinate to evaluate the function on.</param>
-        /// <param name="x">The y cordinate to evaluate the function on.</param>
+        /// <param name="y">The y cordinate to evaluate the function on.</param>
         /// <returns>
         /// The value of the function at the requested cordinates,
-        /// interpolated if required.</returns>
+        /// interpolated if required.
+        /// </returns>
         public double Evaluate(double x, double y)
         {
             return this.function.Evaluate(x, y);
+        }
+
+        /// <summary>
+        /// Evaluates the 2D Function on the specified x cordinates. This function
+        /// assumes the y cordinate is always 0 (essentially calculating the function
+        /// only on the first row).
+        /// </summary>
+        /// <param name="x">The x cordinate to evaluate the function on.</param>
+        /// <returns>
+        /// The value of the function at the requested cordinate,
+        /// interpolated if required.
+        /// </returns>
+        public override double Evaluate(double x)
+        {
+            return Evaluate(x, 0);
+        }
+
+        /// <summary>
+        /// Evaluates the 2D Function on the specified cordinates inside a Vector.
+        /// </summary>
+        /// <remarks>
+        /// The function will handle several cases:
+        /// * Empty parameters vector
+        ///   The return will always be zero.
+        /// * One element in the parameters vector:
+        ///   The function will be evaluated as y = f(x, 0), where x is the passed value.
+        /// * Two or more elements in the parameters vector:
+        ///   The first element will be used as x, the second as y, the rest will be ignored.
+        ///  </remarks>
+        /// <param name="parameters">
+        /// The vector with the cordinates to evaluate the function on.
+        /// </param>
+        /// <returns>
+        /// The value of the function at the requested cordinates,
+        /// interpolated if required.
+        /// </returns>
+        public override double Evaluate(Vector parameters)
+        {
+            // Check the amount of passed parameters.
+            if (parameters.Count == 1)
+            {
+                // There is a single parameter so it's managed like
+                // if it was at cordinate x, 0.
+                return Evaluate(parameters[0]);
+            }
+            else if (parameters.Count > 1)
+            {
+                // There are enough parameter so the first two are used.
+                return Evaluate(parameters[0], parameters[1]);
+            }
+
+            // There were no parameters so zero is returned.
+            return 0;
+        }
+
+        /// <summary>
+        /// Handles the symbol creation and registration on the system,
+        /// additionally it setups a callback for the Engine to use in
+        /// order to evaluate this object.
+        /// </summary>
+        /// <param name="context">The project where this object is being binded to.</param>
+        public override void CreateSymbol(Project context)
+        {
+            base.CreateSymbol(context);
+            Engine.Parser.DefineCallbackFunction(VarName, new TAEDelegateFunction2D(Evaluate));
         }
     }
 }

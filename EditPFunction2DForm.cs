@@ -15,6 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO. Convert to rightvalue internally
+// why it doesn't show heading?
+// errors when selecting a not supported interpolatrion/extrapolation.
+// aggiungi/rimuovi row
+
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -60,7 +65,18 @@ namespace PFunction2D
             // Remove some tabs which have no meaning for this use.
             base.tabControlEditFunctions.Controls.Remove(tabPageAnaliticFunctionData);
             base.tabControlEditFunctions.Controls.Remove(tabPageEditZRCalibrator);
+
+            // Temporarily remove the data sources as it's not supported yet.
+            base.tabControlEditFunctions.Controls.Remove(tabPageDataSource);
+            base.buttonImport.Hide();
+
+            // Sets the selected tab to be the first.
             base.tabControlEditFunctions.SelectedIndex = 0;
+
+            // Set the interpolation types.
+            //this.interpolationExtrapolationControlPF.SetInterpolationType(((PFunction)m_Function).m_Function.iType);
+            //this.interpolationExtrapolationControlPF.LeastSquareCoefficients = ((PFunction)m_Function).m_Function.leastSquaresCoefficients;
+            //this.interpolationExtrapolationControlPF.SetExtrapolationType(((PFunction)m_Function).m_Function.Extrapolation);
 
             // Load the data from the function on the grid.
             PointFunctionDataToDataGrid();
@@ -71,7 +87,8 @@ namespace PFunction2D
         /// </summary>
         protected override void PlotFunction()
         {
-            // Currently just skip it.
+            // The cordinates are always 2 here as it's a 2D function.
+            base.OnPlotGenericFunction(2);
         }
 
         /// <summary>
@@ -114,7 +131,7 @@ namespace PFunction2D
                 for (int x = 0; x < function.XCordinates.Count; x++)
                 {
                     DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-                    cell.Value = function.PointValue(x, y);
+                    cell.Value = function.GetPointValue(x, y);
                     row.Cells.Add(cell);
                 }
 
@@ -124,41 +141,113 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Handles the ok button click action by closing the window and saving the
-        /// changes applied to the data.
+        /// Gets the data from the Data Grid and puts it back in the function.
         /// </summary>
-        /// <param name="sender">The parameter is not used.</param>
-        /// <param name="e">The parameter is not used.</param>
-        protected override void buttonOk_Click(object sender, System.EventArgs e)
+        /// <returns>True if the operation was successful, False otherwise.</returns>
+        private bool DataGridToPointFunctionData()
         {
-            // If this is a new PFunction2D we need to check if the symbol is a duplicate, in that
-            // case we warn the user. This isn't needed when modifying the data as the symbol name
-            // is fixed afterward.
-            if (base.m_ModifyOnly == false)
+            PFunction2D tempFunction = new PFunction2D(null);
+
+            // Check if bind was executed. Is it still needed?
+            if (m_Project != null)
             {
-                // Check if the name is already present
-                if (base.m_Project.ExistSymbol(textBoxFunctionName.Text) == true ||
-                    !base.m_Project.IsValidSymbolName(textBoxFunctionName.Text))
+                m_Project.ResetExpressionParser();
+                m_Project.CreateSymbols();
+
+                #if MONO
+                // If it's running on Mono the event EditingControlShowing doesn't work
+                // Convert the decimal separators in the data grid before calculating the points of the plot
+                if (Engine.RunningOnMono)
+                    fairmatDataGridViewPointData.ConvertDecimalSeparators();
+                #endif
+
+                DataGridViewRowCollection rows = fairmatDataGridViewPointData.Rows;
+                DataGridViewColumnCollection columns = fairmatDataGridViewPointData.Columns;
+
+                tempFunction.SetSizes(columns.Count, rows.Count - 1);
+
+                // First load the column headers values
+                for (int x = columns.Count - 1; x >= 0; x--)
                 {
-                    base.form_errors = true;
+                    try
+                    {
+                        tempFunction[x, -1] = RightValue.ConvertFrom(columns[x].HeaderText, true).fV();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("The string " + columns[x].HeaderText + " (position " + (x + 1) + ") is invalid due to: " + ex.Message, DataExchange.ApplicationName);
+                        return false;
+                    }
+                }
+
+                // Then the rows and the cells.
+                for (int y = rows.Count - 2; y >= 0; y--)
+                {
+                    try
+                    {
+                        tempFunction[-1, y] = RightValue.ConvertFrom(rows[y].HeaderCell.Value, true).fV();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (position " + (y + 1) + ") is invalid due to: " + ex.Message, DataExchange.ApplicationName);
+                        return false;
+                    }
+
+                    for (int x = 0; x < columns.Count; x++)
+                    {
+                        // DataGridView in case the cell is edited to an empty string replaces
+                        // its value with DBNull (non existant value).
+                        // So, substitute the cell value explicitly with the empty string.
+                        if (rows[y].Cells[x] is DBNull)
+                        {
+                            rows[y].Cells[x].Value = string.Empty;
+                        }
+
+                        try
+                        {
+                            tempFunction.SetPointValue(x, y, RightValue.ConvertFrom(rows[y].Cells[x].Value, true));
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("The string " + rows[y].Cells[x].Value + " is invalid due to: " + ex.Message, DataExchange.ApplicationName);
+                            return false;
+                        }
+                    }
                 }
             }
 
-            // Sets the global data like the function description and name.
-            if (DoDataExchangeGeneral(false) == false)
+            tempFunction.CopyTo((PFunction2D)m_Function);
+            return true;
+        }
+
+        /// <summary>
+        /// Saves the changes applied to the data.
+        /// </summary>
+        protected override void SaveDataChanges()
+        {
+            if (!DataGridToPointFunctionData())
             {
                 base.form_errors = true;
             }
 
-            /*if (DoDataExchangePointData(false) == false)
-            {
-                base.form_errors = true;
-            }*/
+            // Save the information about the interpolation/extrapolation
+            //((PFunction)m_Function).m_Function.iType = this.interpolationExtrapolationControlPF.GetInterpolationType();
+            //((PFunction)m_Function).m_Function.leastSquaresCoefficients = this.interpolationExtrapolationControlPF.LeastSquareCoefficients;
+            //((PFunction)m_Function).m_Function.Extrapolation = this.interpolationExtrapolationControlPF.GetExtrapolationType();
+        }
 
-            // Workaround for bug https://bugzilla.novell.com/show_bug.cgi?id=631810.
-            // Do not set the property DialogResult.OK on the button, but set it manually.
-            DialogResult = System.Windows.Forms.DialogResult.OK;
-            Close();
+        /// <summary>
+        /// Does additional operations on the OnShown event.
+        /// </summary>
+        /// <remarks>
+        /// This is needed because the AutoResizeRowHeaderWidth method
+        /// cannot be called when filling the table, else it won't be effective.
+        /// </remarks>
+        /// <param name="e">The parameter is not used but passed to the base class.</param>
+        protected override void OnShown(EventArgs e)
+        {
+            base.fairmatDataGridViewPointData.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+            base.OnShown(e);
         }
     }
 }
