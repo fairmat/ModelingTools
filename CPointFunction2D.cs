@@ -39,78 +39,89 @@ namespace PFunction2D
         /// <summary>
         /// The x cordinates for the matrix.
         /// </summary>
-        private Vector positionsX;
+        private Vector cordinatesX;
 
         /// <summary>
         /// The y cordinates for the matrix.
         /// </summary>
-        private Vector positionsY;
+        private Vector cordinatesY;
 
         /// <summary>
-        /// Defines the interpolation technique to apply, if required.
+        /// Defines the interpolation technique to apply, if needed.
         /// </summary>
         private EInterpolationType interpolationType;
 
+        /// <summary>
+        /// Defines the extrapolation technique to apply, if needed.
+        /// </summary>
+        private ExtrapolationType extrapolationType;
+
         #endregion Function Parameters
-
-        public void fillsomedata()
-        {
-            SetSizes(5, 5);
-            this.positionsX[0] = 1;
-            this.positionsX[1] = 20;
-            this.positionsX[2] = 30;
-            this.positionsX[3] = 50;
-            this.positionsX[4] = 100;
-            this.positionsY[0] = 1;
-            this.positionsY[1] = 40;
-            this.positionsY[2] = 70;
-            this.positionsY[3] = 100;
-            this.positionsY[4] = 1000;
-            this.values[0, 0] = 145;
-            this.values[0, 1] = 45;
-            this.values[0, 2] = 90;
-            this.values[0, 3] = 25;
-            this.values[0, 4] = 253;
-
-            this.values[1, 0] = 345;
-            this.values[1, 1] = 95;
-            this.values[1, 2] = 100;
-            this.values[1, 3] = 275;
-            this.values[1, 4] = 233;
-
-            this.values[2, 0] = 45;
-            this.values[2, 1] = 5;
-            this.values[2, 2] = 0;
-            this.values[2, 3] = 75;
-            this.values[2, 4] = 33;
-
-            this.values[3, 0] = 545;
-            this.values[3, 1] = 55;
-            this.values[3, 2] = 50;
-            this.values[3, 3] = 575;
-            this.values[3, 4] = 533;
-
-            this.values[4, 0] = 1545;
-            this.values[4, 1] = 15;
-            this.values[4, 2] = 150;
-            this.values[4, 3] = 1575;
-            this.values[4, 4] = 533;
-            Console.WriteLine(this.values.ToString());
-            Console.WriteLine(this.positionsX.ToString());
-            Console.WriteLine(this.positionsY.ToString());
-        }
 
         #region Constructors
 
         /// <summary>
         /// Default constructor, just initializes the data storage.
         /// </summary>
-        public CPointFunction2D()
+        private CPointFunction2D()
         {
             this.values = new Matrix();
-            this.positionsX = new Vector();
-            this.positionsY = new Vector();
+            this.cordinatesX = new Vector();
+            this.cordinatesY = new Vector();
             this.interpolationType = EInterpolationType.LINEAR;
+            this.extrapolationType = ExtrapolationType.CONSTANT;
+        }
+
+        /// <summary>
+        /// Constructs a new CPointFunction2D through evaluation of IRightValues
+        /// in order to fill the data used to evaluate the function.
+        /// </summary>
+        /// <param name="cordinatesX">
+        /// An array of IRightValue whose result is ordered from lower to greater and will
+        /// rappresent the x parameter of the function.
+        /// </param>
+        /// <param name="cordinatesY">
+        /// An array of IRightValue whose result is ordered from lower to greater and will
+        /// rappresent the y parameter of the function.
+        /// </param>
+        /// <param name="values">
+        /// A bidimensional array containing the defined data points for
+        /// all the cordinates specified by cordinatesX and cordinatesY.
+        /// </param>
+        /// <param name="interpolationType">
+        /// The interpolation to apply when evaluating the function
+        /// in case the requested cordinates aren't rappresented, but inside them.
+        /// </param>
+        /// <param name="extrapolationType">
+        /// The extrapolation to apply when evaluating the function,
+        /// in case the requested cordinates are outside the rappresented ones.
+        /// </param>
+        public CPointFunction2D(IRightValue[] cordinatesX,
+                                IRightValue[] cordinatesY,
+                                IRightValue[,] values,
+                                EInterpolationType interpolationType,
+                                ExtrapolationType extrapolationType) : this()
+        {
+            this.interpolationType = interpolationType;
+            this.extrapolationType = extrapolationType;
+            SetSizes(cordinatesX.Length, cordinatesY.Length);
+            for (int i = cordinatesX.Length - 1; i >= 0; i--)
+            {
+                this[i, -1] = cordinatesX[i].V();
+            }
+
+            for (int i = cordinatesY.Length - 1; i >= 0; i--)
+            {
+                this[-1, i] = cordinatesY[i].V();
+            }
+
+            for (int x = 0; x < values.GetLength(0); x++)
+            {
+                for (int y = 0; y < values.GetLength(1); y++)
+                {
+                    this[x, y] = values[x, y].V();
+                }
+            }
         }
 
         #endregion Constructors
@@ -118,34 +129,22 @@ namespace PFunction2D
         #region Properties
 
         /// <summary>
-        /// Gets the vector of the x cordinates in the data.
+        /// Gets or sets the data inside the data structures
+        /// after doing checks for consistency.
         /// </summary>
-        /// <remarks>
-        /// To be used only internally, use Evaluate to get the value at any cordinate.
-        /// </remarks>
-        internal Vector PositionsX
-        {
-            get
-            {
-                return this.positionsX;
-            }
-        }
-
-        /// <summary>
-        /// Gets the vector of the y cordinates in the data.
-        /// </summary>
-        /// <remarks>
-        /// To be used only internally, use Evaluate to get the value at any cordinate.
-        /// </remarks>
-        internal Vector PositionsY
-        {
-            get
-            {
-                return this.positionsY;
-            }
-        }
-
-        internal double this[int x, int y]
+        /// <remarks>If both parameters are -1 nothing will be done.</remarks>
+        /// <param name="x">
+        /// The x cordinate to use to get or set the element,
+        /// if it's -1 it will work on the y cordinates, else
+        /// on the values.
+        /// </param>
+        /// <param name="y">
+        /// The y cordinate to use to get or set the element,
+        /// if it's -1 it will work on the x cordinates, else
+        /// on the values.
+        /// </param>
+        /// <returns>The requested value at the position.</returns>
+        private double this[int x, int y]
         {
             get
             {
@@ -155,11 +154,11 @@ namespace PFunction2D
                 }
                 else if (y != -1)
                 {
-                    return this.positionsY[y];
+                    return this.cordinatesY[y];
                 }
                 else if (x != -1)
                 {
-                    return this.positionsX[x];
+                    return this.cordinatesX[x];
                 }
 
                 return 0;
@@ -173,45 +172,26 @@ namespace PFunction2D
                 }
                 else if (y != -1)
                 {
-                    if ((y > 0 && this.positionsY[y - 1] > value) ||
-                       (y < this.positionsY.Count - 1 && this.positionsY[y + 1] < value))
+                    if ((y > 0 && this.cordinatesY[y - 1] > value) ||
+                       (y < this.cordinatesY.Count - 1 && this.cordinatesY[y + 1] < value))
                     {
-                        throw new Exception("Function integrity wasn't maintained in the y parameters.");
+                        throw new Exception("Function integrity wasn't maintained in the " +
+                                            "y cordinates.");
                     }
 
-                    this.positionsY[y] = value;
+                    this.cordinatesY[y] = value;
                 }
                 else if (x != -1)
                 {
-                    if ((x > 0 && this.positionsX[x - 1] > value) ||
-                       (x < this.positionsX.Count - 1 && this.positionsX[x + 1] < value))
+                    if ((x > 0 && this.cordinatesX[x - 1] > value) ||
+                       (x < this.cordinatesX.Count - 1 && this.cordinatesX[x + 1] < value))
                     {
-                        throw new Exception("Function integrity wasn't maintained in the x parameters.");
+                        throw new Exception("Function integrity wasn't maintained in the " +
+                                            "x cordinates.");
                     }
 
-                    this.positionsX[x] = value;
+                    this.cordinatesX[x] = value;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the interpolation to use in case the value request
-        /// is not already available.
-        /// </summary>
-        /// <remarks>
-        /// To be used only internally, in order to set the desidered interpolation and
-        /// get what the current one.
-        /// </remarks>
-        internal EInterpolationType Interpolation
-        {
-            get
-            {
-                return this.interpolationType;
-            }
-
-            set
-            {
-                this.interpolationType = value;
             }
         }
 
@@ -220,34 +200,14 @@ namespace PFunction2D
         #region Getters and Setters
 
         /// <summary>
-        /// Gets a specific value determined by the x, y index (not the actual cordinate value).
+        /// Sets the sizes of the data structures which will be used.
         /// </summary>
-        /// <remarks>
-        /// This is similar to a direct access to the underlying matrix. and the x and y values
-        /// are strictly tied with the position in the Y/XCordinates.
-        /// </remarks>
-        /// <param name="x">The x index in the matrix of data.</param>
-        /// <param name="y">The y index in the matrix of data.</param>
-        /// <returns>The value at the specified indices.</returns>
-        internal double GetPointValue(int x, int y)
+        /// <param name="x">The x length.</param>
+        /// <param name="y">The y length.</param>
+        private void SetSizes(int x, int y)
         {
-            return this.values[x, y];
-        }
-
-        internal void SetPointValue(int x, int y, double value)
-        {
-            this.values[x, y] = value;
-        }
-
-        internal void SetPointValue(int x, int y, RightValue value)
-        {
-            this.values[x, y] = value.fV();
-        }
-
-        internal void SetSizes(int x, int y)
-        {
-            this.positionsX.Resize(x);
-            this.positionsY.Resize(y);
+            this.cordinatesX.Resize(x);
+            this.cordinatesY.Resize(y);
             this.values.NewSize(x, y);
         }
 
@@ -257,7 +217,7 @@ namespace PFunction2D
 
         /// <summary>
         /// Finds the position of a cordinate in a vector,
-        /// it's used with positionsX and positionsY.
+        /// it's used with cordinatesX and cordinatesY.
         /// </summary>
         /// <param name="posVector">
         /// A reference to the vector to use to find the required item index.
@@ -317,31 +277,38 @@ namespace PFunction2D
         {
             // The indices we will find here will always before the last, so there is no need to
             // do bound checking for this function.
-            int beforeX = FindNearestBefore(ref this.positionsX, x);
-            int beforeY = FindNearestBefore(ref this.positionsY, y);
+            int beforeX = FindNearestBefore(ref this.cordinatesX, x);
+            int beforeY = FindNearestBefore(ref this.cordinatesY, y);
 
             // The denominator of the formula which gives the linear interpolation.
             // (x2 - x1) * (y2 - y1)
-            double denominator = (this.positionsX[beforeX + 1] - this.positionsX[beforeX]) *
-                             (this.positionsY[beforeY + 1] - this.positionsY[beforeY]);
+            double denominator = (this.cordinatesX[beforeX + 1] - this.cordinatesX[beforeX]) *
+                             (this.cordinatesY[beforeY + 1] - this.cordinatesY[beforeY]);
 
             // The 4 factors of the formula providing the linear interpolation.
             double factor1 = (this.values[beforeX, beforeY] / denominator) *
-                             ((this.positionsX[beforeX + 1] - x) * (this.positionsY[beforeY + 1] - y));
+                             ((this.cordinatesX[beforeX + 1] - x) * (this.cordinatesY[beforeY + 1] - y));
 
             double factor2 = (this.values[beforeX + 1, beforeY] / denominator) *
-                             ((x - this.positionsX[beforeX]) * (this.positionsY[beforeY + 1] - y));
+                             ((x - this.cordinatesX[beforeX]) * (this.cordinatesY[beforeY + 1] - y));
 
             double factor3 = (this.values[beforeX, beforeY + 1] / denominator) *
-                             ((this.positionsX[beforeX + 1] - x) * (y - this.positionsY[beforeY]));
+                             ((this.cordinatesX[beforeX + 1] - x) * (y - this.cordinatesY[beforeY]));
 
             double factor4 = (this.values[beforeX + 1, beforeY + 1] / denominator) *
-                             ((x - this.positionsX[beforeX]) * (y - this.positionsY[beforeY]));
+                             ((x - this.cordinatesX[beforeX]) * (y - this.cordinatesY[beforeY]));
 
             // Finally sum the 4 factors togheter and return the result.
             return factor1 + factor2 + factor3 + factor4;
         }
 
+        /// <summary>
+        /// Calculates the spline interpolation from left, which is just
+        /// the nearest value available before the requested one (left/up).
+        /// </summary>
+        /// <param name="x">The x cordinate where to calculate the value.</param>
+        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <returns>The calculated value.</returns>
         private double CalculateSpline(double x, double y)
         {
             return 0;
@@ -356,8 +323,8 @@ namespace PFunction2D
         /// <returns>The calculated value.</returns>
         private double CalculateConstantBefore(double x, double y)
         {
-            int selectedX = FindNearestBefore(ref this.positionsX, x);
-            int selectedY = FindNearestBefore(ref this.positionsY, y);
+            int selectedX = FindNearestBefore(ref this.cordinatesX, x);
+            int selectedY = FindNearestBefore(ref this.cordinatesY, y);
 
             return this.values[selectedX, selectedY];
         }
@@ -371,8 +338,8 @@ namespace PFunction2D
         /// <returns>The calculated value.</returns>
         private double CalculateConstantAfter(double x, double y)
         {
-            int selectedX = FindNearestBefore(ref this.positionsX, x);
-            int selectedY = FindNearestBefore(ref this.positionsY, y);
+            int selectedX = FindNearestBefore(ref this.cordinatesX, x);
+            int selectedY = FindNearestBefore(ref this.cordinatesY, y);
 
             // TODO: check bounds.
             return this.values[selectedX + 1, selectedY + 1];
@@ -391,10 +358,12 @@ namespace PFunction2D
         /// </param>
         internal void CopyTo(CPointFunction2D other)
         {
-            other.SetSizes(this.positionsX.Count, this.positionsY.Count);
-            this.positionsX.CopyTo(other.positionsX);
-            this.positionsY.CopyTo(other.positionsY);
+            other.SetSizes(this.cordinatesX.Count, this.cordinatesY.Count);
+            this.cordinatesX.CopyTo(other.cordinatesX);
+            this.cordinatesY.CopyTo(other.cordinatesY);
             this.values.CopyTo(other.values);
+            other.interpolationType = this.interpolationType;
+            other.extrapolationType = this.extrapolationType;
         }
 
         /// <summary>
@@ -407,7 +376,7 @@ namespace PFunction2D
         internal double Evaluate(double x, double y)
         {
             // First of all check if we have any data
-            if (this.positionsX.Count == 0)
+            if (this.cordinatesX.Count == 0)
             {
                 return 0;
             }
@@ -417,22 +386,22 @@ namespace PFunction2D
             // which was exceeded is returned. (Extrapolation)
             // Note: The bounds are determined by the first and last element
             //       of the vectors as they rappresent ordered indexes.
-            if (x < this.positionsX[0])
+            if (x < this.cordinatesX[0])
             {
-                x = this.positionsX[0];
+                x = this.cordinatesX[0];
             }
-            else if (x > this.positionsX[this.positionsX.Count - 1])
+            else if (x > this.cordinatesX[this.cordinatesX.Count - 1])
             {
-                x = this.positionsX[this.positionsX.Count - 1];
+                x = this.cordinatesX[this.cordinatesX.Count - 1];
             }
 
-            if (y < this.positionsY[0])
+            if (y < this.cordinatesY[0])
             {
-                y = this.positionsY[0];
+                y = this.cordinatesY[0];
             }
-            else if (y > this.positionsY[this.positionsY.Count - 1])
+            else if (y > this.cordinatesY[this.cordinatesY.Count - 1])
             {
-                y = this.positionsY[this.positionsY.Count - 1];
+                y = this.cordinatesY[this.cordinatesY.Count - 1];
             }
 
             // Bounds check is now done, so it's possible to fetch the requested value.
@@ -441,8 +410,8 @@ namespace PFunction2D
             // also handle, as a result, the case in which the requested value is at
             // the margin of the matrix, so it will never be possible the code
             // which handles interpolation will have to handle this case.
-            int selectedX = FindPosition(ref this.positionsX, x);
-            int selectedY = FindPosition(ref this.positionsY, y);
+            int selectedX = FindPosition(ref this.cordinatesX, x);
+            int selectedY = FindPosition(ref this.cordinatesY, y);
             if (selectedX != -1 && selectedY != -1)
             {
                 // In this case the requested position was actually provided

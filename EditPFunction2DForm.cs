@@ -15,13 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO. Convert to rightvalue internally
-// why it doesn't show heading?
-// errors when selecting a not supported interpolatrion/extrapolation.
-// aggiungi/rimuovi row
-
 using System;
-using System.Data;
 using System.Windows.Forms;
 using DVPForms;
 using DVPLDOM;
@@ -74,9 +68,9 @@ namespace PFunction2D
             base.tabControlEditFunctions.SelectedIndex = 0;
 
             // Set the interpolation types.
-            //this.interpolationExtrapolationControlPF.SetInterpolationType(((PFunction)m_Function).m_Function.iType);
-            //this.interpolationExtrapolationControlPF.LeastSquareCoefficients = ((PFunction)m_Function).m_Function.leastSquaresCoefficients;
-            //this.interpolationExtrapolationControlPF.SetExtrapolationType(((PFunction)m_Function).m_Function.Extrapolation);
+            this.interpolationExtrapolationControlPF.SetInterpolationType(((PFunction2D)m_Function).Interpolation);
+            this.interpolationExtrapolationControlPF.LeastSquareCoefficients = ((PFunction2D)m_Function).LeastSquaresCoefficients;
+            this.interpolationExtrapolationControlPF.SetExtrapolationType(((PFunction2D)m_Function).Extrapolation);
 
             // Load the data from the function on the grid.
             PointFunctionDataToDataGrid();
@@ -87,8 +81,13 @@ namespace PFunction2D
         /// </summary>
         protected override void PlotFunction()
         {
+            // Create a temporary PFunction2D which will be used
+            // in order to preview current data.
+            PFunction2D tempFunction = new PFunction2D(null);
+            DataGridToPointFunctionData(tempFunction);
+
             // The cordinates are always 2 here as it's a 2D function.
-            base.OnPlotGenericFunction(2);
+            base.OnPlotGenericFunction(2, tempFunction);
         }
 
         /// <summary>
@@ -109,29 +108,27 @@ namespace PFunction2D
             // number the rows from the fairmatDataGridView control.
             base.fairmatDataGridViewPointData.ShowRowNumber = false;
 
-            base.fairmatDataGridViewPointData.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
-
             // Creates the columns for each given x cordinate point stored in the function.
-            for (int i = 0; i < function.XCordinates.Count; i++)
+            for (int i = 0; i < function.XCordinates.Length; i++)
             {
                 // The column name will have the cordinate associated to the specific x entry.
-                base.fairmatDataGridViewPointData.ColumnAdd(function.XCordinates[i].ToString());
+                base.fairmatDataGridViewPointData.ColumnAdd(function.XCordinates[i].Expression);
             }
 
             // Populates all the rows of the matrix which defines the function.
-            for (int y = 0; y < function.YCordinates.Count; y++)
+            for (int y = 0; y < function.YCordinates.Length; y++)
             {
                 // Creates a row for each y cordinate present in the function definition.
                 DataGridViewRow row = new DataGridViewRow();
 
                 // Sets the header cell for the row to contain the value of the cordinate.
-                row.HeaderCell.Value = function.YCordinates[y];
+                row.HeaderCell.Value = function.YCordinates[y].Expression;
 
                 // Finally fill each cell of the current row with the respective value.
-                for (int x = 0; x < function.XCordinates.Count; x++)
+                for (int x = 0; x < function.XCordinates.Length; x++)
                 {
                     DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
-                    cell.Value = function.GetPointValue(x, y);
+                    cell.Value = function[x, y].Expression;
                     row.Cells.Add(cell);
                 }
 
@@ -143,8 +140,12 @@ namespace PFunction2D
         /// <summary>
         /// Gets the data from the Data Grid and puts it back in the function.
         /// </summary>
+        /// <param name="destination">
+        /// The <see cref="PFunction2D"/> object where
+        /// the data will be stored if it succeeds validation.
+        /// </param>
         /// <returns>True if the operation was successful, False otherwise.</returns>
-        private bool DataGridToPointFunctionData()
+        private bool DataGridToPointFunctionData(PFunction2D destination)
         {
             PFunction2D tempFunction = new PFunction2D(null);
 
@@ -154,12 +155,12 @@ namespace PFunction2D
                 m_Project.ResetExpressionParser();
                 m_Project.CreateSymbols();
 
-                #if MONO
-                // If it's running on Mono the event EditingControlShowing doesn't work
-                // Convert the decimal separators in the data grid before calculating the points of the plot
+#if MONO
+                // If it's running on Mono the event EditingControlShowing doesn't work, so
+                // convert the decimal separators in the data grid before calculating the points.
                 if (Engine.RunningOnMono)
                     fairmatDataGridViewPointData.ConvertDecimalSeparators();
-                #endif
+#endif
 
                 DataGridViewRowCollection rows = fairmatDataGridViewPointData.Rows;
                 DataGridViewColumnCollection columns = fairmatDataGridViewPointData.Columns;
@@ -171,11 +172,13 @@ namespace PFunction2D
                 {
                     try
                     {
-                        tempFunction[x, -1] = RightValue.ConvertFrom(columns[x].HeaderText, true).fV();
+                        tempFunction[x, -1] = RightValue.ConvertFrom(columns[x].HeaderText, true);
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        MessageBox.Show("The string " + columns[x].HeaderText + " (position " + (x + 1) + ") is invalid due to: " + ex.Message, DataExchange.ApplicationName);
+                        MessageBox.Show("The string " + columns[x].HeaderText + " (position " + 
+                                        (x + 1) + ") is invalid due to: " + e.Message,
+                                        DataExchange.ApplicationName);
                         return false;
                     }
                 }
@@ -185,11 +188,13 @@ namespace PFunction2D
                 {
                     try
                     {
-                        tempFunction[-1, y] = RightValue.ConvertFrom(rows[y].HeaderCell.Value, true).fV();
+                        tempFunction[-1, y] = RightValue.ConvertFrom(rows[y].HeaderCell.Value, true);
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (position " + (y + 1) + ") is invalid due to: " + ex.Message, DataExchange.ApplicationName);
+                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (position " +
+                                        (y + 1) + ") is invalid due to: " + e.Message,
+                                        DataExchange.ApplicationName);
                         return false;
                     }
 
@@ -205,18 +210,34 @@ namespace PFunction2D
 
                         try
                         {
-                            tempFunction.SetPointValue(x, y, RightValue.ConvertFrom(rows[y].Cells[x].Value, true));
+                            tempFunction[x, y] = RightValue.ConvertFrom(rows[y].Cells[x].Value, true);
                         }
-                        catch (Exception ex)
+                        catch (Exception e)
                         {
-                            MessageBox.Show("The string " + rows[y].Cells[x].Value + " is invalid due to: " + ex.Message, DataExchange.ApplicationName);
+                            MessageBox.Show("The string " + rows[y].Cells[x].Value +
+                                            " is invalid due to: " + e.Message,
+                                            DataExchange.ApplicationName);
                             return false;
                         }
                     }
                 }
             }
 
-            tempFunction.CopyTo((PFunction2D)m_Function);
+            try
+            {
+                // Save the information about the interpolation/extrapolation
+                tempFunction.Interpolation = this.interpolationExtrapolationControlPF.GetInterpolationType();
+                tempFunction.LeastSquaresCoefficients = this.interpolationExtrapolationControlPF.LeastSquareCoefficients;
+                tempFunction.Extrapolation = this.interpolationExtrapolationControlPF.GetExtrapolationType();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("The selected functionality is currently not usable: " + e.Message,
+                                DataExchange.ApplicationName);
+                return false;
+            }
+
+            tempFunction.CopyTo(destination);
             return true;
         }
 
@@ -225,15 +246,10 @@ namespace PFunction2D
         /// </summary>
         protected override void SaveDataChanges()
         {
-            if (!DataGridToPointFunctionData())
+            if (!DataGridToPointFunctionData((PFunction2D)base.m_Function))
             {
                 base.form_errors = true;
             }
-
-            // Save the information about the interpolation/extrapolation
-            //((PFunction)m_Function).m_Function.iType = this.interpolationExtrapolationControlPF.GetInterpolationType();
-            //((PFunction)m_Function).m_Function.leastSquaresCoefficients = this.interpolationExtrapolationControlPF.LeastSquareCoefficients;
-            //((PFunction)m_Function).m_Function.Extrapolation = this.interpolationExtrapolationControlPF.GetExtrapolationType();
         }
 
         /// <summary>

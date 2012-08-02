@@ -20,36 +20,150 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using DVPLDOM;
 using DVPLI;
+using DVPLUtils;
 
 namespace PFunction2D
 {
+    /// <summary>
+    /// Rappresents a 2D functions defined by points and
+    /// which interpolates the missing points.
+    /// </summary>
     [Serializable]
     public class PFunction2D : Function, ISerializable, IEditable,
                                IFunctionDefinition, IExportableContainer
     {
+        #region Serialized Variables
+
         /// <summary>
-        /// The inner container for the data of the PFunction2D, providing
-        /// also the actual implementation of the point search and interpolation
-        /// logic.
+        /// A series of IRightValue rappresenting the x cordinates
+        /// which have been defined for the function, they should
+        /// be ordered from the lowest to the highest.
+        /// </summary>
+        private IRightValue[] cordinatesX;
+
+        /// <summary>
+        /// A series of IRightValue rappresenting the y cordinates
+        /// which have been defined for the function, they should
+        /// be ordered from the lowest to the highest.
+        /// </summary>
+        private IRightValue[] cordinatesY;
+
+        /// <summary>
+        /// A bidimensional array containing the values associated
+        /// to all the cordinates  rappresented in <see cref="cordinatesX"/>
+        /// and <see cref="cordinatesY"/>.
+        /// </summary>
+        private IRightValue[,] values;
+
+        /// <summary>
+        /// Defines the interpolation technique to apply, if needed.
+        /// </summary>
+        private EInterpolationType interpolationType;
+
+        /// <summary>
+        /// Defines the extrapolation technique to apply, if needed.
+        /// </summary>
+        private ExtrapolationType extrapolationType;
+
+        /// <summary>
+        /// Keps the value of coefficient for the least squares interpolation.
+        /// This is currently unused as the interpolation is not implemented.
+        /// </summary>
+        private int leastSquaresCoefficients;
+
+        #endregion Serialized Variables
+
+        #region Temporary Variables
+
+        /// <summary>
+        /// The inner container for the parsed data of the PFunction2D,
+        /// providing also the actual implementation of the point
+        /// search and interpolation logic.
         /// </summary>
         private CPointFunction2D function;
 
+        #endregion Variables
+
+        #region Constructors
+
+        /// <summary>
+        /// Basic constructor to make a new object of type, in a similar
+        /// means to other functions.
+        /// </summary>
+        /// <param name="context">The project this function is created in, if available.</param>
         public PFunction2D(Project context)
             : base(EModelParameterType.POINT_FUNCTION, context)
         {
-            this.function = new CPointFunction2D();
-            function.fillsomedata();
-            Console.WriteLine(function.Evaluate(50, 100));
-            Console.WriteLine(function.Evaluate(55, 105));
+            this.interpolationType = EInterpolationType.LINEAR;
+            this.extrapolationType = ExtrapolationType.CONSTANT;
+            this.leastSquaresCoefficients = 0;
+            fillsomedata();
         }
 
-        static void Main(string[] args)
+        public void fillsomedata()
         {
-            CPointFunction2D a = new CPointFunction2D();
-            a.fillsomedata();
-            Console.WriteLine(a.Evaluate(50, 100));
-            Console.WriteLine(a.Evaluate(55, 105));
+            SetSizes(5, 5);
+            this.cordinatesX[0] = (RightValue)1;
+            this.cordinatesX[1] = (RightValue)20;
+            this.cordinatesX[2] = (RightValue)30;
+            this.cordinatesX[3] = (RightValue)50;
+            this.cordinatesX[4] = (RightValue)100;
+            this.cordinatesY[0] = (RightValue)1;
+            this.cordinatesY[1] = (RightValue)40;
+            this.cordinatesY[2] = (RightValue)70;
+            this.cordinatesY[3] = (RightValue)100;
+            this.cordinatesY[4] = (RightValue)1000;
+            this.values[0, 0] = (RightValue)145;
+            this.values[0, 1] = (RightValue)45;
+            this.values[0, 2] = (RightValue)90;
+            this.values[0, 3] = (RightValue)25;
+            this.values[0, 4] = (RightValue)253;
+
+            this.values[1, 0] = (RightValue)345;
+            this.values[1, 1] = (RightValue)95;
+            this.values[1, 2] = (RightValue)100;
+            this.values[1, 3] = (RightValue)275;
+            this.values[1, 4] = (RightValue)233;
+
+            this.values[2, 0] = (RightValue)45;
+            this.values[2, 1] = (RightValue)5;
+            this.values[2, 2] = (RightValue)0;
+            this.values[2, 3] = (RightValue)75;
+            this.values[2, 4] = (RightValue)33;
+
+            this.values[3, 0] = (RightValue)545;
+            this.values[3, 1] = (RightValue)55;
+            this.values[3, 2] = (RightValue)50;
+            this.values[3, 3] = (RightValue)575;
+            this.values[3, 4] = (RightValue)533;
+
+            this.values[4, 0] = (RightValue)1545;
+            this.values[4, 1] = (RightValue)15;
+            this.values[4, 2] = (RightValue)150;
+            this.values[4, 3] = (RightValue)1575;
+            this.values[4, 4] = (RightValue)533;
+            Console.WriteLine(this.values.ToString());
+            Console.WriteLine(this.cordinatesX.ToString());
+            Console.WriteLine(this.cordinatesY.ToString());
         }
+
+        /// <summary>
+        /// Initializes the object based on the serialized data.
+        /// </summary>
+        /// <param name="info">The SerializationInfo that holds the serialized object data.</param>
+        /// <param name="context">The StreamingContext that contains contextual
+        /// information about the source.</param>
+        public PFunction2D(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            cordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesX", typeof(IRightValue[]));
+            cordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesY", typeof(IRightValue[]));
+            interpolationType = (EInterpolationType)ObjectSerialization.GetValue2(info, "_InterpolationType", typeof(EInterpolationType));
+            extrapolationType = (ExtrapolationType)ObjectSerialization.GetValue2(info, "_ExtrapolationType", typeof(ExtrapolationType));
+            this.leastSquaresCoefficients = (int)ObjectSerialization.GetValue2(info, "_LeastSquaresCoefficients", typeof(int));
+        }
+
+        #endregion Constructors
 
         public List<IExportable> ExportObjects(bool recursive)
         {
@@ -74,11 +188,11 @@ namespace PFunction2D
         /// <remarks>
         /// To be used only internally, use Evaluate to get the value at any cordinate.
         /// </remarks>
-        internal Vector XCordinates
+        internal IRightValue[] XCordinates
         {
             get
             {
-                return this.function.PositionsX;
+                return this.cordinatesX;
             }
         }
 
@@ -88,60 +202,190 @@ namespace PFunction2D
         /// <remarks>
         /// To be used only internally, use Evaluate to get the value at any cordinate.
         /// </remarks>
-        internal Vector YCordinates
+        internal IRightValue[] YCordinates
         {
             get
             {
-                return this.function.PositionsY;
-            }
-        }
-
-        internal double this[int x, int y]
-        {
-            get
-            {
-                return this.function[x, y];
-            }
-
-            set
-            {
-                this.function[x, y] = value;
+                return this.cordinatesY;
             }
         }
 
         /// <summary>
-        /// Gets a specific value determined by the x, y index (not the actual cordinate value).
+        /// Gets or sets the interpolation to use in case the value request
+        /// is not already available.
         /// </summary>
         /// <remarks>
-        /// This is similar to a direct access to the underlying matrix. and the x and y values
-        /// are strictly tied with the position in the Y/XCordinates.
+        /// To be used only internally, in order to set the desidered interpolation and
+        /// get what is the current one.
         /// </remarks>
-        /// <param name="x">The x index in the matrix of data.</param>
-        /// <param name="y">The y index in the matrix of data.</param>
-        /// <returns>The value at the specified indices.</returns>
-        internal double GetPointValue(int x, int y)
+        internal EInterpolationType Interpolation
         {
-            return this.function.GetPointValue(x, y);
+            get
+            {
+                return this.interpolationType;
+            }
+
+            set
+            {
+                // Check for not implemented functionalities.
+                if (value == EInterpolationType.SPLINE ||
+                    value == EInterpolationType.LEAST_SQUARES)
+                {
+                    throw new Exception("The selected interpolation type is not supported.");
+                }
+
+                this.interpolationType = value;
+            }
         }
 
-        internal void SetPointValue(int x, int y, double value)
+        /// <summary>
+        /// Gets or sets the extrapolation to use in case the value request
+        /// is outside the function definition bounduaries.
+        /// </summary>
+        /// <remarks>
+        /// To be used only internally, in order to set the desidered extrapolation and
+        /// get what the current one.
+        /// </remarks>
+        internal ExtrapolationType Extrapolation
         {
-            this.function.SetPointValue(x, y, value);
+            get
+            {
+                return this.extrapolationType;
+            }
+
+            set
+            {
+                // Check for not implemented functionalities.
+                if (value != ExtrapolationType.CONSTANT)
+                {
+                    throw new Exception("The selected extrapolation type is not supported.");
+                }
+
+                this.extrapolationType = value;
+            }
         }
 
-        internal void SetPointValue(int x, int y, RightValue value)
+        /// <summary>
+        /// Gets or sets the leastSquaresCoefficients to use in certain interpolation methods.
+        /// is not already available.
+        /// </summary>
+        /// <remarks>
+        /// To be used only internally, in order to set the desidered
+        /// leastSquaresCoefficients and get what the current one.
+        /// </remarks>
+        internal int LeastSquaresCoefficients
         {
-            this.function.SetPointValue(x, y, value);
+            get
+            {
+                return this.leastSquaresCoefficients;
+            }
+
+            set
+            {
+                this.leastSquaresCoefficients = value;
+            }
         }
 
+        /// <summary>
+        /// Gets or sets RightValue elemenents as cordinates for the function
+        /// or as values for the function.
+        /// </summary>
+        /// <remarks>If both parameters are -1 nothing will be done.</remarks>
+        /// <param name="x">
+        /// The x cordinate to use to get or set the element,
+        /// if it's -1 it will work on the y cordinates, else
+        /// on the values.
+        /// </param>
+        /// <param name="y">
+        /// The y cordinate to use to get or set the element,
+        /// if it's -1 it will work on the x cordinates, else
+        /// on the values.
+        /// </param>
+        /// <returns>The requested RightValue at the position.</returns>
+        internal IRightValue this[int x, int y]
+        {
+            get
+            {
+                if (y != -1 && x != -1)
+                {
+                    return this.values[x, y];
+                }
+                else if (y != -1)
+                {
+                    return this.cordinatesY[y];
+                }
+                else if (x != -1)
+                {
+                    return this.cordinatesX[x];
+                }
+
+                return (RightValue)0;
+            }
+
+            set
+            {
+                if (y != -1 && x != -1)
+                {
+                    this.values[x, y] = value;
+                }
+                else if (y != -1)
+                {
+                    this.cordinatesY[y] = value;
+                }
+                else if (x != -1)
+                {
+                    this.cordinatesX[x] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Initializes the serialization information of the current object.
+        /// </summary>
+        /// <param name="info">The SerializationInfo to populate with data.</param>
+        /// <param name="context">The StreamingContext that contains contextual information
+        /// about the destination.</param>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue("_CordinatesX", this.cordinatesX);
+            info.AddValue("_CordinatesY", this.cordinatesY);
+            info.AddValue("_Values", this.values);
+            info.AddValue("_InterpolationType", this.interpolationType);
+            info.AddValue("_ExtrapolationType", this.extrapolationType);
+            info.AddValue("_LeastSquaresCoefficients", this.leastSquaresCoefficients);
+        }
+
+        /// <summary>
+        /// Initializes the arrays containing the cordinates
+        /// and the values with arrays of the desidered size.
+        /// </summary>
+        /// <remarks>Anything stored is lost.</remarks>
+        /// <param name="x">The size in the x dimension.</param>
+        /// <param name="y">The size in the y dimension.</param>
         internal void SetSizes(int x, int y)
         {
-            this.function.SetSizes(x, y);
+            cordinatesX = new RightValue[x];
+            cordinatesY = new RightValue[y];
+            values = new RightValue[x, y];
         }
 
+        /// <summary>
+        /// Copies the data stored in this object in another object.
+        /// </summary>
+        /// <remarks>
+        /// Anything stored in the other object is overwritten.
+        /// </remarks>
+        /// <param name="other">The object where to copy this object to.</param>
         internal void CopyTo(PFunction2D other)
         {
-            this.function.CopyTo(other.function);
+            other.SetSizes(this.cordinatesX.Length, this.cordinatesY.Length);
+            other.cordinatesX = (IRightValue[])this.cordinatesX.Clone();
+            other.cordinatesY = (IRightValue[])this.cordinatesY.Clone();
+            other.values = (IRightValue[,])this.values.Clone();
+            other.extrapolationType = this.extrapolationType;
+            other.interpolationType = this.interpolationType;
         }
 
         /// <summary>
@@ -221,6 +465,27 @@ namespace PFunction2D
         {
             base.CreateSymbol(context);
             Engine.Parser.DefineCallbackFunction(VarName, new TAEDelegateFunction2D(Evaluate));
+        }
+
+        /// <summary>
+        /// Parses the object.
+        /// </summary>
+        /// <param name="context">The project in which to parse the object.</param>
+        /// <returns>True if an error occurred during the parsing, False otherwise.</returns>
+        public override bool Parse(IProject context)
+        {
+            try
+            {
+                function = new CPointFunction2D(cordinatesX, cordinatesY, values,
+                                                interpolationType, extrapolationType);
+            }
+            catch (Exception e)
+            {
+                context.AddError(e.ToString());
+                return false;
+            }
+
+            return base.Parse(context);
         }
     }
 }
