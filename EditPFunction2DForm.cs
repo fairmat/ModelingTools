@@ -203,7 +203,7 @@ namespace PFunction2D
                         // DataGridView in case the cell is edited to an empty string replaces
                         // its value with DBNull (non existant value).
                         // So, substitute the cell value explicitly with the empty string.
-                        if (rows[y].Cells[x] is DBNull)
+                        if (rows[y].Cells[x].Value is DBNull)
                         {
                             rows[y].Cells[x].Value = string.Empty;
                         }
