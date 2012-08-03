@@ -20,7 +20,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Mono.Addins;
 
-// The following lines tell that the assembly is an addin
+// The following lines tell that the assembly is an addin.
 [assembly: Addin("PFunction2D", "1.0.0", Category = "Functions")]
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]

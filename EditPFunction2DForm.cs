@@ -74,6 +74,13 @@ namespace PFunction2D
 
             // Load the data from the function on the grid.
             PointFunctionDataToDataGrid();
+
+            // Setup additional operations on the datagrid to allow editing columns/rows.
+            base.fairmatDataGridViewPointData.EnableColumnRename = true;
+            base.fairmatDataGridViewPointData.EnableRowRename = true;
+            base.fairmatDataGridViewPointData.EnableColumnEditing = true;
+            base.fairmatDataGridViewPointData.ColumnRenameOperationName = "Change x cordinate";
+            base.fairmatDataGridViewPointData.RowRenameOperationName = "Change y cordinate";
         }
 
         /// <summary>
