@@ -156,10 +156,10 @@ namespace PFunction2D
         public PFunction2D(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            cordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesX", typeof(IRightValue[]));
-            cordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesY", typeof(IRightValue[]));
-            interpolationType = (EInterpolationType)ObjectSerialization.GetValue2(info, "_InterpolationType", typeof(EInterpolationType));
-            extrapolationType = (ExtrapolationType)ObjectSerialization.GetValue2(info, "_ExtrapolationType", typeof(ExtrapolationType));
+            this.cordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesX", typeof(IRightValue[]));
+            this.cordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesY", typeof(IRightValue[]));
+            this.interpolationType = (EInterpolationType)ObjectSerialization.GetValue2(info, "_InterpolationType", typeof(EInterpolationType));
+            this.extrapolationType = (ExtrapolationType)ObjectSerialization.GetValue2(info, "_ExtrapolationType", typeof(ExtrapolationType));
             this.leastSquaresCoefficients = (int)ObjectSerialization.GetValue2(info, "_LeastSquaresCoefficients", typeof(int));
         }
 
