@@ -75,7 +75,7 @@ namespace PFunction2D
             // Load the data from the function on the grid.
             PointFunctionDataToDataGrid();
 
-            // Setup additional operations on the datagrid to allow editing columns/rows.
+            // Setup additional operations on the Datagrid to allow editing columns/rows.
             base.fairmatDataGridViewPointData.EnableColumnRename = true;
             base.fairmatDataGridViewPointData.EnableRowRename = true;
             base.fairmatDataGridViewPointData.EnableColumnEditing = true;
@@ -93,7 +93,7 @@ namespace PFunction2D
             PFunction2D tempFunction = new PFunction2D(null);
             DataGridToPointFunctionData(tempFunction);
 
-            // The cordinates are always 2 here as it's a 2D function.
+            // The coordinates are always 2 here as it's a 2D function.
             base.OnPlotGenericFunction(2, tempFunction);
         }
 
@@ -105,7 +105,7 @@ namespace PFunction2D
         {
             // Take a reference to the function casted to PFunction2D
             // so we can access its members, it's assured to be one
-            // from checks in fairmat (due to the ProvidesTo implementation).
+            // from checks in Fairmat (due to the ProvidesTo implementation).
             PFunction2D function = (PFunction2D)base.m_Function;
 
             // Clear all the columns so it's possible to populate them from clean.
@@ -115,20 +115,20 @@ namespace PFunction2D
             // number the rows from the fairmatDataGridView control.
             base.fairmatDataGridViewPointData.ShowRowNumber = false;
 
-            // Creates the columns for each given x cordinate point stored in the function.
+            // Creates the columns for each given x coordinate point stored in the function.
             for (int i = 0; i < function.XCordinates.Length; i++)
             {
-                // The column name will have the cordinate associated to the specific x entry.
+                // The column name will have the coordinate associated to the specific x entry.
                 base.fairmatDataGridViewPointData.ColumnAdd(function.XCordinates[i].Expression);
             }
 
             // Populates all the rows of the matrix which defines the function.
             for (int y = 0; y < function.YCordinates.Length; y++)
             {
-                // Creates a row for each y cordinate present in the function definition.
+                // Creates a row for each y coordinate present in the function definition.
                 DataGridViewRow row = new DataGridViewRow();
 
-                // Sets the header cell for the row to contain the value of the cordinate.
+                // Sets the header cell for the row to contain the value of the coordinate.
                 row.HeaderCell.Value = function.YCordinates[y].Expression;
 
                 // Finally fill each cell of the current row with the respective value.
@@ -181,7 +181,7 @@ namespace PFunction2D
                 for (int x = columns.Count - 1; x >= 0; x--)
                 {
                     // DataGridView in case the header cell is edited to an empty string replaces
-                    // its value with DBNull (non existant value).
+                    // its value with DBNull (non existent value).
                     // So, substitute the cell value explicitly with the empty string.
                     if (columns[x].HeaderCell.Value is DBNull ||
                         columns[x].HeaderCell.Value == null)
@@ -206,7 +206,7 @@ namespace PFunction2D
                 for (int y = rows.Count - 2; y >= 0; y--)
                 {
                     // DataGridView in case the header cell is edited to an empty string replaces
-                    // its value with DBNull (non existant value).
+                    // its value with DBNull (non existent value).
                     // So, substitute the cell value explicitly with the empty string.
                     if (rows[y].HeaderCell.Value is DBNull || rows[y].HeaderCell.Value == null)
                     {
@@ -228,7 +228,7 @@ namespace PFunction2D
                     for (int x = 0; x < columns.Count; x++)
                     {
                         // DataGridView in case the cell is edited to an empty string replaces
-                        // its value with DBNull (non existant value).
+                        // its value with DBNull (non existent value).
                         // So, substitute the cell value explicitly with the empty string.
                         if (rows[y].Cells[x].Value is DBNull)
                         {

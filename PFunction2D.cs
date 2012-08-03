@@ -25,7 +25,7 @@ using DVPLUtils;
 namespace PFunction2D
 {
     /// <summary>
-    /// Rappresents a 2D functions defined by points and
+    /// Represents a 2D functions defined by points and
     /// which interpolates the missing points.
     /// </summary>
     [Serializable]
@@ -35,22 +35,22 @@ namespace PFunction2D
         #region Serialized Variables
 
         /// <summary>
-        /// A series of IRightValue rappresenting the x cordinates
+        /// A series of IRightValue representing the x coordinates
         /// which have been defined for the function, they should
         /// be ordered from the lowest to the highest.
         /// </summary>
         private IRightValue[] cordinatesX;
 
         /// <summary>
-        /// A series of IRightValue rappresenting the y cordinates
+        /// A series of IRightValue representing the y coordinates
         /// which have been defined for the function, they should
         /// be ordered from the lowest to the highest.
         /// </summary>
         private IRightValue[] cordinatesY;
 
         /// <summary>
-        /// A bidimensional array containing the values associated
-        /// to all the cordinates  rappresented in <see cref="cordinatesX"/>
+        /// A bi-dimensional array containing the values associated
+        /// to all the coordinates  represented in <see cref="cordinatesX"/>
         /// and <see cref="cordinatesY"/>.
         /// </summary>
         private IRightValue[,] values;
@@ -66,7 +66,7 @@ namespace PFunction2D
         private ExtrapolationType extrapolationType;
 
         /// <summary>
-        /// Keps the value of coefficient for the least squares interpolation.
+        /// Keeps the value of coefficient for the least squares interpolation.
         /// This is currently unused as the interpolation is not implemented.
         /// </summary>
         private int leastSquaresCoefficients;
@@ -99,7 +99,7 @@ namespace PFunction2D
             this.extrapolationType = ExtrapolationType.CONSTANT;
             this.leastSquaresCoefficients = 0;
 
-            // We make a function with cordinates 0 1 and all values to 0 by default.
+            // We make a function with coordinates 0 1 and all values to 0 by default.
             FillWithDefaultData();
         }
 
@@ -139,10 +139,10 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Gets the vector of the x cordinates in the data.
+        /// Gets the vector of the x coordinates in the data.
         /// </summary>
         /// <remarks>
-        /// To be used only internally, use Evaluate to get the value at any cordinate.
+        /// To be used only internally, use Evaluate to get the value at any coordinate.
         /// </remarks>
         internal IRightValue[] XCordinates
         {
@@ -153,10 +153,10 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Gets the vector of the y cordinates in the data.
+        /// Gets the vector of the y coordinates in the data.
         /// </summary>
         /// <remarks>
-        /// To be used only internally, use Evaluate to get the value at any cordinate.
+        /// To be used only internally, use Evaluate to get the value at any coordinate.
         /// </remarks>
         internal IRightValue[] YCordinates
         {
@@ -171,7 +171,7 @@ namespace PFunction2D
         /// is not already available.
         /// </summary>
         /// <remarks>
-        /// To be used only internally, in order to set the desidered interpolation and
+        /// To be used only internally, in order to set the wanted interpolation and
         /// get what is the current one.
         /// </remarks>
         internal EInterpolationType Interpolation
@@ -196,10 +196,10 @@ namespace PFunction2D
 
         /// <summary>
         /// Gets or sets the extrapolation to use in case the value request
-        /// is outside the function definition bounduaries.
+        /// is outside the function definition boundaries.
         /// </summary>
         /// <remarks>
-        /// To be used only internally, in order to set the desidered extrapolation and
+        /// To be used only internally, in order to set the wanted extrapolation and
         /// get what the current one.
         /// </remarks>
         internal ExtrapolationType Extrapolation
@@ -226,7 +226,7 @@ namespace PFunction2D
         /// is not already available.
         /// </summary>
         /// <remarks>
-        /// To be used only internally, in order to set the desidered
+        /// To be used only internally, in order to set the wated
         /// leastSquaresCoefficients and get what the current one.
         /// </remarks>
         internal int LeastSquaresCoefficients
@@ -243,18 +243,18 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Gets or sets RightValue elemenents as cordinates for the function
+        /// Gets or sets RightValue elements as coordinates for the function
         /// or as values for the function.
         /// </summary>
         /// <remarks>If both parameters are -1 nothing will be done.</remarks>
         /// <param name="x">
-        /// The x cordinate to use to get or set the element,
-        /// if it's -1 it will work on the y cordinates, else
+        /// The x coordinate to use to get or set the element,
+        /// if it's -1 it will work on the y coordinates, else
         /// on the values.
         /// </param>
         /// <param name="y">
-        /// The y cordinate to use to get or set the element,
-        /// if it's -1 it will work on the x cordinates, else
+        /// The y coordinate to use to get or set the element,
+        /// if it's -1 it will work on the x coordinates, else
         /// on the values.
         /// </param>
         /// <returns>The requested RightValue at the position.</returns>

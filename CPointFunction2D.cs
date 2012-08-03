@@ -23,8 +23,8 @@ namespace PFunction2D
 {
     /// <summary>
     /// Implements the evaluation functionalities of PFunction2D.
-    /// It provides the capabilities to rappresent a matrix and give to it
-    /// cordinates, additionally it allows to interpolate values between the values
+    /// It provides the capabilities to represent a matrix and give to it
+    /// coordinates, additionally it allows to interpolate values between the values
     /// actually present in the matrix.
     /// </summary>
     public class CPointFunction2D
@@ -37,12 +37,12 @@ namespace PFunction2D
         private Matrix values;
 
         /// <summary>
-        /// The x cordinates for the matrix.
+        /// The x coordinates for the matrix.
         /// </summary>
         private Vector cordinatesX;
 
         /// <summary>
-        /// The y cordinates for the matrix.
+        /// The y coordinates for the matrix.
         /// </summary>
         private Vector cordinatesY;
 
@@ -78,23 +78,23 @@ namespace PFunction2D
         /// </summary>
         /// <param name="cordinatesX">
         /// An array of IRightValue whose result is ordered from lower to greater and will
-        /// rappresent the x parameter of the function.
+        /// represent the x parameter of the function.
         /// </param>
         /// <param name="cordinatesY">
         /// An array of IRightValue whose result is ordered from lower to greater and will
-        /// rappresent the y parameter of the function.
+        /// represent the y parameter of the function.
         /// </param>
         /// <param name="values">
-        /// A bidimensional array containing the defined data points for
-        /// all the cordinates specified by cordinatesX and cordinatesY.
+        /// A bi-dimensional array containing the defined data points for
+        /// all the coordinates specified by cordinatesX and cordinatesY.
         /// </param>
         /// <param name="interpolationType">
         /// The interpolation to apply when evaluating the function
-        /// in case the requested cordinates aren't rappresented, but inside them.
+        /// in case the requested coordinates aren't represented, but inside them.
         /// </param>
         /// <param name="extrapolationType">
         /// The extrapolation to apply when evaluating the function,
-        /// in case the requested cordinates are outside the rappresented ones.
+        /// in case the requested coordinates are outside the represented ones.
         /// </param>
         public CPointFunction2D(IRightValue[] cordinatesX,
                                 IRightValue[] cordinatesY,
@@ -108,13 +108,13 @@ namespace PFunction2D
             // Sets the sizes depending on the passed arrays length.
             SetSizes(cordinatesX.Length, cordinatesY.Length);
 
-            // First copy the parsed elements for the x cordinates.
+            // First copy the parsed elements for the x coordinates.
             for (int i = cordinatesX.Length - 1; i >= 0; i--)
             {
                 this[i, -1] = cordinatesX[i].V();
             }
 
-            // Then copy the parsed elements for the y cordinates.
+            // Then copy the parsed elements for the y coordinates.
             for (int i = cordinatesY.Length - 1; i >= 0; i--)
             {
                 this[-1, i] = cordinatesY[i].V();
@@ -139,18 +139,18 @@ namespace PFunction2D
         /// after doing checks for consistency.
         /// </summary>
         /// <exception cref="Exception">
-        /// If the data is not valid. For example the cordinates 
+        /// If the data is not valid. For example the coordinates 
         /// values aren't ordered from lesser to greater.
         /// </exception>
         /// <remarks>If both parameters are -1 nothing will be done.</remarks>
         /// <param name="x">
-        /// The x cordinate to use to get or set the element,
-        /// if it's -1 it will work on the y cordinates, else
+        /// The x coordinate to use to get or set the element,
+        /// if it's -1 it will work on the y coordinates, else
         /// on the values.
         /// </param>
         /// <param name="y">
-        /// The y cordinate to use to get or set the element,
-        /// if it's -1 it will work on the x cordinates, else
+        /// The y coordinate to use to get or set the element,
+        /// if it's -1 it will work on the x coordinates, else
         /// on the values.
         /// </param>
         /// <returns>The requested value at the position.</returns>
@@ -159,7 +159,7 @@ namespace PFunction2D
             get
             {
                 // If both are > -1 it means it's a value in the main matrix.
-                // If one is -1 it means to get the cordinate values.
+                // If one is -1 it means to get the coordinate values.
                 if (y > -1 && x > -1)
                 {
                     return this.values[x, y];
@@ -185,26 +185,26 @@ namespace PFunction2D
                 }
                 else if (y != -1)
                 {
-                    // Check if the y cordinates are ordered from lower to greater.
+                    // Check if the y coordinates are ordered from lower to greater.
                     // else throw an error.
                     if ((y > 0 && this.cordinatesY[y - 1] > value) ||
                        (y < this.cordinatesY.Count - 1 && this.cordinatesY[y + 1] < value))
                     {
                         throw new Exception("Function integrity wasn't maintained in the " +
-                                            "y cordinates.");
+                                            "y coordinates.");
                     }
 
                     this.cordinatesY[y] = value;
                 }
                 else if (x != -1)
                 {
-                    // Check if the x cordinates are ordered from lower to greater.
+                    // Check if the x coordinates are ordered from lower to greater.
                     // else throw an error.
                     if ((x > 0 && this.cordinatesX[x - 1] > value) ||
                        (x < this.cordinatesX.Count - 1 && this.cordinatesX[x + 1] < value))
                     {
                         throw new Exception("Function integrity wasn't maintained in the " +
-                                            "x cordinates.");
+                                            "x coordinates.");
                     }
 
                     this.cordinatesX[x] = value;
@@ -233,7 +233,7 @@ namespace PFunction2D
         #region Internal functions
 
         /// <summary>
-        /// Finds the position of a cordinate in a vector,
+        /// Finds the position of a coordinate in a vector,
         /// it's used with cordinatesX and cordinatesY.
         /// </summary>
         /// <param name="posVector">
@@ -280,18 +280,18 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Calculates the value at the requested cordinates through linear
+        /// Calculates the value at the requested coordinates through linear
         /// interpolation having to interpolate only through a single direction.
         /// </summary>
         /// <remarks>
         /// The function is handled directly from <see cref="CalculateLinear"/>
-        /// in the cases bilinear interpolation is not appliable (due
-        /// to collapsed cordinates because of lack of data or being at
+        /// in the cases bilinear interpolation is not applicable (due
+        /// to collapsed coordinates because of lack of data or being at
         /// the boundaries).
         /// </remarks>
-        /// <param name="x">The cordinate to calculate (in the single dimension).</param>
-        /// <param name="x0">The cordinate before the one to calculate that it's known.</param>
-        /// <param name="x1">The cordinate after the one to calculate th at it's known.</param>
+        /// <param name="x">The coordinate to calculate (in the single dimension).</param>
+        /// <param name="x0">The coordinate before the one to calculate that it's known.</param>
+        /// <param name="x1">The coordinate after the one to calculate th at it's known.</param>
         /// <param name="y0">The value of the function at the position x0.</param>
         /// <param name="y1">The value of the function at the position x1.</param>
         /// <returns>The calculated value.</returns>
@@ -301,15 +301,15 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Calculates the value at the requested cordinates through linear
+        /// Calculates the value at the requested coordinates through linear
         /// interpolation.
         /// </summary>
         /// <remarks>
         /// The value requested must not be at the margin of the matrix,
         /// so there must be at least one entry under and on the left of the
         /// requested value.</remarks>
-        /// <param name="x">The x cordinate where to calculate the value.</param>
-        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <param name="x">The x coordinate where to calculate the value.</param>
+        /// <param name="y">The y coordinate where to calculate the value.</param>
         /// <returns>The calculated value.</returns>
         private double CalculateLinear(double x, double y)
         {
@@ -356,7 +356,7 @@ namespace PFunction2D
             double factor4 = (this.values[beforeX + 1, beforeY + 1] / denominator) *
                              ((x - this.cordinatesX[beforeX]) * (y - this.cordinatesY[beforeY]));
 
-            // Finally sum the 4 factors togheter and return the result.
+            // Finally sum the 4 factors together and return the result.
             return factor1 + factor2 + factor3 + factor4;
         }
 
@@ -364,8 +364,8 @@ namespace PFunction2D
         /// Calculates the spline interpolation from left, which is just
         /// the nearest value available before the requested one (left/up).
         /// </summary>
-        /// <param name="x">The x cordinate where to calculate the value.</param>
-        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <param name="x">The x coordinate where to calculate the value.</param>
+        /// <param name="y">The y coordinate where to calculate the value.</param>
         /// <returns>The calculated value.</returns>
         private double CalculateSpline(double x, double y)
         {
@@ -377,8 +377,8 @@ namespace PFunction2D
         /// Calculates the constant interpolation from left, which is just
         /// the nearest value available before the requested one (left/up).
         /// </summary>
-        /// <param name="x">The x cordinate where to calculate the value.</param>
-        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <param name="x">The x coordinate where to calculate the value.</param>
+        /// <param name="y">The y coordinate where to calculate the value.</param>
         /// <returns>The calculated value.</returns>
         private double CalculateConstantBefore(double x, double y)
         {
@@ -392,15 +392,15 @@ namespace PFunction2D
         /// Calculates the constant interpolation from right, which is just
         /// the nearest value available before the requested one (right/down).
         /// </summary>
-        /// <param name="x">The x cordinate where to calculate the value.</param>
-        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <param name="x">The x coordinate where to calculate the value.</param>
+        /// <param name="y">The y coordinate where to calculate the value.</param>
         /// <returns>The calculated value.</returns>
         private double CalculateConstantAfter(double x, double y)
         {
             int selectedX = FindNearestBefore(ref this.cordinatesX, x);
             int selectedY = FindNearestBefore(ref this.cordinatesY, y);
 
-            // In case the nearest before is actually a bounduary cell
+            // In case the nearest before is actually a boundary cell
             // apply a correction to the index in order to take the last
             // value available at the end of the data.
             if (selectedX == this.cordinatesX.Count - 1)
@@ -441,8 +441,8 @@ namespace PFunction2D
         /// Evaluates the function at the requested x and y point,
         /// using, if necessary, an interpolation.
         /// </summary>
-        /// <param name="x">The x cordinate where to evaluate the function.</param>
-        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <param name="x">The x coordinate where to evaluate the function.</param>
+        /// <param name="y">The y coordinate where to calculate the value.</param>
         /// <returns>The value of the function at the requested point.</returns>
         internal double Evaluate(double x, double y)
         {
@@ -453,10 +453,10 @@ namespace PFunction2D
             }
 
             // Values outside the range of the x and y aren't allowed
-            // in those case the last value in the bounduary direction
+            // in those case the last value in the boundary direction
             // which was exceeded is returned. (Extrapolation)
             // Note: The bounds are determined by the first and last element
-            //       of the vectors as they rappresent ordered indexes.
+            //       of the vectors as they represent ordered indexes.
             if (x < this.cordinatesX[0])
             {
                 x = this.cordinatesX[0];
@@ -513,7 +513,7 @@ namespace PFunction2D
                     case EInterpolationType.ZERO_ORDER:
                         return CalculateConstantAfter(x, y);
 
-                    // Any interpolation type which in't supported will return zero.
+                    // Any interpolation type which isn't supported will return zero.
                     default:
                         return 0;
                 }
