@@ -35,26 +35,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DVPForms">
-      <HintPath>..\DVPLReferences\DVPForms.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPForms.dll</HintPath>
     </Reference>
     <Reference Include="DVPLDOM">
-      <HintPath>..\DVPLReferences\DVPLDOM.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLDOM.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLI">
-      <HintPath>..\DVPLReferences\DVPLI.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLInterfaces">
-      <HintPath>..\DVPLReferences\DVPLInterfaces.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLUtils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c08731b4bb5a116, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DVPLReferences\DVPLUtils.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLUtils.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Addins">
-      <HintPath>..\DVPLReferences\Mono.Addins.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\Mono.Addins.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -68,7 +68,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="UIBase, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c08731b4bb5a116, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DVPLReferences\UIBase.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

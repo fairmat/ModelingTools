@@ -32,31 +32,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DVPForms">
-      <HintPath>..\DVPLReferences\DVPForms.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPForms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLDOM">
-      <HintPath>..\DVPLReferences\DVPLDOM.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLDOM.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLDOME">
-      <HintPath>..\DVPLReferences\DVPLDOME.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLDOME.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLI">
-      <HintPath>..\DVPLReferences\DVPLI.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLInterfaces">
-      <HintPath>..\DVPLReferences\DVPLInterfaces.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DVPLUtils">
-      <HintPath>..\DVPLReferences\DVPLUtils.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\DVPLUtils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Addins">
-      <HintPath>..\DVPLReferences\Mono.Addins.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\Mono.Addins.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
