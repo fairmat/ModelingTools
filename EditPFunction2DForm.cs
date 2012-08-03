@@ -180,13 +180,22 @@ namespace PFunction2D
                 // First load the column headers values
                 for (int x = columns.Count - 1; x >= 0; x--)
                 {
+                    // DataGridView in case the header cell is edited to an empty string replaces
+                    // its value with DBNull (non existant value).
+                    // So, substitute the cell value explicitly with the empty string.
+                    if (columns[x].HeaderCell.Value is DBNull ||
+                        columns[x].HeaderCell.Value == null)
+                    {
+                        columns[x].HeaderCell.Value = string.Empty;
+                    }
+
                     try
                     {
                         tempFunction[x, -1] = RightValue.ConvertFrom(columns[x].HeaderText, true);
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("The string " + columns[x].HeaderText + " (position " + 
+                        MessageBox.Show("The string " + columns[x].HeaderText + " (position " +
                                         (x + 1) + ") is invalid due to: " + e.Message,
                                         DataExchange.ApplicationName);
                         return false;
@@ -196,6 +205,14 @@ namespace PFunction2D
                 // Then the rows and the cells.
                 for (int y = rows.Count - 2; y >= 0; y--)
                 {
+                    // DataGridView in case the header cell is edited to an empty string replaces
+                    // its value with DBNull (non existant value).
+                    // So, substitute the cell value explicitly with the empty string.
+                    if (rows[y].HeaderCell.Value is DBNull || rows[y].HeaderCell.Value == null)
+                    {
+                        rows[y].HeaderCell.Value = string.Empty;
+                    }
+
                     try
                     {
                         tempFunction[-1, y] = RightValue.ConvertFrom(rows[y].HeaderCell.Value, true);

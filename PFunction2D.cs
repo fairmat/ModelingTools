@@ -94,57 +94,13 @@ namespace PFunction2D
         public PFunction2D(Project context)
             : base(EModelParameterType.POINT_FUNCTION, context)
         {
+            // Set some default values.
             this.interpolationType = EInterpolationType.LINEAR;
             this.extrapolationType = ExtrapolationType.CONSTANT;
             this.leastSquaresCoefficients = 0;
-            fillsomedata();
-        }
 
-        public void fillsomedata()
-        {
-            SetSizes(5, 5);
-            this.cordinatesX[0] = (RightValue)1;
-            this.cordinatesX[1] = (RightValue)20;
-            this.cordinatesX[2] = (RightValue)30;
-            this.cordinatesX[3] = (RightValue)50;
-            this.cordinatesX[4] = (RightValue)100;
-            this.cordinatesY[0] = (RightValue)1;
-            this.cordinatesY[1] = (RightValue)40;
-            this.cordinatesY[2] = (RightValue)70;
-            this.cordinatesY[3] = (RightValue)100;
-            this.cordinatesY[4] = (RightValue)1000;
-            this.values[0, 0] = (RightValue)145;
-            this.values[0, 1] = (RightValue)45;
-            this.values[0, 2] = (RightValue)90;
-            this.values[0, 3] = (RightValue)25;
-            this.values[0, 4] = (RightValue)253;
-
-            this.values[1, 0] = (RightValue)345;
-            this.values[1, 1] = (RightValue)95;
-            this.values[1, 2] = (RightValue)100;
-            this.values[1, 3] = (RightValue)275;
-            this.values[1, 4] = (RightValue)233;
-
-            this.values[2, 0] = (RightValue)45;
-            this.values[2, 1] = (RightValue)5;
-            this.values[2, 2] = (RightValue)0;
-            this.values[2, 3] = (RightValue)75;
-            this.values[2, 4] = (RightValue)33;
-
-            this.values[3, 0] = (RightValue)545;
-            this.values[3, 1] = (RightValue)55;
-            this.values[3, 2] = (RightValue)50;
-            this.values[3, 3] = (RightValue)575;
-            this.values[3, 4] = (RightValue)533;
-
-            this.values[4, 0] = (RightValue)1545;
-            this.values[4, 1] = (RightValue)15;
-            this.values[4, 2] = (RightValue)150;
-            this.values[4, 3] = (RightValue)1575;
-            this.values[4, 4] = (RightValue)533;
-            Console.WriteLine(this.values.ToString());
-            Console.WriteLine(this.cordinatesX.ToString());
-            Console.WriteLine(this.cordinatesY.ToString());
+            // We make a function with cordinates 0 1 and all values to 0 by default.
+            FillWithDefaultData();
         }
 
         /// <summary>
@@ -358,6 +314,28 @@ namespace PFunction2D
         }
 
         /// <summary>
+        /// Fills the function with default data, to be presented to the user when created.
+        /// </summary>
+        public void FillWithDefaultData()
+        {
+            // We make a 2x2 field.
+            SetSizes(2, 2);
+
+            // With cordinates 0 and 1 for x and y.
+            this.cordinatesX[0] = (RightValue)0;
+            this.cordinatesX[1] = (RightValue)1;
+
+            this.cordinatesY[0] = (RightValue)0;
+            this.cordinatesY[1] = (RightValue)1;
+
+            // And all the values set to zero.
+            this.values[0, 0] = (RightValue)0;
+            this.values[0, 1] = (RightValue)0;
+            this.values[1, 0] = (RightValue)0;
+            this.values[1, 1] = (RightValue)0;
+        }
+
+        /// <summary>
         /// Initializes the arrays containing the cordinates
         /// and the values with arrays of the desidered size.
         /// </summary>
@@ -481,7 +459,7 @@ namespace PFunction2D
             }
             catch (Exception e)
             {
-                context.AddError(e.ToString());
+                context.AddError(e.Message + " for the 2D Function " + base.Name);
                 return false;
             }
 

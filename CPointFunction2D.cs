@@ -268,12 +268,15 @@ namespace PFunction2D
         /// </summary>
         /// <remarks>
         /// The function is handled directly from <see cref="CalculateLinear"/>
-        /// in the cases bilinear interpolation is not appliable (due 
+        /// in the cases bilinear interpolation is not appliable (due
         /// to collapsed cordinates because of lack of data or being at
-        /// the boundaries)
+        /// the boundaries).
         /// </remarks>
-        /// <param name="x">The x cordinate where to calculate the value.</param>
-        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <param name="x">The cordinate to calculate (in the single dimension).</param>
+        /// <param name="x0">The cordinate before the one to calculate that it's known.</param>
+        /// <param name="x1">The cordinate after the one to calculate th at it's known.</param>
+        /// <param name="y0">The value of the function at the position x0.</param>
+        /// <param name="y1">The value of the function at the position x1.</param>
         /// <returns>The calculated value.</returns>
         private double CalculateLinearSingle(double x, double x0, double x1, double y0, double y1)
         {
@@ -308,7 +311,7 @@ namespace PFunction2D
                                              this.values[beforeX, beforeY],
                                              this.values[beforeX, beforeY + 1]);
             }
-            
+
             if (beforeY == this.cordinatesY.Count - 1)
             {
                 // In this case we do a linear interpolation only over the x axis.
@@ -386,7 +389,7 @@ namespace PFunction2D
             {
                 selectedX--;
             }
-            
+
             if (selectedY == this.cordinatesY.Count - 1)
             {
                 selectedY--;
