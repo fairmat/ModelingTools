@@ -1,4 +1,5 @@
 PFunction2D
 ===========
 
-A 2D version of PFunction for Fairmat.
+This plugins implements a 2D function defined by value interpolation for fairmat.
+It supports linear and zero order interpolation and constant extrapolation of the data.
