@@ -341,7 +341,19 @@ namespace PFunction2D
             int selectedX = FindNearestBefore(ref this.cordinatesX, x);
             int selectedY = FindNearestBefore(ref this.cordinatesY, y);
 
-            // TODO: check bounds.
+            // In case the nearest before is actually a bounduary cell
+            // apply a correction to the index in order to take the last
+            // value available at the end of the data.
+            if (selectedX == this.cordinatesX.Count - 1)
+            {
+                selectedX--;
+            }
+            
+            if (selectedY == this.cordinatesY.Count - 1)
+            {
+                selectedY--;
+            }
+
             return this.values[selectedX + 1, selectedY + 1];
         }
 
