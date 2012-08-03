@@ -262,7 +262,7 @@ namespace PFunction2D
         {
             get
             {
-                if (y != -1 && x != -1)
+                if (y > -1 && x > -1)
                 {
                     return this.values[x, y];
                 }
@@ -280,7 +280,7 @@ namespace PFunction2D
 
             set
             {
-                if (y != -1 && x != -1)
+                if (y > -1 && x > -1)
                 {
                     this.values[x, y] = value;
                 }

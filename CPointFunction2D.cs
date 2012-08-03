@@ -104,17 +104,23 @@ namespace PFunction2D
         {
             this.interpolationType = interpolationType;
             this.extrapolationType = extrapolationType;
+
+            // Sets the sizes depending on the passed arrays length.
             SetSizes(cordinatesX.Length, cordinatesY.Length);
+
+            // First copy the parsed elements for the x cordinates.
             for (int i = cordinatesX.Length - 1; i >= 0; i--)
             {
                 this[i, -1] = cordinatesX[i].V();
             }
 
+            // Then copy the parsed elements for the y cordinates.
             for (int i = cordinatesY.Length - 1; i >= 0; i--)
             {
                 this[-1, i] = cordinatesY[i].V();
             }
 
+            // Finally populate the values matrix with the provided data.
             for (int x = 0; x < values.GetLength(0); x++)
             {
                 for (int y = 0; y < values.GetLength(1); y++)
@@ -132,6 +138,10 @@ namespace PFunction2D
         /// Gets or sets the data inside the data structures
         /// after doing checks for consistency.
         /// </summary>
+        /// <exception cref="Exception">
+        /// If the data is not valid. For example the cordinates 
+        /// values aren't ordered from lesser to greater.
+        /// </exception>
         /// <remarks>If both parameters are -1 nothing will be done.</remarks>
         /// <param name="x">
         /// The x cordinate to use to get or set the element,
@@ -148,7 +158,9 @@ namespace PFunction2D
         {
             get
             {
-                if (y != -1 && x != -1)
+                // If both are > -1 it means it's a value in the main matrix.
+                // If one is -1 it means to get the cordinate values.
+                if (y > -1 && x > -1)
                 {
                     return this.values[x, y];
                 }
@@ -161,17 +173,20 @@ namespace PFunction2D
                     return this.cordinatesX[x];
                 }
 
+                // None of the previous attempts worked so just return 0.
                 return 0;
             }
 
             set
             {
-                if (y != -1 && x != -1)
+                if (y > -1 && x > -1)
                 {
                     this.values[x, y] = value;
                 }
                 else if (y != -1)
                 {
+                    // Check if the y cordinates are ordered from lower to greater.
+                    // else throw an error.
                     if ((y > 0 && this.cordinatesY[y - 1] > value) ||
                        (y < this.cordinatesY.Count - 1 && this.cordinatesY[y + 1] < value))
                     {
@@ -183,6 +198,8 @@ namespace PFunction2D
                 }
                 else if (x != -1)
                 {
+                    // Check if the x cordinates are ordered from lower to greater.
+                    // else throw an error.
                     if ((x > 0 && this.cordinatesX[x - 1] > value) ||
                        (x < this.cordinatesX.Count - 1 && this.cordinatesX[x + 1] < value))
                     {
@@ -352,6 +369,7 @@ namespace PFunction2D
         /// <returns>The calculated value.</returns>
         private double CalculateSpline(double x, double y)
         {
+            // Not implemented.
             return 0;
         }
 
