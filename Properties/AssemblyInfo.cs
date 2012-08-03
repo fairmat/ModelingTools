@@ -21,19 +21,19 @@ using System.Runtime.InteropServices;
 using Mono.Addins;
 
 // The following lines tell that the assembly is an addin.
-[assembly: Addin("PFunction2D", "1.0.0", Category = "Functions")]
+[assembly: Addin("Point Function 2D", "1.0.0", Category = "Functions")]
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]
-[assembly: AddinDescription("A 2D implementation of Function.")]
+[assembly: AddinDescription("A 2D function defined by value interpolation.")]
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PFunction2D")]
-[assembly: AssemblyDescription("A 2D implementation of Function.")]
+[assembly: AssemblyTitle("Point Function 2D")]
+[assembly: AssemblyDescription("A 2D function defined by value interpolation.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fairmat SRL")]
-[assembly: AssemblyProduct("PFunction2D")]
+[assembly: AssemblyProduct("Point Function 2D")]
 [assembly: AssemblyCopyright("Copyright © Fairmat SRL 2012")]
 [assembly: AssemblyTrademark("Fairmat")]
 [assembly: AssemblyCulture("")]
