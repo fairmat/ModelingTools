@@ -264,6 +264,24 @@ namespace PFunction2D
 
         /// <summary>
         /// Calculates the value at the requested cordinates through linear
+        /// interpolation having to interpolate only through a single direction.
+        /// </summary>
+        /// <remarks>
+        /// The function is handled directly from <see cref="CalculateLinear"/>
+        /// in the cases bilinear interpolation is not appliable (due 
+        /// to collapsed cordinates because of lack of data or being at
+        /// the boundaries)
+        /// </remarks>
+        /// <param name="x">The x cordinate where to calculate the value.</param>
+        /// <param name="y">The y cordinate where to calculate the value.</param>
+        /// <returns>The calculated value.</returns>
+        private double CalculateLinearSingle(double x, double x0, double x1, double y0, double y1)
+        {
+            return y0 + ((((x - x0) * y1) - ((x - x0) * y0)) / (x1 - x0));
+        }
+
+        /// <summary>
+        /// Calculates the value at the requested cordinates through linear
         /// interpolation.
         /// </summary>
         /// <remarks>
@@ -279,6 +297,26 @@ namespace PFunction2D
             // do bound checking for this function.
             int beforeX = FindNearestBefore(ref this.cordinatesX, x);
             int beforeY = FindNearestBefore(ref this.cordinatesY, y);
+
+            // Check this is a situation which would end up going at the edge of bounds
+            // due to lack of data.
+            if (beforeX == this.cordinatesX.Count - 1)
+            {
+                // In this case we do a linear interpolation only over the y axis.
+                return CalculateLinearSingle(y, this.cordinatesY[beforeY],
+                                             this.cordinatesY[beforeY + 1],
+                                             this.values[beforeX, beforeY],
+                                             this.values[beforeX, beforeY + 1]);
+            }
+            
+            if (beforeY == this.cordinatesY.Count - 1)
+            {
+                // In this case we do a linear interpolation only over the x axis.
+                return CalculateLinearSingle(x, this.cordinatesX[beforeX],
+                                             this.cordinatesX[beforeX + 1],
+                                             this.values[beforeX, beforeY],
+                                             this.values[beforeX + 1, beforeY]);
+            }
 
             // The denominator of the formula which gives the linear interpolation.
             // (x2 - x1) * (y2 - y1)
