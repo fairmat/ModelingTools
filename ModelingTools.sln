@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2D", "PFunction2D.csproj", "{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGenerator", "DatesGenerator\DatesGenerator.csproj", "{86C0D51D-B82C-40E9-8784-3EB614396B3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2D", "PFunction2D\PFunction2D.csproj", "{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,6 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86C0D51D-B82C-40E9-8784-3EB614396B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86C0D51D-B82C-40E9-8784-3EB614396B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86C0D51D-B82C-40E9-8784-3EB614396B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86C0D51D-B82C-40E9-8784-3EB614396B3B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}.Release|Any CPU.ActiveCfg = Release|Any CPU
