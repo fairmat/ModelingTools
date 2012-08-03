@@ -318,7 +318,7 @@ namespace PFunction2D
             int beforeX = FindNearestBefore(ref this.cordinatesX, x);
             int beforeY = FindNearestBefore(ref this.cordinatesY, y);
 
-            // Check this is a situation which would end up going at the edge of bounds
+            // Check if this is a situation which would end up going at the edge of bounds
             // due to lack of data.
             if (beforeX == this.cordinatesX.Count - 1)
             {
