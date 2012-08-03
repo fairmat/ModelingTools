@@ -56,6 +56,6 @@ using Mono.Addins;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // Plugin information
-[assembly: Addin("Dates Generator", "1.0.1", Category = "Dates Generator")]
+[assembly: Addin("Dates Generator", "1.0.1", Category = "Modeling Tools")]
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]
