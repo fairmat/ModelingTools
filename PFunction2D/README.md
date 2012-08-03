@@ -1,4 +1,4 @@
-PFunction2D
+Point Function 2D
 ===========
 
 This plugins implements a 2D function defined by value interpolation for Fairmat.
