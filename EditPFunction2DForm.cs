@@ -172,7 +172,10 @@ namespace PFunction2D
                 DataGridViewRowCollection rows = fairmatDataGridViewPointData.Rows;
                 DataGridViewColumnCollection columns = fairmatDataGridViewPointData.Columns;
 
-                tempFunction.SetSizes(columns.Count, rows.Count - 1);
+                // Sets the sizes of the function. Additionally check if the row.Count is zero,
+                // in that case it means there are no columns and rows and so must be handled
+                // separately
+                tempFunction.SetSizes(columns.Count, rows.Count > 0 ? rows.Count - 1 : 0);
 
                 // First load the column headers values
                 for (int x = columns.Count - 1; x >= 0; x--)

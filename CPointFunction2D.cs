@@ -426,7 +426,7 @@ namespace PFunction2D
         internal double Evaluate(double x, double y)
         {
             // First of all check if we have any data
-            if (this.cordinatesX.Count == 0)
+            if (this.cordinatesX.Count == 0 || this.cordinatesY.Count == 0)
             {
                 return 0;
             }
