@@ -138,6 +138,8 @@ namespace PFunction2D
             }
         }
 
+        #region Properties
+
         /// <summary>
         /// Gets the vector of the x coordinates in the data.
         /// </summary>
@@ -295,28 +297,20 @@ namespace PFunction2D
             }
         }
 
+        #endregion Properties
+
+        #region Private and Internal methods
+
         /// <summary>
         /// Initializes the serialization information of the current object.
         /// </summary>
         /// <param name="info">The SerializationInfo to populate with data.</param>
         /// <param name="context">The StreamingContext that contains contextual information
         /// about the destination.</param>
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-
-            info.AddValue("_CordinatesX", this.cordinatesX);
-            info.AddValue("_CordinatesY", this.cordinatesY);
-            info.AddValue("_Values", this.values);
-            info.AddValue("_InterpolationType", this.interpolationType);
-            info.AddValue("_ExtrapolationType", this.extrapolationType);
-            info.AddValue("_LeastSquaresCoefficients", this.leastSquaresCoefficients);
-        }
-
         /// <summary>
         /// Fills the function with default data, to be presented to the user when created.
         /// </summary>
-        public void FillWithDefaultData()
+        private void FillWithDefaultData()
         {
             // We make a 2x2 field.
             SetSizes(2, 2);
@@ -365,6 +359,10 @@ namespace PFunction2D
             other.extrapolationType = this.extrapolationType;
             other.interpolationType = this.interpolationType;
         }
+
+        #endregion Private and Internal methods
+
+        #region Public methods
 
         /// <summary>
         /// Evaluates the 2D Function on the specified cordinates.
@@ -433,6 +431,18 @@ namespace PFunction2D
             return 0;
         }
 
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+
+            info.AddValue("_CordinatesX", this.cordinatesX);
+            info.AddValue("_CordinatesY", this.cordinatesY);
+            info.AddValue("_Values", this.values);
+            info.AddValue("_InterpolationType", this.interpolationType);
+            info.AddValue("_ExtrapolationType", this.extrapolationType);
+            info.AddValue("_LeastSquaresCoefficients", this.leastSquaresCoefficients);
+        }
+
         /// <summary>
         /// Handles the symbol creation and registration on the system,
         /// additionally it setups a callback for the Engine to use in
@@ -465,5 +475,8 @@ namespace PFunction2D
 
             return base.Parse(context);
         }
+
+        #endregion Public methods
+
     }
 }
