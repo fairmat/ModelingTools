@@ -13,7 +13,7 @@ The plug-in implements 3 types of interpolation:
 \item left zero order interpolation
 \end{itemize}
 
-The function values outside the domain specified by control points is given by contat extrapolation (the value at the nearest available data point is used).
+The function values outside the domain specified by control points is given by constant extrapolation (the value at the nearest available data point is used).
 
 \section{How to use the plug-in}
 In the Fairmat user interface, when adding a new parameter \& functions, you will find the additional option \emph{2D Function defined by value interpolation} under functions.
@@ -43,5 +43,28 @@ As for filling in the data points, you just need to fill in the single cells whi
 You have the freedom to use any formula for coordinates and point values, but remember that during evaluation, rows and columns coordinates must be ordered in ascending order (they must increase while going from left to right and from top to bottom) or you'll get an error during evaluation.
 
 Finally, on the right of the form, you can choose the interpolation and extrapolation methods you want to apply to the function evaluation.
+\section{Interpolation implementation}
+These formulas are used to implement the interpolations.
+\subsection{Bi-linear interpolation}
+$f(x, y) = \frac{f(x_1, y_1)}{(x_2 - x_1)(y_2 - y_1)}(x_2 - x)(y_2 - y) + \frac{f(x_2, y_1)}{(x_2 - x_1)(y_2 - y_1)}(x - x_1)(y_2 - y) + \frac{f(x_1, y_2)}{(x_2 - x_1)(y_2 - y_1)}(x_2 - x)(y - y_1) + \frac{f(x_2, y_2)}{(x_2 - x_1)(y_2 - y_1)}(x - x_1)(y - y_1)$
 
+where:
+\begin{itemize}
+\item $x_1$ is the coordinate before $x$
+\item $x_2$ is the coordinate after $x$
+\item $y_1$ is the coordinate before $y$
+\item $y_2$ is the coordinate after $y$
+\end{itemize}
+\subsection{Linear interpolation}
+This is used when the bi-linear interpolation is not applicable (e.g. The points have the same x/y axis).
+
+$f(y) = y_0 + \frac{(x - x_0)y_1 - (x - x_0)y_0}{x_1 - x_0}$
+
+where:
+\begin{itemize}
+\item $x_0$ is the coordinate before $x$
+\item $x_1$ is the coordinate after $x$
+\item $y_0$ is the value of the function at $x_0$
+\item $y_1$ is the value of the function at $x_1$
+\end{itemize}
 \end{document}
