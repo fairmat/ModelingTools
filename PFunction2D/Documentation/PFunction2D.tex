@@ -16,8 +16,8 @@ The plug-in implements 3 types of interpolation:
 The function values outside the domain specified by control points is given by contat extrapolation (the value at the nearest available data point is used).
 
 \section{How to use the plug-in}
-In the Fairmat user interface when adding a new parameter \& functions, and additional option \emph{2D Function defined by value interpolation} under functions will be available.
-You will then be shown a window similar to the one used to define the 1D version of this plug-in, but differently than that one, you will be given the freedom to define as many columns and as many rows as you wish (See also Figure~\ref{fig.PFunction2DGUI}).
+In the Fairmat user interface, when adding a new parameter \& functions, you will find the additional option \emph{2D Function defined by value interpolation} under functions.
+You will then be shown a window similar to the one used to define the 1D version of this plug-in, except that you will be given the freedom to define as many columns and as many rows as you wish (See also Figure~\ref{fig.PFunction2DGUI}).
 
 \begin{figure}[h]
 \begin{center}
@@ -28,9 +28,9 @@ You will then be shown a window similar to the one used to define the 1D version
 \end{center}
 \end{figure}
 
-In order to give values to coordinates you can double click on the row/column header, this way you will be shown a window allowing to change them (See also Figure~\ref{fig.PFunction2DColumnEdit}), additionally you can add/remove columns by right clicking on the columns headers and by selecting one of the contextual options allowing to remove them or insert then before or after the current one. The same identical procedure can be done with rows.
+In order to give values to coordinates, you can double click on the row/column header, which will show you a window allowing you to change them (See also Figure~\ref{fig.PFunction2DColumnEdit}). Additionally you can add/remove columns by right clicking on the column headers and by selecting one of the contextual options, allowing you to remove or insert them before or after the one you are working on. The same identical procedure can be done with rows.
 
-As for filling the data points, you'll just have to fill the single cells which will be there when creating rows or columns.
+As for filling in the data points, you just need to fill in the single cells which will appear when creating rows or columns.
 
 \begin{figure}[h]
 \begin{center}
@@ -40,7 +40,7 @@ As for filling the data points, you'll just have to fill the single cells which 
 \end{center}
 \end{figure}
 
-You are given the freedom to use any formula for coordinates and point values, but remember that during evaluation, rows and columns coordinates must be ordered in ascending order (they must increase while going from left to right and from up to bottom) or you'll get an error during evaluation.
+You have the freedom to use any formula for coordinates and point values, but remember that during evaluation, rows and columns coordinates must be ordered in ascending order (they must increase while going from left to right and from top to bottom) or you'll get an error during evaluation.
 
 Finally, on the right of the form, you can choose the interpolation and extrapolation methods you want to apply to the function evaluation.
 
