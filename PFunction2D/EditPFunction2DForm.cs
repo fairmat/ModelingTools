@@ -31,6 +31,8 @@ namespace PFunction2D
     [Extension("/Fairmat/Editor")]
     public class EditPFunction2DForm : EditFunctionsForm
     {
+        #region Properties
+
         /// <summary>
         /// Gets the data requested by the ProvidesTo interface member which
         /// tells Fairmat that this class will handle PFunction2D objects.
@@ -46,6 +48,10 @@ namespace PFunction2D
                 return new Type[] { typeof(PFunction2D) };
             }
         }
+
+        #endregion Properties
+
+        #region Public interface methods
 
         /// <summary>
         /// Handles the objects which will be displayed through this form
@@ -83,6 +89,10 @@ namespace PFunction2D
             base.fairmatDataGridViewPointData.RowRenameOperationName = "Change y cordinate";
         }
 
+        #endregion
+
+        #region Overriden methods
+
         /// <summary>
         /// Handles the graphical plotting of the 2D function.
         /// </summary>
@@ -96,6 +106,35 @@ namespace PFunction2D
             // The coordinates are always 2 here as it's a 2D function.
             base.OnPlotGenericFunction(2, tempFunction);
         }
+
+        /// <summary>
+        /// Saves the changes applied to the data.
+        /// </summary>
+        protected override void SaveDataChanges()
+        {
+            if (!DataGridToPointFunctionData((PFunction2D)base.m_Function))
+            {
+                base.form_errors = true;
+            }
+        }
+
+        /// <summary>
+        /// Does additional operations on the OnShown event.
+        /// </summary>
+        /// <remarks>
+        /// This is needed because the AutoResizeRowHeaderWidth method
+        /// cannot be called when filling the table, else it won't be effective.
+        /// </remarks>
+        /// <param name="e">The parameter is not used but passed to the base class.</param>
+        protected override void OnShown(EventArgs e)
+        {
+            base.fairmatDataGridViewPointData.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
+            base.OnShown(e);
+        }
+
+        #endregion Overriden methods
+
+        #region Private methods
 
         /// <summary>
         /// Loads the data from the function on the grid
@@ -268,29 +307,7 @@ namespace PFunction2D
             return true;
         }
 
-        /// <summary>
-        /// Saves the changes applied to the data.
-        /// </summary>
-        protected override void SaveDataChanges()
-        {
-            if (!DataGridToPointFunctionData((PFunction2D)base.m_Function))
-            {
-                base.form_errors = true;
-            }
-        }
+        #endregion Private methods
 
-        /// <summary>
-        /// Does additional operations on the OnShown event.
-        /// </summary>
-        /// <remarks>
-        /// This is needed because the AutoResizeRowHeaderWidth method
-        /// cannot be called when filling the table, else it won't be effective.
-        /// </remarks>
-        /// <param name="e">The parameter is not used but passed to the base class.</param>
-        protected override void OnShown(EventArgs e)
-        {
-            base.fairmatDataGridViewPointData.AutoResizeRowHeadersWidth(DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders);
-            base.OnShown(e);
-        }
     }
 }
