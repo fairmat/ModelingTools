@@ -234,7 +234,7 @@ namespace PFunction2D
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("The string " + columns[x].HeaderText + " (position " +
+                        MessageBox.Show("The string " + columns[x].HeaderText + " (column position " +
                                         (x + 1) + ") is invalid due to: " + e.Message,
                                         DataExchange.ApplicationName);
                         return false;
@@ -258,7 +258,7 @@ namespace PFunction2D
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (position " +
+                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (row position " +
                                         (y + 1) + ") is invalid due to: " + e.Message,
                                         DataExchange.ApplicationName);
                         return false;
@@ -281,7 +281,8 @@ namespace PFunction2D
                         catch (Exception e)
                         {
                             MessageBox.Show("The string " + rows[y].Cells[x].Value +
-                                            " is invalid due to: " + e.Message,
+                                            " (position " + (x + 1) + ", " + (y + 1) + ") " +
+                                            "is invalid due to: " + e.Message,
                                             DataExchange.ApplicationName);
                             return false;
                         }
