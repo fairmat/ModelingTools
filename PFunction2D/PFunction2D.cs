@@ -104,6 +104,43 @@ namespace PFunction2D
         }
 
         /// <summary>
+        /// Default constructor, which initializes the function with default data.
+        /// </summary>
+        public PFunction2D() : this(null)
+        {
+        }
+
+        /// <summary>
+        /// Constructor to initialize the function with the specified data.
+        /// </summary>
+        /// <param name="cordinatesX">
+        /// A <see cref="Vector"/> of cordinates, which must go from the lowest to the highest and rappresents
+        /// the x parameter of the function.
+        /// </param>
+        /// <param name="cordinatesY">
+        /// A <see cref="Vector"/> of cordinates, which must go from the lowest to the highest and rappresents
+        /// the y parameter of the function.
+        /// </param>
+        /// <param name="values">
+        /// A <see cref="Matrix"/> containing the defined data points for
+        /// all the coordinates specified by cordinatesX and cordinatesY.
+        /// </param>
+        public PFunction2D(Vector cordinatesX, Vector cordinatesY, Matrix values) : this(null)
+        {
+            SetSizes(cordinatesX.Count, cordinatesY.Count);
+            this.cordinatesX = Array.ConvertAll((double[])cordinatesX.ToArray(), element => RightValue.ConvertFrom(element, true));
+            this.cordinatesY = Array.ConvertAll((double[])cordinatesY.ToArray(), element => RightValue.ConvertFrom(element, true));
+            
+            for (int x = 0; x < values.R; x++)
+            {
+                for (int y = 0; y < values.C; y++)
+                {
+                    this.values[x, y] = RightValue.ConvertFrom(values[x, y], true);
+                }
+            }
+        }
+
+        /// <summary>
         /// Initializes the object based on the serialized data.
         /// </summary>
         /// <param name="info">The SerializationInfo that holds the serialized object data.</param>

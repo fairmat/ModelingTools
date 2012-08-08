@@ -25,7 +25,7 @@ using Mono.Addins;
 namespace PFunction2D
 {
     /// <summary>
-    /// Extends the EditFunctionsForm in order to allow it to handle also PFunction2D,
+    /// Extends the <see cref="EditFunctionsForm"/> in order to allow it to handle also <see cref="PFunction2D"/>,
     /// and so 2d interpolation defined functions.
     /// </summary>
     [Extension("/Fairmat/Editor")]
@@ -100,7 +100,7 @@ namespace PFunction2D
         {
             // Create a temporary PFunction2D which will be used
             // in order to preview current data.
-            PFunction2D tempFunction = new PFunction2D(null);
+            PFunction2D tempFunction = new PFunction2D();
             DataGridToPointFunctionData(tempFunction);
 
             // The coordinates are always 2 here as it's a 2D function.
@@ -193,7 +193,7 @@ namespace PFunction2D
         /// <returns>True if the operation was successful, False otherwise.</returns>
         private bool DataGridToPointFunctionData(PFunction2D destination)
         {
-            PFunction2D tempFunction = new PFunction2D(null);
+            PFunction2D tempFunction = new PFunction2D();
 
             // Check if bind was executed. Is it still needed?
             if (m_Project != null)

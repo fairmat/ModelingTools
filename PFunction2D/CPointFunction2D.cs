@@ -77,11 +77,11 @@ namespace PFunction2D
         /// in order to fill the data used to evaluate the function.
         /// </summary>
         /// <param name="cordinatesX">
-        /// An array of IRightValue whose result is ordered from lower to greater and will
+        /// An array of <see cref="IRightValue"/> whose result is ordered from lower to greater and will
         /// represent the x parameter of the function.
         /// </param>
         /// <param name="cordinatesY">
-        /// An array of IRightValue whose result is ordered from lower to greater and will
+        /// An array of <see cref="IRightValue"/> whose result is ordered from lower to greater and will
         /// represent the y parameter of the function.
         /// </param>
         /// <param name="values">
@@ -233,11 +233,11 @@ namespace PFunction2D
         #region Internal functions
 
         /// <summary>
-        /// Finds the position of a coordinate in a vector,
+        /// Finds the position of a coordinate in a <see cref="IRightValue"/>,
         /// it's used with cordinatesX and cordinatesY.
         /// </summary>
         /// <param name="posVector">
-        /// A reference to the vector to use to find the required item index.
+        /// A reference to the <see cref="Vector"/> to use to find the required item index.
         /// </param>
         /// <param name="value">The value to search for, exact search.</param>
         /// <returns>
@@ -259,13 +259,14 @@ namespace PFunction2D
         /// Finds the nearest index before the given one.
         /// </summary>
         /// <param name="posVector">
-        /// A reference to the vector to use to find the required item index.
+        /// A reference to the <see cref="IRightValue"/> to use to find the required item index.
         /// </param>
         /// <param name="value">
         /// The value to search for the nearest lower element to the given one.
         /// </param>
         /// <returns>
-        /// The position in the given vector of the nearest value before the requested one.
+        /// The position in the given <see cref="IRightValue"/> of the nearest 
+        /// value before the requested one.
         /// The first element has index 0.
         /// </returns>
         private int FindNearestBefore(ref Vector posVector, double value)
@@ -305,7 +306,7 @@ namespace PFunction2D
         /// interpolation.
         /// </summary>
         /// <remarks>
-        /// The value requested must not be at the margin of the matrix,
+        /// The value requested must not be at the margin of the <see cref="matrix"/>,
         /// so there must be at least one entry under and on the left of the
         /// requested value.</remarks>
         /// <param name="x">The x coordinate where to calculate the value.</param>
@@ -456,7 +457,7 @@ namespace PFunction2D
             // in those case the last value in the boundary direction
             // which was exceeded is returned. (Extrapolation)
             // Note: The bounds are determined by the first and last element
-            //       of the vectors as they represent ordered indexes.
+            //       of the <see cref="Vector"/> as they represent ordered indexes.
             if (x < this.cordinatesX[0])
             {
                 x = this.cordinatesX[0];

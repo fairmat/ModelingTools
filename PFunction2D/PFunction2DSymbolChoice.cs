@@ -40,14 +40,16 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Returns the PFunction2D representing a 2D function defined by value interpolation.
+        /// Returns the <see cref="Pfunction2D"/> representing a 2D function 
+        /// defined by value interpolation.
         /// </summary>
         /// <returns>
-        /// The PFunction2D representing the 2D function defined by value interpolation.
+        /// The <see cref="Pfunction2D"/> representing the 2D 
+        /// function defined by value interpolation.
         /// </returns>
         public IEditable CreateInstance()
         {
-            return new PFunction2D(null);
+            return new PFunction2D();
         }
 
         #endregion IEditableChoice implementation
