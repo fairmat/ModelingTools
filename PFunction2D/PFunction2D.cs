@@ -380,18 +380,17 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Evaluates the 2D Function on the specified x cordinates. This function
-        /// assumes the y cordinate is always 0 (essentially calculating the function
-        /// only on the first row).
+        /// Overrides the Evaluate with a single parameter of function and
+        /// always throws an InvalidOperationException.
         /// </summary>
-        /// <param name="x">The x cordinate to evaluate the function on.</param>
-        /// <returns>
-        /// The value of the function at the requested cordinate,
-        /// interpolated if required.
-        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Always thrown.
+        /// </exception>
+        /// <param name="x">The single parameter.</param>
+        /// <returns>The function doesn't return.</returns>
         public override double Evaluate(double x)
         {
-            return Evaluate(x, 0);
+            throw new InvalidOperationException("The function requires two parameters");
         }
 
         /// <summary>
@@ -399,13 +398,12 @@ namespace PFunction2D
         /// </summary>
         /// <remarks>
         /// The function will handle several cases:
-        /// * Empty parameters vector
-        ///   The return will always be zero.
-        /// * One element in the parameters vector:
-        ///   The function will be evaluated as y = f(x, 0), where x is the passed value.
+        /// * Less or more than two elements in the parameters vector:
+        ///   An exception will be thrown.
         /// * Two or more elements in the parameters vector:
-        ///   The first element will be used as x, the second as y, the rest will be ignored.
+        ///   The first element will be used as x and the second as y.
         ///  </remarks>
+        ///  <exception cref="Exception"
         /// <param name="x">
         /// The vector with the cordinates to evaluate the function on.
         /// </param>
@@ -415,21 +413,16 @@ namespace PFunction2D
         /// </returns>
         public override double Evaluate(Vector x)
         {
-            // Check the amount of passed parameters.
-            if (x.Count == 1)
+
+            if (x.Count == 2)
             {
-                // There is a single parameter so it's managed like
-                // if it was at cordinate x, 0.
-                return Evaluate(x[0]);
-            }
-            else if (x.Count > 1)
-            {
-                // There are enough parameter so the first two are used.
+                // There are two parameters, so use them.
                 return Evaluate(x[0], x[1]);
             }
 
-            // There were no parameters so zero is returned.
-            return 0;
+            // In this case there weren't enough parameters or there were too many
+            // so an Exception is thrown.
+            throw new ArgumentException("Wrong amount of parameters");
         }
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
