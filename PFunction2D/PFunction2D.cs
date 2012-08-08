@@ -114,6 +114,7 @@ namespace PFunction2D
         {
             this.cordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesX", typeof(IRightValue[]));
             this.cordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesY", typeof(IRightValue[]));
+            this.values = (IRightValue[,])ObjectSerialization.GetValue2(info,"_Values", typeof(IRightValue[,]));
             this.interpolationType = (EInterpolationType)ObjectSerialization.GetValue2(info, "_InterpolationType", typeof(EInterpolationType));
             this.extrapolationType = (ExtrapolationType)ObjectSerialization.GetValue2(info, "_ExtrapolationType", typeof(ExtrapolationType));
             this.leastSquaresCoefficients = (int)ObjectSerialization.GetValue2(info, "_LeastSquaresCoefficients", typeof(int));
