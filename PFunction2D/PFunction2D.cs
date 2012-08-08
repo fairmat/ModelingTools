@@ -406,14 +406,14 @@ namespace PFunction2D
         /// * Two or more elements in the parameters vector:
         ///   The first element will be used as x, the second as y, the rest will be ignored.
         ///  </remarks>
-        /// <param name="parameters">
+        /// <param name="x">
         /// The vector with the cordinates to evaluate the function on.
         /// </param>
         /// <returns>
         /// The value of the function at the requested cordinates,
         /// interpolated if required.
         /// </returns>
-        public override double Evaluate(Vector parameters)
+        public override double Evaluate(Vector x)
         {
             // Check the amount of passed parameters.
             if (parameters.Count == 1)
