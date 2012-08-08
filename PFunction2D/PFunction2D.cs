@@ -416,16 +416,16 @@ namespace PFunction2D
         public override double Evaluate(Vector x)
         {
             // Check the amount of passed parameters.
-            if (parameters.Count == 1)
+            if (x.Count == 1)
             {
                 // There is a single parameter so it's managed like
                 // if it was at cordinate x, 0.
-                return Evaluate(parameters[0]);
+                return Evaluate(x[0]);
             }
-            else if (parameters.Count > 1)
+            else if (x.Count > 1)
             {
                 // There are enough parameter so the first two are used.
-                return Evaluate(parameters[0], parameters[1]);
+                return Evaluate(x[0], x[1]);
             }
 
             // There were no parameters so zero is returned.
