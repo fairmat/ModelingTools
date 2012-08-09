@@ -39,19 +39,19 @@ namespace PFunction2D
         /// which have been defined for the function, they should
         /// be ordered from the lowest to the highest.
         /// </summary>
-        private IRightValue[] cordinatesX;
+        private IRightValue[] coordinatesX;
 
         /// <summary>
         /// A series of IRightValue representing the y coordinates
         /// which have been defined for the function, they should
         /// be ordered from the lowest to the highest.
         /// </summary>
-        private IRightValue[] cordinatesY;
+        private IRightValue[] coordinatesY;
 
         /// <summary>
         /// A bi-dimensional array containing the values associated
-        /// to all the coordinates  represented in <see cref="cordinatesX"/>
-        /// and <see cref="cordinatesY"/>.
+        /// to all the coordinates  represented in <see cref="coordinatesX"/>
+        /// and <see cref="coordinatesY"/>.
         /// </summary>
         private IRightValue[,] values;
 
@@ -113,23 +113,23 @@ namespace PFunction2D
         /// <summary>
         /// Constructor to initialize the function with the specified data.
         /// </summary>
-        /// <param name="cordinatesX">
-        /// A <see cref="Vector"/> of cordinates, which must go from the lowest to the highest and rappresents
+        /// <param name="coordinatesX">
+        /// A <see cref="Vector"/> of coordinates, which must go from the lowest to the highest and represents
         /// the x parameter of the function.
         /// </param>
-        /// <param name="cordinatesY">
-        /// A <see cref="Vector"/> of cordinates, which must go from the lowest to the highest and rappresents
+        /// <param name="coordinatesY">
+        /// A <see cref="Vector"/> of coordinates, which must go from the lowest to the highest and represents
         /// the y parameter of the function.
         /// </param>
         /// <param name="values">
         /// A <see cref="Matrix"/> containing the defined data points for
-        /// all the coordinates specified by cordinatesX and cordinatesY.
+        /// all the coordinates specified by coordinatesX and coordinatesY.
         /// </param>
-        public PFunction2D(Vector cordinatesX, Vector cordinatesY, Matrix values) : this(null)
+        public PFunction2D(Vector coordinatesX, Vector coordinatesY, Matrix values) : this(null)
         {
-            SetSizes(cordinatesX.Count, cordinatesY.Count);
-            this.cordinatesX = Array.ConvertAll((double[])cordinatesX.ToArray(), element => RightValue.ConvertFrom(element, true));
-            this.cordinatesY = Array.ConvertAll((double[])cordinatesY.ToArray(), element => RightValue.ConvertFrom(element, true));
+            SetSizes(coordinatesX.Count, coordinatesY.Count);
+            this.coordinatesX = Array.ConvertAll((double[])coordinatesX.ToArray(), element => RightValue.ConvertFrom(element, true));
+            this.coordinatesY = Array.ConvertAll((double[])coordinatesY.ToArray(), element => RightValue.ConvertFrom(element, true));
             
             for (int x = 0; x < values.R; x++)
             {
@@ -149,8 +149,8 @@ namespace PFunction2D
         public PFunction2D(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            this.cordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesX", typeof(IRightValue[]));
-            this.cordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_CordinatesY", typeof(IRightValue[]));
+            this.coordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_coordinatesX", typeof(IRightValue[]));
+            this.coordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_coordinatesY", typeof(IRightValue[]));
             this.values = (IRightValue[,])ObjectSerialization.GetValue2(info,"_Values", typeof(IRightValue[,]));
             this.interpolationType = (EInterpolationType)ObjectSerialization.GetValue2(info, "_InterpolationType", typeof(EInterpolationType));
             this.extrapolationType = (ExtrapolationType)ObjectSerialization.GetValue2(info, "_ExtrapolationType", typeof(ExtrapolationType));
@@ -184,11 +184,11 @@ namespace PFunction2D
         /// <remarks>
         /// To be used only internally, use Evaluate to get the value at any coordinate.
         /// </remarks>
-        internal IRightValue[] XCordinates
+        internal IRightValue[] Xcoordinates
         {
             get
             {
-                return this.cordinatesX;
+                return this.coordinatesX;
             }
         }
 
@@ -198,11 +198,11 @@ namespace PFunction2D
         /// <remarks>
         /// To be used only internally, use Evaluate to get the value at any coordinate.
         /// </remarks>
-        internal IRightValue[] YCordinates
+        internal IRightValue[] Ycoordinates
         {
             get
             {
-                return this.cordinatesY;
+                return this.coordinatesY;
             }
         }
 
@@ -266,7 +266,7 @@ namespace PFunction2D
         /// is not already available.
         /// </summary>
         /// <remarks>
-        /// To be used only internally, in order to set the wated
+        /// To be used only internally, in order to set the wanted
         /// leastSquaresCoefficients and get what the current one.
         /// </remarks>
         internal int LeastSquaresCoefficients
@@ -308,11 +308,11 @@ namespace PFunction2D
                 }
                 else if (y != -1)
                 {
-                    return this.cordinatesY[y];
+                    return this.coordinatesY[y];
                 }
                 else if (x != -1)
                 {
-                    return this.cordinatesX[x];
+                    return this.coordinatesX[x];
                 }
 
                 return (RightValue)0;
@@ -326,11 +326,11 @@ namespace PFunction2D
                 }
                 else if (y != -1)
                 {
-                    this.cordinatesY[y] = value;
+                    this.coordinatesY[y] = value;
                 }
                 else if (x != -1)
                 {
-                    this.cordinatesX[x] = value;
+                    this.coordinatesX[x] = value;
                 }
             }
         }
@@ -353,12 +353,12 @@ namespace PFunction2D
             // We make a 2x2 field.
             SetSizes(2, 2);
 
-            // With cordinates 0 and 1 for x and y.
-            this.cordinatesX[0] = (RightValue)0;
-            this.cordinatesX[1] = (RightValue)1;
+            // With coordinates 0 and 1 for x and y.
+            this.coordinatesX[0] = (RightValue)0;
+            this.coordinatesX[1] = (RightValue)1;
 
-            this.cordinatesY[0] = (RightValue)0;
-            this.cordinatesY[1] = (RightValue)1;
+            this.coordinatesY[0] = (RightValue)0;
+            this.coordinatesY[1] = (RightValue)1;
 
             // And all the values set to zero.
             this.values[0, 0] = (RightValue)0;
@@ -368,16 +368,16 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Initializes the arrays containing the cordinates
-        /// and the values with arrays of the desidered size.
+        /// Initializes the arrays containing the coordinates
+        /// and the values with arrays of the wanted size.
         /// </summary>
         /// <remarks>Anything stored is lost.</remarks>
         /// <param name="x">The size in the x dimension.</param>
         /// <param name="y">The size in the y dimension.</param>
         internal void SetSizes(int x, int y)
         {
-            cordinatesX = new RightValue[x];
-            cordinatesY = new RightValue[y];
+            coordinatesX = new RightValue[x];
+            coordinatesY = new RightValue[y];
             values = new RightValue[x, y];
         }
 
@@ -390,9 +390,9 @@ namespace PFunction2D
         /// <param name="other">The object where to copy this object to.</param>
         internal void CopyTo(PFunction2D other)
         {
-            other.SetSizes(this.cordinatesX.Length, this.cordinatesY.Length);
-            other.cordinatesX = (IRightValue[])this.cordinatesX.Clone();
-            other.cordinatesY = (IRightValue[])this.cordinatesY.Clone();
+            other.SetSizes(this.coordinatesX.Length, this.coordinatesY.Length);
+            other.coordinatesX = (IRightValue[])this.coordinatesX.Clone();
+            other.coordinatesY = (IRightValue[])this.coordinatesY.Clone();
             other.values = (IRightValue[,])this.values.Clone();
             other.extrapolationType = this.extrapolationType;
             other.interpolationType = this.interpolationType;
@@ -403,12 +403,12 @@ namespace PFunction2D
         #region Public methods
 
         /// <summary>
-        /// Evaluates the 2D Function on the specified cordinates.
+        /// Evaluates the 2D Function on the specified coordinates.
         /// </summary>
-        /// <param name="x">The x cordinate to evaluate the function on.</param>
-        /// <param name="y">The y cordinate to evaluate the function on.</param>
+        /// <param name="x">The x coordinate to evaluate the function on.</param>
+        /// <param name="y">The y coordinate to evaluate the function on.</param>
         /// <returns>
-        /// The value of the function at the requested cordinates,
+        /// The value of the function at the requested coordinates,
         /// interpolated if required.
         /// </returns>
         public double Evaluate(double x, double y)
@@ -431,7 +431,7 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Evaluates the 2D Function on the specified cordinates inside a Vector.
+        /// Evaluates the 2D Function on the specified coordinates inside a Vector.
         /// </summary>
         /// <remarks>
         /// The function will handle several cases:
@@ -442,10 +442,10 @@ namespace PFunction2D
         ///  </remarks>
         ///  <exception cref="Exception"
         /// <param name="x">
-        /// The vector with the cordinates to evaluate the function on.
+        /// The vector with the coordinates to evaluate the function on.
         /// </param>
         /// <returns>
-        /// The value of the function at the requested cordinates,
+        /// The value of the function at the requested coordinates,
         /// interpolated if required.
         /// </returns>
         public override double Evaluate(Vector x)
@@ -466,8 +466,8 @@ namespace PFunction2D
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("_CordinatesX", this.cordinatesX);
-            info.AddValue("_CordinatesY", this.cordinatesY);
+            info.AddValue("_coordinatesX", this.coordinatesX);
+            info.AddValue("_coordinatesY", this.coordinatesY);
             info.AddValue("_Values", this.values);
             info.AddValue("_InterpolationType", this.interpolationType);
             info.AddValue("_ExtrapolationType", this.extrapolationType);
@@ -495,7 +495,7 @@ namespace PFunction2D
         {
             try
             {
-                function = new CPointFunction2D(cordinatesX, cordinatesY, values,
+                function = new CPointFunction2D(coordinatesX, coordinatesY, values,
                                                 interpolationType, extrapolationType);
             }
             catch (Exception e)

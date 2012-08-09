@@ -155,23 +155,23 @@ namespace PFunction2D
             base.fairmatDataGridViewPointData.ShowRowNumber = false;
 
             // Creates the columns for each given x coordinate point stored in the function.
-            for (int i = 0; i < function.XCordinates.Length; i++)
+            for (int i = 0; i < function.Xcoordinates.Length; i++)
             {
                 // The column name will have the coordinate associated to the specific x entry.
-                base.fairmatDataGridViewPointData.ColumnAdd(function.XCordinates[i].Expression);
+                base.fairmatDataGridViewPointData.ColumnAdd(function.Xcoordinates[i].Expression);
             }
 
             // Populates all the rows of the matrix which defines the function.
-            for (int y = 0; y < function.YCordinates.Length; y++)
+            for (int y = 0; y < function.Ycoordinates.Length; y++)
             {
                 // Creates a row for each y coordinate present in the function definition.
                 DataGridViewRow row = new DataGridViewRow();
 
                 // Sets the header cell for the row to contain the value of the coordinate.
-                row.HeaderCell.Value = function.YCordinates[y].Expression;
+                row.HeaderCell.Value = function.Ycoordinates[y].Expression;
 
                 // Finally fill each cell of the current row with the respective value.
-                for (int x = 0; x < function.XCordinates.Length; x++)
+                for (int x = 0; x < function.Xcoordinates.Length; x++)
                 {
                     DataGridViewTextBoxCell cell = new DataGridViewTextBoxCell();
                     cell.Value = function[x, y].Expression;
