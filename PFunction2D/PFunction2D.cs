@@ -176,6 +176,114 @@ namespace PFunction2D
             }
         }
 
+        /// <summary>
+        /// Gets or sets the expression that generates the object.
+        /// </summary>
+        /// <remarks>
+        /// The data is in this format:
+        /// 0  X1  X2  X3
+        /// Y1 Z11 Z12 Z13
+        /// Y2 Z21 Z22 Z23
+        /// Y3 Z31 Z32 Z33
+        /// </remarks>
+        public override Array Expr
+        {
+            get
+            {
+                // Initialize a multidimensional array able to store the data points
+                // and the coordinates values.
+                object[,] data = new object[this.coordinatesX.Length + 1,
+                                            this.coordinatesY.Length + 1];
+
+                // Set the first row with the data from coordinatesX
+                for (int i = 0; i < this.coordinatesX.Length; i++)
+                {
+                    // This will set the first row starting from the second
+                    // column, as the first one is unused.
+                    data[i + 1, 0] = this.coordinatesX[i];
+                }
+
+                // Set the first column with the data from coordinatesY
+                for (int i = 0; i < this.coordinatesY.Length; i++)
+                {
+                    // This will set the first column starting from the second
+                    // row, as the first one is unused.
+                    data[0, i + 1] = this.coordinatesY[i];
+                }
+
+                // Finally set the values of the data points.
+                for (int x = 0; x < this.coordinatesX.Length; x++)
+                {
+                    for (int y = 0; y < this.coordinatesY.Length; y++)
+                    {
+                        // As the first row and column are used by the coordinates
+                        // the data points will fill from the second row and second column.
+                        data[x + 1, y + 1] = values[x, y];
+                    }
+                }
+
+                return data;
+            }
+
+            set
+            {
+                try
+                {
+                    /// Handles conversion from an object to an IRightValue.
+                    Func<object, IRightValue> convertData = (object obj) =>
+                    {
+                        IRightValue result = obj as IRightValue;
+
+                        // If the simple conversion failed it means it's something else.
+                        if (result == null)
+                        {
+                            // Try converting the obj to a RightValue in some other means.
+                            result = RightValue.ConvertFrom(obj, true);
+                        }
+
+                        return result;
+                    };
+
+                    // First of all get the sizes of the matrix and of the
+                    // vectors which will have to store the data and resize
+                    // the data fields in order to be able to fill them.
+                    SetSizes(value.GetLength(0) - 1, values.GetLength(1) - 1);
+
+                    // Then start converting the x coordinates in the storage array.
+                    for (int i = 0; i < value.GetLength(0) - 1; i++)
+                    {
+                        // This will get the first row, starting 
+                        // from the second column as the first is one is unused.
+                        this.coordinatesX[i] = convertData(value.GetValue(i + 1, 0));
+                    }
+
+                    // Then start converting the y coordinates in the storage array.
+                    for (int i = 0; i < value.GetLength(1) - 1; i++)
+                    {
+                        // This will get the first column, starting 
+                        // from the second row as the first is one is unused.
+                        this.coordinatesY[i] = convertData(value.GetValue(0, i + 1));
+                    }
+
+                    // Finally set the values of the data points.
+                    for (int x = 0; x < this.coordinatesX.Length; x++)
+                    {
+                        for (int y = 0; y < this.coordinatesY.Length; y++)
+                        {
+                            // As the first row and column are used by the coordinates
+                            // the data points will fill from the second row and second column.
+                            this.values[x, y] = convertData(value.GetValue(x + 1, y + 1));
+                        }
+                    }
+                }
+                catch
+                {
+                    // If conversion fails, recreate with default data.
+                    (new PFunction2D()).CopyTo(this);
+                }
+            }
+        }
+
         #region Properties
 
         /// <summary>
