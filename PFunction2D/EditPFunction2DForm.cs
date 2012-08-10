@@ -25,8 +25,8 @@ using Mono.Addins;
 namespace PFunction2D
 {
     /// <summary>
-    /// Extends the <see cref="EditFunctionsForm"/> in order to allow it to handle also <see cref="PFunction2D"/>,
-    /// and so 2d interpolation defined functions.
+    /// Extends the <see cref="EditFunctionsForm"/> in order to allow it to 
+    /// handle also <see cref="PFunction2D"/>, and so 2d interpolation defined functions.
     /// </summary>
     [Extension("/Fairmat/Editor")]
     public class EditPFunction2DForm : EditFunctionsForm
@@ -309,6 +309,5 @@ namespace PFunction2D
         }
 
         #endregion Private methods
-
     }
 }

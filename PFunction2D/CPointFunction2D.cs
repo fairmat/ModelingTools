@@ -77,12 +77,12 @@ namespace PFunction2D
         /// in order to fill the data used to evaluate the function.
         /// </summary>
         /// <param name="coordinatesX">
-        /// An array of <see cref="IRightValue"/> whose result is ordered from lower to greater and will
-        /// represent the x parameter of the function.
+        /// An array of <see cref="IRightValue"/> whose result is ordered from
+        /// lower to greater and will represent the x parameter of the function.
         /// </param>
         /// <param name="coordinatesY">
-        /// An array of <see cref="IRightValue"/> whose result is ordered from lower to greater and will
-        /// represent the y parameter of the function.
+        /// An array of <see cref="IRightValue"/> whose result is ordered from
+        /// lower to greater and will represent the y parameter of the function.
         /// </param>
         /// <param name="values">
         /// A bi-dimensional array containing the defined data points for
@@ -139,7 +139,7 @@ namespace PFunction2D
         /// after doing checks for consistency.
         /// </summary>
         /// <exception cref="Exception">
-        /// If the data is not valid. For example the coordinates 
+        /// If the data is not valid. For example the coordinates
         /// values aren't ordered from lesser to greater.
         /// </exception>
         /// <remarks>If both parameters are -1 nothing will be done.</remarks>
@@ -265,7 +265,7 @@ namespace PFunction2D
         /// The value to search for the nearest lower element to the given one.
         /// </param>
         /// <returns>
-        /// The position in the given <see cref="IRightValue"/> of the nearest 
+        /// The position in the given <see cref="IRightValue"/> of the nearest
         /// value before the requested one.
         /// The first element has index 0.
         /// </returns>

@@ -114,12 +114,12 @@ namespace PFunction2D
         /// Constructor to initialize the function with the specified data.
         /// </summary>
         /// <param name="coordinatesX">
-        /// A <see cref="Vector"/> of coordinates, which must go from the lowest to the highest and represents
-        /// the x parameter of the function.
+        /// A <see cref="Vector"/> of coordinates, which must go from the 
+        /// lowest to the highest and represents the x parameter of the function.
         /// </param>
         /// <param name="coordinatesY">
-        /// A <see cref="Vector"/> of coordinates, which must go from the lowest to the highest and represents
-        /// the y parameter of the function.
+        /// A <see cref="Vector"/> of coordinates, which must go from the lowest 
+        /// to the highest and represents the y parameter of the function.
         /// </param>
         /// <param name="values">
         /// A <see cref="Matrix"/> containing the defined data points for
@@ -130,7 +130,7 @@ namespace PFunction2D
             SetSizes(coordinatesX.Count, coordinatesY.Count);
             this.coordinatesX = Array.ConvertAll((double[])coordinatesX.ToArray(), element => RightValue.ConvertFrom(element, true));
             this.coordinatesY = Array.ConvertAll((double[])coordinatesY.ToArray(), element => RightValue.ConvertFrom(element, true));
-            
+
             for (int x = 0; x < values.R; x++)
             {
                 for (int y = 0; y < values.C; y++)
@@ -151,7 +151,7 @@ namespace PFunction2D
         {
             this.coordinatesX = (IRightValue[])ObjectSerialization.GetValue2(info, "_coordinatesX", typeof(IRightValue[]));
             this.coordinatesY = (IRightValue[])ObjectSerialization.GetValue2(info, "_coordinatesY", typeof(IRightValue[]));
-            this.values = (IRightValue[,])ObjectSerialization.GetValue2(info,"_Values", typeof(IRightValue[,]));
+            this.values = (IRightValue[,])ObjectSerialization.GetValue2(info, "_Values", typeof(IRightValue[,]));
             this.interpolationType = (EInterpolationType)ObjectSerialization.GetValue2(info, "_InterpolationType", typeof(EInterpolationType));
             this.extrapolationType = (ExtrapolationType)ObjectSerialization.GetValue2(info, "_ExtrapolationType", typeof(ExtrapolationType));
             this.leastSquaresCoefficients = (int)ObjectSerialization.GetValue2(info, "_LeastSquaresCoefficients", typeof(int));
@@ -185,6 +185,7 @@ namespace PFunction2D
         /// Y1 Z11 Z12 Z13
         /// Y2 Z21 Z22 Z23
         /// Y3 Z31 Z32 Z33
+        /// The element [0, 0] is always ignored.
         /// </remarks>
         public override Array Expr
         {
@@ -218,7 +219,7 @@ namespace PFunction2D
                     {
                         // As the first row and column are used by the coordinates
                         // the data points will fill from the second row and second column.
-                        data[x + 1, y + 1] = values[x, y];
+                        data[x + 1, y + 1] = this.values[x, y];
                     }
                 }
 
@@ -229,7 +230,7 @@ namespace PFunction2D
             {
                 try
                 {
-                    /// Handles conversion from an object to an IRightValue.
+                    // Handles conversion from an object to an IRightValue.
                     Func<object, IRightValue> convertData = (object obj) =>
                     {
                         IRightValue result = obj as IRightValue;
@@ -247,12 +248,12 @@ namespace PFunction2D
                     // First of all get the sizes of the matrix and of the
                     // vectors which will have to store the data and resize
                     // the data fields in order to be able to fill them.
-                    SetSizes(value.GetLength(0) - 1, values.GetLength(1) - 1);
+                    SetSizes(value.GetLength(0) - 1, value.GetLength(1) - 1);
 
                     // Then start converting the x coordinates in the storage array.
                     for (int i = 0; i < value.GetLength(0) - 1; i++)
                     {
-                        // This will get the first row, starting 
+                        // This will get the first row, starting
                         // from the second column as the first is one is unused.
                         this.coordinatesX[i] = convertData(value.GetValue(i + 1, 0));
                     }
@@ -260,7 +261,7 @@ namespace PFunction2D
                     // Then start converting the y coordinates in the storage array.
                     for (int i = 0; i < value.GetLength(1) - 1; i++)
                     {
-                        // This will get the first column, starting 
+                        // This will get the first column, starting
                         // from the second row as the first is one is unused.
                         this.coordinatesY[i] = convertData(value.GetValue(0, i + 1));
                     }
@@ -448,12 +449,6 @@ namespace PFunction2D
         #region Private and Internal methods
 
         /// <summary>
-        /// Initializes the serialization information of the current object.
-        /// </summary>
-        /// <param name="info">The SerializationInfo to populate with data.</param>
-        /// <param name="context">The StreamingContext that contains contextual information
-        /// about the destination.</param>
-        /// <summary>
         /// Fills the function with default data, to be presented to the user when created.
         /// </summary>
         private void FillWithDefaultData()
@@ -484,9 +479,9 @@ namespace PFunction2D
         /// <param name="y">The size in the y dimension.</param>
         internal void SetSizes(int x, int y)
         {
-            coordinatesX = new RightValue[x];
-            coordinatesY = new RightValue[y];
-            values = new RightValue[x, y];
+            this.coordinatesX = new RightValue[x];
+            this.coordinatesY = new RightValue[y];
+            this.values = new RightValue[x, y];
         }
 
         /// <summary>
@@ -547,8 +542,10 @@ namespace PFunction2D
         ///   An exception will be thrown.
         /// * Two or more elements in the parameters vector:
         ///   The first element will be used as x and the second as y.
-        ///  </remarks>
-        ///  <exception cref="Exception"
+        /// </remarks>
+        /// <exception cref="ArgumentException">
+        ///  If the number of the provided elements is wrong.
+        /// </exception>
         /// <param name="x">
         /// The vector with the coordinates to evaluate the function on.
         /// </param>
@@ -558,7 +555,6 @@ namespace PFunction2D
         /// </returns>
         public override double Evaluate(Vector x)
         {
-
             if (x.Count == 2)
             {
                 // There are two parameters, so use them.
@@ -570,6 +566,12 @@ namespace PFunction2D
             throw new ArgumentException("Wrong amount of parameters");
         }
 
+        /// <summary>
+        /// Initializes the serialization information of the current object.
+        /// </summary>
+        /// <param name="info">The SerializationInfo to populate with data.</param>
+        /// <param name="context">The StreamingContext that contains contextual information
+        /// about the destination.</param>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -591,7 +593,7 @@ namespace PFunction2D
         public override void CreateSymbol(Project context)
         {
             base.CreateSymbol(context);
-            Engine.Parser.DefineCallbackFunction(VarName, new TAEDelegateFunction2D(Evaluate));
+            Engine.Parser.DefineCallbackFunction(base.VarName, new TAEDelegateFunction2D(Evaluate));
         }
 
         /// <summary>
@@ -604,8 +606,9 @@ namespace PFunction2D
         {
             try
             {
-                function = new CPointFunction2D(coordinatesX, coordinatesY, values,
-                                                interpolationType, extrapolationType);
+                this.function = new CPointFunction2D(this.coordinatesX, this.coordinatesY,
+                                                     this.values, this.interpolationType,
+                                                     this.extrapolationType);
                 CreateSymbol(context as Project);
             }
             catch (Exception e)
@@ -621,6 +624,5 @@ namespace PFunction2D
         }
 
         #endregion Public methods
-
     }
 }
