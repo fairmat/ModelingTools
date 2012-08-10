@@ -171,7 +171,7 @@ namespace PFunction2D
             get
             {
                 List<string> s = new List<string>();
-                s.Add("(xy1)");
+                s.Add("(x1;x2)");
                 return s;
             }
         }
