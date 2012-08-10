@@ -191,7 +191,7 @@ namespace PFunction2D
                        (y < this.coordinatesY.Count - 1 && this.coordinatesY[y + 1] < value))
                     {
                         throw new Exception("Function integrity wasn't maintained in the " +
-                                            "y coordinates.");
+                                            "y coordinates");
                     }
 
                     this.coordinatesY[y] = value;
@@ -204,7 +204,7 @@ namespace PFunction2D
                        (x < this.coordinatesX.Count - 1 && this.coordinatesX[x + 1] < value))
                     {
                         throw new Exception("Function integrity wasn't maintained in the " +
-                                            "x coordinates.");
+                                            "x coordinates");
                     }
 
                     this.coordinatesX[x] = value;

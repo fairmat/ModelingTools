@@ -487,7 +487,8 @@ namespace PFunction2D
         }
 
         /// <summary>
-        /// Parses the object.
+        /// Parses the object and checks if all the restraints of the 2D Point Function
+        /// have been respected, if not will return an error to the parser.
         /// </summary>
         /// <param name="context">The project in which to parse the object.</param>
         /// <returns>True if an error occurred during the parsing, False otherwise.</returns>
@@ -497,14 +498,18 @@ namespace PFunction2D
             {
                 function = new CPointFunction2D(coordinatesX, coordinatesY, values,
                                                 interpolationType, extrapolationType);
+                CreateSymbol(context as Project);
             }
             catch (Exception e)
             {
                 context.AddError(e.Message + " for the 2D Function " + base.Name);
-                return false;
+
+                // Return true as an error was raised during the parsing.
+                return true;
             }
 
-            return base.Parse(context);
+            // Return false as no error have raised during the parsing.
+            return false;
         }
 
         #endregion Public methods
