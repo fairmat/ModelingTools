@@ -166,12 +166,18 @@ namespace PFunction2D
             return l;
         }
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the list of the signatures supported by this object,
+        /// through the formula parser, to be shown to the user.
+        /// </summary>
         public List<string> Signatures
         {
             get
             {
                 List<string> s = new List<string>();
-                s.Add("(x1;x2)");
+                s.Add("(x; y)");
                 return s;
             }
         }
@@ -284,8 +290,6 @@ namespace PFunction2D
                 }
             }
         }
-
-        #region Properties
 
         /// <summary>
         /// Gets the vector of the x coordinates in the data.
