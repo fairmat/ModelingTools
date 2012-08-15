@@ -15,15 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using DVPLDOM;
 using DVPLI;
 using DVPLUtils;
-using Mono.Addins;
 using NUnit.Framework;
-using DVPLSolver;
 
 namespace PFunction2D
 {
@@ -42,7 +36,7 @@ namespace PFunction2D
             DVPLI.PluginsManager.Init();
             Mono.Addins.AddinManager.Registry.ResetConfiguration();
             Mono.Addins.AddinManager.Registry.Update(new Mono.Addins.ConsoleProgressStatus(6));
-			DVPLI.Engine.Parser.NewContext();
+            DVPLI.Engine.Parser.NewContext();
         }
 
         /// <summary>
@@ -52,7 +46,7 @@ namespace PFunction2D
         /// 100 50 100
         /// in a PFunction2D.
         /// </summary>
-        /// <returns>A PFunction2D populated with the sample data</returns>
+        /// <returns>A PFunction2D populated with the sample data.</returns>
         private PFunction2D SetTestData1()
         {
             // Prepare some simple data.
@@ -85,7 +79,7 @@ namespace PFunction2D
             func.Interpolation = EInterpolationType.LINEAR;
             func.Parse(null);
             Assert.AreEqual(50, func.Evaluate(50, 50));
-		}
+        }
 
         /// <summary>
         /// Tries the Zero Order interpolation at point 50, 50
@@ -114,6 +108,5 @@ namespace PFunction2D
             func.Parse(null);
             Assert.AreEqual(0, func.Evaluate(50, 50));
         }
-	}
+    }
 }
-

@@ -114,11 +114,11 @@ namespace PFunction2D
         /// Constructor to initialize the function with the specified data.
         /// </summary>
         /// <param name="coordinatesX">
-        /// A <see cref="Vector"/> of coordinates, which must go from the 
+        /// A <see cref="Vector"/> of coordinates, which must go from the
         /// lowest to the highest and represents the x parameter of the function.
         /// </param>
         /// <param name="coordinatesY">
-        /// A <see cref="Vector"/> of coordinates, which must go from the lowest 
+        /// A <see cref="Vector"/> of coordinates, which must go from the lowest
         /// to the highest and represents the y parameter of the function.
         /// </param>
         /// <param name="values">

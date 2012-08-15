@@ -25,7 +25,7 @@ using Mono.Addins;
 namespace PFunction2D
 {
     /// <summary>
-    /// Extends the <see cref="EditFunctionsForm"/> in order to allow it to 
+    /// Extends the <see cref="EditFunctionsForm"/> in order to allow it to
     /// handle also <see cref="PFunction2D"/>, and so 2d interpolation defined functions.
     /// </summary>
     [Extension("/Fairmat/Editor")]
@@ -234,9 +234,9 @@ namespace PFunction2D
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("The string " + columns[x].HeaderText + " (column position " +
-                                        (x + 1) + ") is invalid due to: " + e.Message,
-                                        DataExchange.ApplicationName);
+                        MessageBox.Show("The string " + columns[x].HeaderText + " (column " +
+                                        "position " + (x + 1) + ") is invalid due to: " +
+                                        e.Message, DataExchange.ApplicationName);
                         return false;
                     }
                 }
@@ -258,9 +258,9 @@ namespace PFunction2D
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (row position " +
-                                        (y + 1) + ") is invalid due to: " + e.Message,
-                                        DataExchange.ApplicationName);
+                        MessageBox.Show("The string " + rows[y].HeaderCell.Value + " (row " +
+                                        "position " + (y + 1) + ") is invalid due to: " +
+                                        e.Message, DataExchange.ApplicationName);
                         return false;
                     }
 
