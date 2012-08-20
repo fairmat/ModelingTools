@@ -518,7 +518,7 @@ namespace PFunction2D
         /// The value of the function at the requested coordinates,
         /// interpolated if required.
         /// </returns>
-        public double Evaluate(double x, double y)
+        public override double Evaluate(double x, double y)
         {
             return this.function.Evaluate(x, y);
         }
