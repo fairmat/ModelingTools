@@ -512,6 +512,13 @@ namespace PFunction2D
         /// <summary>
         /// Evaluates the 2D Function on the specified coordinates.
         /// </summary>
+        /// <remarks>
+        /// Before calling this function always call Parse
+        /// if the PFunction2D object is new or its data has been changed
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">
+        /// If this function was called before this object was ever Parsed.
+        /// </exception>
         /// <param name="x">The x coordinate to evaluate the function on.</param>
         /// <param name="y">The y coordinate to evaluate the function on.</param>
         /// <returns>
@@ -520,6 +527,11 @@ namespace PFunction2D
         /// </returns>
         public override double Evaluate(double x, double y)
         {
+            if (this.function == null)
+            {
+                throw new InvalidOperationException("Call Parse before calling Evaluate.");
+            }
+
             return this.function.Evaluate(x, y);
         }
 
@@ -604,6 +616,10 @@ namespace PFunction2D
         /// Parses the object and checks if all the restraints of the 2D Point Function
         /// have been respected, if not will return an error to the parser.
         /// </summary>
+        /// <remarks>
+        /// Note that this method caches the object status, so any changes done to its data
+        /// will require this method to be called again in order to update the cache.
+        /// </remarks>
         /// <param name="context">The project in which to parse the object.</param>
         /// <returns>True if an error occurred during the parsing, False otherwise.</returns>
         public override bool Parse(IProject context)
