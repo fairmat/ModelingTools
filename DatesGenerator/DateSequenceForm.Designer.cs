@@ -265,7 +265,7 @@
             this.groupBoxParameterInfo.Size = new System.Drawing.Size(328, 103);
             this.groupBoxParameterInfo.TabIndex = 12;
             this.groupBoxParameterInfo.TabStop = false;
-            this.groupBoxParameterInfo.Text = "Parameter informations";
+            this.groupBoxParameterInfo.Text = "Parameter information";
             // 
             // tableLayoutPanelParameterInfo
             // 
