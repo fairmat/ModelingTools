@@ -337,8 +337,7 @@ namespace PFunction2D
             set
             {
                 // Check for not implemented functionalities.
-                if (value == EInterpolationType.SPLINE ||
-                    value == EInterpolationType.LEAST_SQUARES)
+                if (value == EInterpolationType.SPLINE)
                 {
                     throw new Exception("The selected interpolation type is not supported.");
                 }

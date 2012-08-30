@@ -56,6 +56,11 @@ namespace PFunction2D
         /// </summary>
         private ExtrapolationType extrapolationType;
 
+        /// <summary>
+        /// Quadratic form approximation (used only when approx. method is least squares and order equal to two)
+        /// </summary>
+        private Fairmat.Optimization.QuadraticModel quadraticModel;
+
         #endregion Function Parameters
 
         #region Constructors
@@ -127,6 +132,29 @@ namespace PFunction2D
                 {
                     this[x, y] = values[x, y].V();
                 }
+            }
+
+            switch (this.interpolationType)
+            {
+                case EInterpolationType.LEAST_SQUARES:
+                    quadraticModel = new Fairmat.Optimization.QuadraticModel();
+                    //Unroll matrix and coordinate vectors
+                    int n=values.GetLength(0)*values.GetLength(1);
+                    Matrix xy= new Matrix(n,2);
+                    Vector z= new Vector(n);
+                    int count = 0;
+                    for(int x=0;x<coordinatesX.Length;x++)
+                        for (int y = 0; y < coordinatesY.Length; y++)
+                        {
+                            xy[count,Range.All]= ((Matrix)new Vector(){this[x,-1],this[-1,y]}).T;
+                            z[count] = this[x, y];
+                            count++;
+                        }
+
+                    quadraticModel.Estimate(xy.ToArray() as double[,], z.ToArray() as double[]);
+                break;
+                default:
+                break;
             }
         }
 
@@ -417,6 +445,17 @@ namespace PFunction2D
             return this.values[selectedX + 1, selectedY + 1];
         }
 
+        /// <summary>
+        /// Evaluates using the fitted quadratic model.
+        /// </summary>
+        /// <param name="x">The x coordinate where to calculate the value.</param>
+        /// <param name="y">The y coordinate where to calculate the value.</param>
+        /// <returns>the requested value</returns>
+        private double CalculateLeastSquares(double x, double y)
+        {
+            return quadraticModel.Predict(new double[] { x, y });
+        }
+
         #endregion Internal functions
 
         #region Public functions
@@ -513,6 +552,8 @@ namespace PFunction2D
                     // It interpolates by taking the right down values.
                     case EInterpolationType.ZERO_ORDER:
                         return CalculateConstantAfter(x, y);
+                    case EInterpolationType.LEAST_SQUARES:
+                        return CalculateLeastSquares(x, y);
 
                     // Any interpolation type which isn't supported will return zero.
                     default:

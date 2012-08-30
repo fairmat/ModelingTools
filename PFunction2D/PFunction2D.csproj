@@ -66,6 +66,10 @@
       <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Fairmat.Optimization">
+      <HintPath>..\..\DVPLReferences\Fairmat.Optimization.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CPointFunction2D.cs" />
