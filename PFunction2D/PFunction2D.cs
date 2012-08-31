@@ -106,7 +106,8 @@ namespace PFunction2D
         /// <summary>
         /// Default constructor, which initializes the function with default data.
         /// </summary>
-        public PFunction2D() : this(null)
+        public PFunction2D()
+            : this(null)
         {
         }
 
@@ -125,7 +126,8 @@ namespace PFunction2D
         /// A <see cref="Matrix"/> containing the defined data points for
         /// all the coordinates specified by coordinatesX and coordinatesY.
         /// </param>
-        public PFunction2D(Vector coordinatesX, Vector coordinatesY, Matrix values) : this(null)
+        public PFunction2D(Vector coordinatesX, Vector coordinatesY, Matrix values)
+            : this(null)
         {
             SetSizes(coordinatesX.Count, coordinatesY.Count);
             this.coordinatesX = Array.ConvertAll((double[])coordinatesX.ToArray(), element => RightValue.ConvertFrom(element, true));
@@ -339,8 +341,12 @@ namespace PFunction2D
                 }
 
                 this.interpolationType = value;
-                if(this.function!=null) // Refresh the underlying function if already present.
+
+                // Refresh the underlying function if already present.
+                if (this.function != null)
+                {
                     this.function.Interpolation = value;
+                }
             }
         }
 
@@ -511,7 +517,7 @@ namespace PFunction2D
         /// </summary>
         /// <remarks>
         /// Before calling this function always call Parse
-        /// if the PFunction2D object is new or its data has been changed
+        /// if the PFunction2D object is new or its data has been changed.
         /// </remarks>
         /// <exception cref="InvalidOperationException">
         /// If this function was called before this object was ever Parsed.
