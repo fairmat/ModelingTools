@@ -58,8 +58,7 @@ namespace PFunction2D
 
         /// <summary>
         /// Quadratic form approximation model.
-        /// (used only when interpolation approximation
-        /// method is least squares and order equal to two).
+        /// (used only when approximation method is least squares and order equal to two).
         /// </summary>
         private Fairmat.Optimization.QuadraticModel quadraticModel;
 
