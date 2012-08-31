@@ -323,11 +323,7 @@ namespace PFunction2D
         /// Gets or sets the interpolation to use in case the value request
         /// is not already available.
         /// </summary>
-        /// <remarks>
-        /// To be used only internally, in order to set the wanted interpolation and
-        /// get what is the current one.
-        /// </remarks>
-        internal EInterpolationType Interpolation
+        public EInterpolationType Interpolation
         {
             get
             {
@@ -343,6 +339,8 @@ namespace PFunction2D
                 }
 
                 this.interpolationType = value;
+                if(this.function!=null) // Refresh the underlying function if already present.
+                    this.function.Interpolation = value;
             }
         }
 

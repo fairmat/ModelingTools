@@ -134,33 +134,56 @@ namespace PFunction2D
                 }
             }
 
+            UpdateModel();
+        }
+
+        /// <summary>
+        /// Updates the underlying interpolation mode
+        /// </summary>
+        private void UpdateModel()
+        {
             switch (this.interpolationType)
             {
                 case EInterpolationType.LEAST_SQUARES:
                     quadraticModel = new Fairmat.Optimization.QuadraticModel();
                     //Unroll matrix and coordinate vectors
-                    int n=values.GetLength(0)*values.GetLength(1);
-                    Matrix xy= new Matrix(n,2);
-                    Vector z= new Vector(n);
+                    int n = this.values.R * this.values.C;
+                    Matrix xy = new Matrix(n, 2);
+                    Vector z = new Vector(n);
                     int count = 0;
-                    for(int x=0;x<coordinatesX.Length;x++)
+                    for (int x = 0; x < coordinatesX.Length; x++)
                         for (int y = 0; y < coordinatesY.Length; y++)
                         {
-                            xy[count,Range.All]= ((Matrix)new Vector(){this[x,-1],this[-1,y]}).T;
+                            xy[count, Range.All] = ((Matrix)new Vector() { this[x, -1], this[-1, y] }).T;
                             z[count] = this[x, y];
                             count++;
                         }
 
                     quadraticModel.Estimate(xy.ToArray() as double[,], z.ToArray() as double[]);
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
         }
 
         #endregion Constructors
 
         #region Properties
+
+
+        public EInterpolationType Interpolation
+        {
+            get
+            {
+                return this.interpolationType;
+            }
+            set
+            {
+                this.interpolationType = value;
+                UpdateModel();
+            }
+
+        }
 
         /// <summary>
         /// Gets or sets the data inside the data structures
