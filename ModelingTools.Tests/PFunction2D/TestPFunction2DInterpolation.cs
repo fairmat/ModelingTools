@@ -33,10 +33,7 @@ namespace PFunction2D
         [SetUp]
         public void Init()
         {
-            DVPLI.PluginsManager.Init();
-            Mono.Addins.AddinManager.Registry.ResetConfiguration();
-            Mono.Addins.AddinManager.Registry.Update(new Mono.Addins.ConsoleProgressStatus(6));
-            DVPLI.Engine.Parser.NewContext();
+            TestCommon.TestInitialization.CommonInitialization();
         }
 
         /// <summary>
