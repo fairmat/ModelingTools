@@ -29,11 +29,24 @@ namespace DatesGenerator
     [Serializable]
     public class ModelParameterDateSequence : ModelParameterArray
     {
+        #region Fields
+        /// <summary>
+        /// The version of the ModelParameterDateSequence object.
+        /// </summary>
+        [NonSerialized]
+        private int version = 1;
+        #endregion // Fields
+
         #region Properties
         /// <summary>
         /// Gets or sets the start date.
         /// </summary>
         public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the start date has to be excluded.
+        /// </summary>
+        public bool ExcludeStartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the end date.
@@ -111,6 +124,16 @@ namespace DatesGenerator
         public ModelParameterDateSequence(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            int serialializedVersion;
+            try
+            {
+                serialializedVersion = info.GetInt32("_VersionDateSequence");
+            }
+            catch
+            {
+                serialializedVersion = 0;
+            }
+            
             StartDate = info.GetDateTime("_StartDate");
             EndDate = info.GetDateTime("_EndDate");
             int frequency = info.GetInt32("_Frequency");
@@ -122,6 +145,16 @@ namespace DatesGenerator
                     Frequency = value;
                     break;
                 }
+            }
+
+            if (serialializedVersion >= 1)
+            {
+                // Introduction of ExludeStartDate
+                ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
+            }
+            else
+            {
+                ExcludeStartDate = false;
             }
         }
         #endregion // Constructor
@@ -142,6 +175,9 @@ namespace DatesGenerator
 
                 // Add the dates from the designated start date adding the interval each time
                 DateTime tempDate = StartDate;
+                if (ExcludeStartDate)
+                    tempDate = AddPeriod(Frequency, StartDate, ++i);
+
                 while (tempDate.CompareTo(EndDate) < 0)
                 {
                     rv = RightValue.ConvertFrom(tempDate, true);
@@ -174,6 +210,8 @@ namespace DatesGenerator
             info.AddValue("_StartDate", this.StartDate);
             info.AddValue("_EndDate", this.EndDate);
             info.AddValue("_Frequency", (int)this.Frequency);
+            info.AddValue("_ExcludeStartDate", ExcludeStartDate);
+            info.AddValue("_VersionDateSequence", version);
         }
 
         /// <summary>

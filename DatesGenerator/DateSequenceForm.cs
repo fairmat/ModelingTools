@@ -37,6 +37,11 @@ namespace DatesGenerator
         private DateTime startDate;
 
         /// <summary>
+        /// A flag that indicates whether or not the start date has to be excluded.
+        /// </summary>
+        private bool excludeStartDate;
+
+        /// <summary>
         /// The end date.
         /// </summary>
         private DateTime endDate;
@@ -100,7 +105,9 @@ namespace DatesGenerator
         {
             this.buttonOk.Click += new EventHandler(buttonOk_Click);
             this.buttonCancel.Click += new EventHandler(buttonCancel_Click);
+            this.buttonUpdate.Click += new EventHandler(buttonUpdate_Click);
         }
+
         #endregion // Initialization
 
         #region Handlers
@@ -112,7 +119,7 @@ namespace DatesGenerator
         /// <param name="e">The event arguments.</param>
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            if (Validation())
+            if (Validation(false))
             {
                 InitializeModelParameter();
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -128,6 +135,16 @@ namespace DatesGenerator
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        /// <summary>
+        /// Calculates and shows the dates to be generated.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        void buttonUpdate_Click(object sender, EventArgs e)
+        {
+            InitializeDatesPreview();
         }
         #endregion // Handlers
 
@@ -166,9 +183,7 @@ namespace DatesGenerator
                 // Bind the ModelParameterArray informations to the GUI
                 this.textBoxName.Text = string.IsNullOrEmpty(this.editedObject.Name) ?
                                         string.Empty : this.editedObject.Name;
-                this.textBoxDescription.Text = string.IsNullOrEmpty(this.editedObject.Description) ?
-                                               string.Empty : this.editedObject.Description;
-                this.checkBoxExport.Checked = this.editedObject.include;
+                this.publishingInfoControl.DataExchange(true, this.editedObject);
 
                 if (this.editedObject is ModelParameterDateSequence)
                 {
@@ -176,6 +191,7 @@ namespace DatesGenerator
                     this.dateTimePickerStartDate.Value = ((ModelParameterDateSequence)this.editedObject).StartDate;
                     this.dateTimePickerEndDate.Value = ((ModelParameterDateSequence)this.editedObject).EndDate;
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).Frequency.StringRepresentation();
+                    this.checkBoxExclude.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
                 }
                 else
                 {
@@ -205,6 +221,12 @@ namespace DatesGenerator
                 {
                     this.initialized = false;
                 }
+
+                this.textBoxName.Enabled = !initialized;
+                if (initialized)
+                {
+                    InitializeDatesPreview();
+                }
             }
         }
         #endregion // IEditorEx implementation
@@ -213,23 +235,30 @@ namespace DatesGenerator
         /// <summary>
         /// Sets and validates the values specified in the form.
         /// </summary>
+        /// <param name="preview">
+        /// true if the validation is caused by a preview; otherwise false.
+        /// </param>
         /// <returns>True if the values have been successfully set and validated,
         /// false otherwise.</returns>
-        private bool Validation()
+        private bool Validation(bool preview)
         {
             bool errors = false;
             string validationErrors = string.Empty;
 
-            // Name of the dates vector
-            if (!this.initialized && (this.project.ExistSymbol(this.textBoxName.Text) ||
-                                      !this.project.IsValidSymbolName(this.textBoxName.Text)))
+            if (!preview)
             {
-                validationErrors += "The name used is either already in use or invalid.\n\r";
-                errors = true;
+                // Name of the dates vector
+                if (!this.initialized && (this.project.ExistSymbol(this.textBoxName.Text) ||
+                                          !this.project.IsValidSymbolName(this.textBoxName.Text)))
+                {
+                    validationErrors += "The name used is either already in use or invalid.\n\r";
+                    errors = true;
+                }
             }
 
             // Date
             this.startDate = this.dateTimePickerStartDate.Value;
+            this.excludeStartDate = this.checkBoxExclude.Checked;
             this.endDate = this.dateTimePickerEndDate.Value;
             if (this.startDate.CompareTo(this.endDate) >= 0)
             {
@@ -269,16 +298,17 @@ namespace DatesGenerator
         /// </summary>
         private void InitializeModelParameter()
         {
+            this.publishingInfoControl.DataExchange(false, this.editedObject);
+
             if (this.editedObject is ModelParameterDateSequence)
             {
                 // Initialize the model parameter representing the sequence of dates
                 ModelParameterDateSequence modelParameterDateSequence = (ModelParameterDateSequence)this.editedObject;
                 modelParameterDateSequence.StartDate = this.startDate;
+                modelParameterDateSequence.ExcludeStartDate = this.excludeStartDate;
                 modelParameterDateSequence.EndDate = this.endDate;
                 modelParameterDateSequence.Frequency = this.frequency;
                 modelParameterDateSequence.VarName = this.textBoxName.Text;
-                modelParameterDateSequence.Description = this.textBoxDescription.Text;
-                modelParameterDateSequence.include = this.checkBoxExport.Checked;
                 modelParameterDateSequence.Tag = null;
 
                 // Parse the object to generate the array of dates
@@ -288,6 +318,7 @@ namespace DatesGenerator
             {
                 // Initialize the array to the sequence of dates
                 ModelParameterDateSequence modelParameterDateSequence = new ModelParameterDateSequence(this.startDate, this.endDate, this.frequency);
+                modelParameterDateSequence.ExcludeStartDate = this.excludeStartDate;
                 modelParameterDateSequence.Parse(this.project);
                 this.editedObject.Values = modelParameterDateSequence.Values;
             }
@@ -295,6 +326,26 @@ namespace DatesGenerator
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        /// <summary>
+        /// Initializes the edited object in order to show its preview.
+        /// </summary>
+        private void InitializeDatesPreview()
+        {
+            if (Validation(true))
+            {
+                ModelParameterDateSequence preview = new ModelParameterDateSequence(this.startDate, this.endDate, this.frequency);
+                preview.ExcludeStartDate = this.excludeStartDate;
+                preview.Parse(project);
+                this.dataGridViewDates.Rows.Clear();
+
+                for (int i = 0; i < preview.Values.Count; i++)
+                {
+                    this.dataGridViewDates.Rows.Add(preview.Values[i]);
+                }
+            }
+        }
         #endregion // Helper methods
+
     }
 }
