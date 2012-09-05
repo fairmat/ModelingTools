@@ -173,16 +173,19 @@ namespace DatesGenerator
                 RightValue rv;
                 int i = 0;
 
-                // Add the dates from the designated start date adding the interval each time
-                DateTime tempDate = StartDate;
-                if (ExcludeStartDate)
-                    tempDate = AddPeriod(Frequency, StartDate, ++i);
-
-                while (tempDate.CompareTo(EndDate) < 0)
+                if (StartDate != EndDate)
                 {
-                    rv = RightValue.ConvertFrom(tempDate, true);
-                    dates.Add(rv);
-                    tempDate = AddPeriod(Frequency, StartDate, ++i);
+                    // Add the dates from the designated start date adding the interval each time
+                    DateTime tempDate = StartDate;
+                    if (ExcludeStartDate)
+                        tempDate = AddPeriod(Frequency, StartDate, ++i);
+
+                    while (tempDate.CompareTo(EndDate) < 0)
+                    {
+                        rv = RightValue.ConvertFrom(tempDate, true);
+                        dates.Add(rv);
+                        tempDate = AddPeriod(Frequency, StartDate, ++i);
+                    }
                 }
 
                 // Add the last date
@@ -232,7 +235,7 @@ namespace DatesGenerator
         private bool Validation()
         {
             // The start date has to be smaller than the end date
-            return this.StartDate.CompareTo(EndDate) < 0;
+            return this.StartDate.CompareTo(EndDate) <= 0;
         }
 
         /// <summary>

@@ -260,9 +260,9 @@ namespace DatesGenerator
             this.startDate = this.dateTimePickerStartDate.Value;
             this.excludeStartDate = this.checkBoxExclude.Checked;
             this.endDate = this.dateTimePickerEndDate.Value;
-            if (this.startDate.CompareTo(this.endDate) >= 0)
+            if (this.startDate.CompareTo(this.endDate) > 0)
             {
-                validationErrors += "The end date must be greater than the start date.\n\r";
+                validationErrors += "The end date must be greater or equal than the start date.\n\r";
                 errors = true;
             }
 
