@@ -133,7 +133,7 @@ namespace DatesGenerator
             {
                 serialializedVersion = 0;
             }
-            
+
             StartDate = info.GetDateTime("_StartDate");
             EndDate = info.GetDateTime("_EndDate");
             int frequency = info.GetInt32("_Frequency");

@@ -236,7 +236,7 @@ namespace DatesGenerator
         /// Sets and validates the values specified in the form.
         /// </summary>
         /// <param name="preview">
-        /// true if the validation is caused by a preview; otherwise false.
+        /// True if the validation is caused by a preview; otherwise false.
         /// </param>
         /// <returns>True if the values have been successfully set and validated,
         /// false otherwise.</returns>
@@ -346,6 +346,5 @@ namespace DatesGenerator
             }
         }
         #endregion // Helper methods
-
     }
 }
