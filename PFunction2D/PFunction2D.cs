@@ -646,6 +646,15 @@ namespace PFunction2D
             return false;
         }
 
+        /// <summary>
+        /// Gets the kind of data represented by this object.
+        /// </summary>
+        /// <returns>The kind of data represented.</returns>
+        public override string GetStringKind()
+        {
+            return "2D Interpolated Function";
+        }
+
         #endregion Public methods
     }
 }

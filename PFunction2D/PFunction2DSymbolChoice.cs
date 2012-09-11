@@ -35,7 +35,7 @@ namespace PFunction2D
         {
             get
             {
-                return "Functions/2D Function defined by value interpolation";
+                return "Functions/2D Interpolated Function";
             }
         }
 

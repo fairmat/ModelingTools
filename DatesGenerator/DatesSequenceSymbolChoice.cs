@@ -35,7 +35,7 @@ namespace DatesGenerator
         {
             get
             {
-                return "Dates sequence";
+                return "Dates Sequence";
             }
         }
 
