@@ -97,7 +97,7 @@ namespace PFunction2D
             // Set some default values.
             this.interpolationType = EInterpolationType.LINEAR;
             this.extrapolationType = ExtrapolationType.CONSTANT;
-            this.leastSquaresCoefficients = 0;
+            this.leastSquaresCoefficients = 2;
 
             // We make a function with coordinates 0 1 and all values to 0 by default.
             FillWithDefaultData();
@@ -506,6 +506,7 @@ namespace PFunction2D
             other.values = (IRightValue[,])this.values.Clone();
             other.extrapolationType = this.extrapolationType;
             other.interpolationType = this.interpolationType;
+            other.leastSquaresCoefficients = this.leastSquaresCoefficients;
         }
 
         #endregion Private and Internal methods
