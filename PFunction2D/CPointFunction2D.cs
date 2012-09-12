@@ -112,6 +112,14 @@ namespace PFunction2D
             this.interpolationType = interpolationType;
             this.extrapolationType = extrapolationType;
 
+            // Check if the interpolation and extrapolation methods are available.
+            if (extrapolationType == ExtrapolationType.USEMODEL &&
+               interpolationType != EInterpolationType.LEAST_SQUARES)
+            {
+                throw new Exception("Use model extrapolation method is " +
+                                    "supported only for Least Squares");
+            }
+
             // Sets the sizes depending on the passed arrays length.
             SetSizes(coordinatesX.Length, coordinatesY.Length);
 
@@ -273,6 +281,36 @@ namespace PFunction2D
                 this.interpolationType = value;
 
                 // Update the underlying interpolation model, if needed.
+                UpdateModel();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the extrapolation model of this point function.
+        /// </summary>
+        /// <remarks>
+        /// If needed, it will update the underlaying extrapolation model.
+        /// </remarks>
+        internal ExtrapolationType Extrapolation
+        {
+            get
+            {
+                return this.extrapolationType;
+            }
+
+            set
+            {
+                // Check if the interpolation and extrapolation methods are available.
+                if (value == ExtrapolationType.USEMODEL &&
+                   interpolationType != EInterpolationType.LEAST_SQUARES)
+                {
+                    throw new Exception("Use model extrapolation method is " +
+                                        "supported only for Least Squares.");
+                }
+                
+                this.extrapolationType = value;
+
+                // Update the underlying extrapolation model, if needed.
                 UpdateModel();
             }
         }
@@ -516,7 +554,7 @@ namespace PFunction2D
 
         /// <summary>
         /// Evaluates the function at the requested x and y point,
-        /// using, if necessary, an interpolation.
+        /// using, if necessary, an interpolation or an extrapolation.
         /// </summary>
         /// <param name="x">The x coordinate where to evaluate the function.</param>
         /// <param name="y">The y coordinate where to calculate the value.</param>
@@ -530,26 +568,33 @@ namespace PFunction2D
             }
 
             // Values outside the range of the x and y aren't allowed
-            // in those case the last value in the boundary direction
-            // which was exceeded is returned. (Extrapolation)
+            // so they must be handled differently.
+            // In case MODEL was selected, the handling will depend on the model,
+            // and so the next chunk of code will be skipped, for now only LEAST SQUARES
+            // supports it, in case CONSTANT was selected this code will search for
+            // the last value in the boundary direction
+            // which was exceeded and will use that as point of evaluation. (Extrapolation)
             // Note: The bounds are determined by the first and last element
             //       of the <see cref="Vector"/> as they represent ordered indexes.
-            if (x < this.coordinatesX[0])
+            if (this.extrapolationType == ExtrapolationType.CONSTANT)
             {
-                x = this.coordinatesX[0];
-            }
-            else if (x > this.coordinatesX[this.coordinatesX.Count - 1])
-            {
-                x = this.coordinatesX[this.coordinatesX.Count - 1];
-            }
+                if (x < this.coordinatesX[0])
+                {
+                    x = this.coordinatesX[0];
+                }
+                else if (x > this.coordinatesX[this.coordinatesX.Count - 1])
+                {
+                    x = this.coordinatesX[this.coordinatesX.Count - 1];
+                }
 
-            if (y < this.coordinatesY[0])
-            {
-                y = this.coordinatesY[0];
-            }
-            else if (y > this.coordinatesY[this.coordinatesY.Count - 1])
-            {
-                y = this.coordinatesY[this.coordinatesY.Count - 1];
+                if (y < this.coordinatesY[0])
+                {
+                    y = this.coordinatesY[0];
+                }
+                else if (y > this.coordinatesY[this.coordinatesY.Count - 1])
+                {
+                    y = this.coordinatesY[this.coordinatesY.Count - 1];
+                }
             }
 
             // Bounds check is now done, so it's possible to fetch the requested value.

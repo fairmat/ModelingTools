@@ -367,13 +367,13 @@ namespace PFunction2D
 
             set
             {
-                // Check for not implemented functionalities.
-                if (value != ExtrapolationType.CONSTANT)
-                {
-                    throw new Exception("The selected extrapolation type is not supported.");
-                }
-
                 this.extrapolationType = value;
+
+                // Refresh the underlying function if already present.
+                if (this.function != null)
+                {
+                    this.function.Extrapolation = value;
+                }
             }
         }
 
