@@ -358,7 +358,7 @@ namespace PFunction2D
         /// To be used only internally, in order to set the wanted extrapolation and
         /// get what the current one.
         /// </remarks>
-        internal ExtrapolationType Extrapolation
+        public ExtrapolationType Extrapolation
         {
             get
             {
