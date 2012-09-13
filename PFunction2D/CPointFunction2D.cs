@@ -147,40 +147,6 @@ namespace PFunction2D
             UpdateModel();
         }
 
-        /// <summary>
-        /// Updates the underlying interpolation mode, if needed.
-        /// </summary>
-        private void UpdateModel()
-        {
-            switch (this.interpolationType)
-            {
-                // Right now only the Least Squares requires this operation to be done.
-                case EInterpolationType.LEAST_SQUARES:
-                    quadraticModel = new Fairmat.Optimization.QuadraticModel();
-
-                    // Unroll matrix and coordinate vectors in order to make it suitable
-                    // for the Quadratic model implementation.
-                    int n = this.values.R * this.values.C;
-                    Matrix xy = new Matrix(n, 2);
-                    Vector z = new Vector(n);
-                    int count = 0;
-                    for (int x = 0; x < this.coordinatesX.Length; x++)
-                    {
-                        for (int y = 0; y < this.coordinatesY.Length; y++)
-                        {
-                            xy[count, Range.All] = ((Matrix)new Vector() { this[x, -1], this[-1, y] }).T;
-                            z[count] = this[x, y];
-                            count++;
-                        }
-                    }
-
-                    quadraticModel.Estimate(xy.ToArray() as double[,], z.ToArray() as double[]);
-                    break;
-                default:
-                    break;
-            }
-        }
-
         #endregion Constructors
 
         #region Properties
@@ -307,7 +273,7 @@ namespace PFunction2D
                     throw new Exception("Use model extrapolation method is " +
                                         "supported only for Least Squares.");
                 }
-                
+
                 this.extrapolationType = value;
 
                 // Update the underlying extrapolation model, if needed.
@@ -334,6 +300,40 @@ namespace PFunction2D
         #endregion Getters and Setters
 
         #region Internal functions
+
+        /// <summary>
+        /// Updates the underlying interpolation mode, if needed.
+        /// </summary>
+        private void UpdateModel()
+        {
+            switch (this.interpolationType)
+            {
+                // Right now only the Least Squares requires this operation to be done.
+                case EInterpolationType.LEAST_SQUARES:
+                    this.quadraticModel = new Fairmat.Optimization.QuadraticModel();
+
+                    // Unroll matrix and coordinate vectors in order to make it suitable
+                    // for the Quadratic model implementation.
+                    int n = this.values.R * this.values.C;
+                    Matrix xy = new Matrix(n, 2);
+                    Vector z = new Vector(n);
+                    int count = 0;
+                    for (int x = 0; x < this.coordinatesX.Length; x++)
+                    {
+                        for (int y = 0; y < this.coordinatesY.Length; y++)
+                        {
+                            xy[count, Range.All] = ((Matrix)new Vector() { this[x, -1], this[-1, y] }).T;
+                            z[count] = this[x, y];
+                            count++;
+                        }
+                    }
+
+                    this.quadraticModel.Estimate(xy.ToArray() as double[,], z.ToArray() as double[]);
+                    break;
+                default:
+                    break;
+            }
+        }
 
         /// <summary>
         /// Finds the position of a coordinate in a <see cref="IRightValue"/>,
@@ -528,7 +528,7 @@ namespace PFunction2D
         /// <returns>The requested value.</returns>
         private double CalculateLeastSquares(double x, double y)
         {
-            return quadraticModel.Predict(new double[] { x, y });
+            return this.quadraticModel.Predict(new double[] { x, y });
         }
 
         #endregion Internal functions
