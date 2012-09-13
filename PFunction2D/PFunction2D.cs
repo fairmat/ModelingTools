@@ -637,11 +637,15 @@ namespace PFunction2D
             }
             catch (Exception e)
             {
-                string msg=e.Message + " for the 2D Function " + base.Name;
+                string msg = e.Message + " for the 2D Function " + base.Name;
                 if (context != null)
+                {
                     context.AddError(msg);
+                }
                 else
+                {
                     throw e;
+                }
 
                 // Return true as an error was raised during the parsing.
                 return true;

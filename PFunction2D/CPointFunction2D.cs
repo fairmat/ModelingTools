@@ -268,7 +268,7 @@ namespace PFunction2D
             {
                 // Check if the interpolation and extrapolation methods are available.
                 if (value == ExtrapolationType.USEMODEL &&
-                   interpolationType != EInterpolationType.LEAST_SQUARES)
+                   this.interpolationType != EInterpolationType.LEAST_SQUARES)
                 {
                     throw new Exception("Use model extrapolation method is " +
                                         "supported only for Least Squares.");

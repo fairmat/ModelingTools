@@ -63,11 +63,11 @@ namespace PFunction2D
             base.m_Function = (Function)obj;
 
             // Remove some tabs which have no meaning for this use.
-            base.tabControlEditFunctions.Controls.Remove(tabPageAnaliticFunctionData);
-            base.tabControlEditFunctions.Controls.Remove(tabPageEditZRCalibrator);
+            base.tabControlEditFunctions.Controls.Remove(base.tabPageAnaliticFunctionData);
+            base.tabControlEditFunctions.Controls.Remove(base.tabPageEditZRCalibrator);
 
             // Temporarily remove the data sources as it's not supported yet.
-            base.tabControlEditFunctions.Controls.Remove(tabPageDataSource);
+            base.tabControlEditFunctions.Controls.Remove(base.tabPageDataSource);
             base.buttonImport.Hide();
 
             // Sets the selected tab to be the first.
@@ -209,10 +209,10 @@ namespace PFunction2D
             PFunction2D tempFunction = new PFunction2D();
 
             // Check if bind was executed. Is it still needed?
-            if (m_Project != null)
+            if (base.m_Project != null)
             {
-                m_Project.ResetExpressionParser();
-                m_Project.CreateSymbols();
+                base.m_Project.ResetExpressionParser();
+                base.m_Project.CreateSymbols();
 
 #if MONO
                 // If it's running on Mono the event EditingControlShowing doesn't work, so
