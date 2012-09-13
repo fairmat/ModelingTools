@@ -103,8 +103,21 @@ namespace PFunction2D
             PFunction2D tempFunction = new PFunction2D();
             DataGridToPointFunctionData(tempFunction);
 
+            // Get the defined coordinates for the function in order
+            // to define its edges and set them for the plot.
+            // The values are in this order.
+            // 0 => X1 start
+            // 1 => X1 end
+            // 2 => X2 start
+            // 3 => X2 end.
+            Vector startingValues = new Vector(4);
+            startingValues[0] = tempFunction.Xcoordinates[0].V();
+            startingValues[1] = tempFunction.Xcoordinates[tempFunction.Xcoordinates.Length - 1].V();
+            startingValues[2] = tempFunction.Ycoordinates[0].V();
+            startingValues[3] = tempFunction.Ycoordinates[tempFunction.Ycoordinates.Length - 1].V();
+
             // The coordinates are always 2 here as it's a 2D function.
-            base.OnPlotGenericFunction(2, tempFunction);
+            base.OnPlotGenericFunction(2, tempFunction, startingValues);
         }
 
         /// <summary>

@@ -80,7 +80,6 @@
     <Compile Include="PFunction2DSymbolChoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="Documentation\PFunction2D.tex" />
   </ItemGroup>
