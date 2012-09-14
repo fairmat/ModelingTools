@@ -65,10 +65,10 @@ namespace DatesGenerator
         {
             get
             {
-                object[,] retValue = new object[1, 3];
+                object[,] retValue = new object[3, 1];
                 retValue[0, 0] = StartDate;
-                retValue[0, 1] = EndDate;
-                retValue[0, 2] = (int)this.Frequency;
+                retValue[1, 0] = EndDate;
+                retValue[2, 0] = (int)this.Frequency;
                 return retValue;
             }
 
@@ -77,8 +77,8 @@ namespace DatesGenerator
                 try
                 {
                     StartDate = (DateTime)value.GetValue(0, 0);
-                    EndDate = (DateTime)value.GetValue(0, 1);
-                    Frequency = (DateFrequency)value.GetValue(0, 2);
+                    EndDate = (DateTime)value.GetValue(1, 0);
+                    Frequency = (DateFrequency)value.GetValue(2, 0);
                 }
                 catch
                 {
