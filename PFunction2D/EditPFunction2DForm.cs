@@ -68,7 +68,17 @@ namespace PFunction2D
 
             // Temporarily remove the data sources as it's not supported yet.
             base.tabControlEditFunctions.Controls.Remove(base.tabPageDataSource);
-            base.buttonImport.Hide();
+
+            // Change the behavior of the Import button
+            Control buttonImportContainer = base.buttonImport.Parent;
+            buttonImportContainer.Controls.Remove(base.buttonImport);
+            Button buttonImport = new Button();
+            buttonImport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonImport.AutoSize = true;
+            buttonImport.Margin = new System.Windows.Forms.Padding(3);
+            buttonImport.Text = "Import From Clipboard";
+            buttonImport.Click += new EventHandler(buttonImport_Click);
+            buttonImportContainer.Controls.Add(buttonImport);
 
             // Sets the selected tab to be the first.
             base.tabControlEditFunctions.SelectedIndex = 0;
@@ -319,6 +329,26 @@ namespace PFunction2D
 
             tempFunction.CopyTo(destination);
             return true;
+        }
+
+        /// <summary>
+        /// Handles the import from the clipboard (tab character for separating the row elements).
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        void buttonImport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string errorMessage;
+                if (!base.fairmatDataGridViewPointData.Import2DFunctionFromClipboard(out errorMessage))
+                    MessageBox.Show(errorMessage, DataExchange.ApplicationName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured during the import. Consult the log for more information.", DataExchange.ApplicationName);
+                Log.SimpleWriteLine("Clipboard import error :" + ex.Message);
+            }
         }
 
         #endregion Private methods
