@@ -39,10 +39,6 @@
       <HintPath>..\..\DVPLReferences\DVPLDOM.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DVPLDOME">
-      <HintPath>..\..\DVPLReferences\DVPLDOME.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="DVPLI">
       <HintPath>..\..\DVPLReferences\DVPLI.dll</HintPath>
       <Private>False</Private>
@@ -63,11 +59,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UIBase">
       <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
       <Private>False</Private>
