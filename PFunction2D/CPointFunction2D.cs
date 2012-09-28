@@ -233,7 +233,7 @@ namespace PFunction2D
         /// Gets or sets the interpolation model of this point function.
         /// </summary>
         /// <remarks>
-        /// If needed, it will update the underlaying interpolation model.
+        /// If needed, it will update the underlying interpolation model.
         /// </remarks>
         internal EInterpolationType Interpolation
         {
@@ -255,7 +255,7 @@ namespace PFunction2D
         /// Gets or sets the extrapolation model of this point function.
         /// </summary>
         /// <remarks>
-        /// If needed, it will update the underlaying extrapolation model.
+        /// If needed, it will update the underlying extrapolation model.
         /// </remarks>
         internal ExtrapolationType Extrapolation
         {

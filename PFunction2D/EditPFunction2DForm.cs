@@ -95,8 +95,8 @@ namespace PFunction2D
             base.fairmatDataGridViewPointData.EnableColumnRename = true;
             base.fairmatDataGridViewPointData.EnableRowRename = true;
             base.fairmatDataGridViewPointData.EnableColumnEditing = true;
-            base.fairmatDataGridViewPointData.ColumnRenameOperationName = "Change x cordinate";
-            base.fairmatDataGridViewPointData.RowRenameOperationName = "Change y cordinate";
+            base.fairmatDataGridViewPointData.ColumnRenameOperationName = "Change x coordinate";
+            base.fairmatDataGridViewPointData.RowRenameOperationName = "Change y coordinate";
         }
 
         #endregion
@@ -342,11 +342,13 @@ namespace PFunction2D
             {
                 string errorMessage;
                 if (!base.fairmatDataGridViewPointData.Import2DFunctionFromClipboard(out errorMessage))
+                {
                     MessageBox.Show(errorMessage, DataExchange.ApplicationName);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occured during the import. Consult the log for more information.", DataExchange.ApplicationName);
+                MessageBox.Show("An error occurred during the import. Consult the log for more information.", DataExchange.ApplicationName);
                 Log.SimpleWriteLine("Clipboard import error :" + ex.Message);
             }
         }

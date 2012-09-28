@@ -30,10 +30,10 @@ namespace PFunction2D
         /// </summary>
         /// <param name="dataGridView">The DataGridView to use.</param>
         /// <param name="errorMessage">The resulting error message (if any error happens).</param>
-        /// <returns>true if the import was successfull; otherwise false.</returns>
+        /// <returns>true if the import was successful; otherwise false.</returns>
         public static bool Import2DFunctionFromClipboard(this DataGridView dataGridView, out string errorMessage)
         {
-            // Set the error message to the empty string
+            // Set the error message to the empty string.
             errorMessage = string.Empty;
 
             IDataObject clipboard = Clipboard.GetDataObject();
@@ -47,22 +47,26 @@ namespace PFunction2D
                     string[] lines = clipboardString.Split('\n', '\r');
                     int columns = -1;
 
-                    // Check if the matrix dimensions are consistent
+                    // Check if the matrix dimensions are consistent.
                     bool consistent = true;
                     foreach (string line in lines)
                     {
-                        // Use tab as separator for the elements
+                        // Use tab as separator for the elements.
                         string[] elements = line.Split('\t');
 
                         if (columns == -1)
+                        {
                             columns = elements.Length;
+                        }
                         else if (columns != elements.Length)
+                        {
                             consistent = false;
+                        }
                     }
 
                     if (consistent)
                     {
-                        // Determine the matrix
+                        // Determines the matrix.
                         string[,] matrixString = new string[lines.Length, columns];
                         for (int i = 0; i < matrixString.GetLength(0); i++)
                         {
@@ -76,13 +80,19 @@ namespace PFunction2D
                         return dataGridView.Import2DFunctionFromMatrix(matrixString, out errorMessage);
                     }
                     else
+                    {
                         errorMessage = "The matrix dimensions are not consistent.";
+                    }
                 }
                 else
+                {
                     errorMessage = "The clipboard is empty.";
+                }
             }
             else
+            {
                 errorMessage = "The clipboard is empty.";
+            }
 
             return errorMessage == string.Empty;
         }
