@@ -112,7 +112,7 @@ namespace DatesGenerator
 
         #region Handlers
         /// <summary>
-        /// Tries to validate the data and if the validation is successfull
+        /// Tries to validate the data and if the validation is successful
         /// initializes the ModelParameter object and closes the form.
         /// </summary>
         /// <param name="sender">The sender object.</param>
@@ -180,14 +180,14 @@ namespace DatesGenerator
             this.editedObject = editedObject as ModelParameterArray;
             if (editedObject != null)
             {
-                // Bind the ModelParameterArray informations to the GUI
+                // Bind the ModelParameterArray information to the GUI
                 this.textBoxName.Text = string.IsNullOrEmpty(this.editedObject.Name) ?
                                         string.Empty : this.editedObject.Name;
                 this.publishingInfoControl.DataExchange(true, this.editedObject);
 
                 if (this.editedObject is ModelParameterDateSequence)
                 {
-                    // Binds the date sequence specific informations to the GUI
+                    // Binds the date sequence specific information to the GUI
                     this.dateTimePickerStartDate.Value = ((ModelParameterDateSequence)this.editedObject).StartDate;
                     this.dateTimePickerEndDate.Value = ((ModelParameterDateSequence)this.editedObject).EndDate;
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).Frequency.StringRepresentation();
