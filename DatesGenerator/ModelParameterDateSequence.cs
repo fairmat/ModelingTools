@@ -183,6 +183,7 @@ namespace DatesGenerator
                     while (tempDate.CompareTo(EndDate) < 0)
                     {
                         rv = RightValue.ConvertFrom(tempDate, true);
+                       
                         dates.Add(rv);
                         tempDate = AddPeriod(Frequency, StartDate, ++i);
                     }
@@ -190,11 +191,12 @@ namespace DatesGenerator
 
                 // Add the last date
                 rv = RightValue.ConvertFrom(EndDate, true);
+               
                 dates.Add(rv);
 
                 // Set the model parameter array values
                 this.Values = dates;
-                return false;
+                return base.Parse(p_Context);
             }
             else
                 return true;
