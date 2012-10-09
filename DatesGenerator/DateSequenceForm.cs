@@ -339,6 +339,7 @@ namespace DatesGenerator
                 preview.Parse(project);
                 this.dataGridViewDates.Rows.Clear();
 
+                this.labelElementsCount.Text = preview.Values.Count + " Elements";
                 for (int i = 0; i < preview.Values.Count; i++)
                 {
                     this.dataGridViewDates.Rows.Add(preview.Values[i]);

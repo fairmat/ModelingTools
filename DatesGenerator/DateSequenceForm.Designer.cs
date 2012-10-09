@@ -39,37 +39,40 @@
             this.labelName = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.tableLayoutPanelDefinition = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridViewDates = new System.Windows.Forms.DataGridView();
+            this.columnDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBoxDatesSequence = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelDatesSequence = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelStartDate = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBoxExclude = new System.Windows.Forms.CheckBox();
             this.groupBoxParameterInfo = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelParameterInfo = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageDefinition = new System.Windows.Forms.TabPage();
             this.tabPagePublishing = new System.Windows.Forms.TabPage();
             this.publishingInfoControl = new DVPForms.Controls.PublishingInfoControl();
+            this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelStatusBar = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelButtons = new System.Windows.Forms.TableLayoutPanel();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
-            this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGridViewDates = new System.Windows.Forms.DataGridView();
-            this.columnDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
-            this.buttonUpdate = new System.Windows.Forms.Button();
-            this.tableLayoutPanelStartDate = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBoxExclude = new System.Windows.Forms.CheckBox();
+            this.labelElementsCount = new System.Windows.Forms.Label();
             this.tableLayoutPanelDefinition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
             this.tableLayoutPanelDatesSequence.SuspendLayout();
+            this.tableLayoutPanelStartDate.SuspendLayout();
             this.groupBoxParameterInfo.SuspendLayout();
             this.tableLayoutPanelParameterInfo.SuspendLayout();
+            this.flowLayoutPanelButtons.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.tabPageDefinition.SuspendLayout();
             this.tabPagePublishing.SuspendLayout();
-            this.tableLayoutPanelButtons.SuspendLayout();
             this.tableLayoutPanelMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
-            this.flowLayoutPanelButtons.SuspendLayout();
-            this.tableLayoutPanelStartDate.SuspendLayout();
+            this.tableLayoutPanelStatusBar.SuspendLayout();
+            this.tableLayoutPanelButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelStartDate
@@ -172,8 +175,29 @@
             this.tableLayoutPanelDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelDefinition.Size = new System.Drawing.Size(532, 268);
+            this.tableLayoutPanelDefinition.Size = new System.Drawing.Size(532, 262);
             this.tableLayoutPanelDefinition.TabIndex = 11;
+            // 
+            // dataGridViewDates
+            // 
+            this.dataGridViewDates.AllowUserToAddRows = false;
+            this.dataGridViewDates.AllowUserToDeleteRows = false;
+            this.dataGridViewDates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.columnDate});
+            this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewDates.Location = new System.Drawing.Point(276, 3);
+            this.dataGridViewDates.Name = "dataGridViewDates";
+            this.dataGridViewDates.ReadOnly = true;
+            this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
+            this.dataGridViewDates.Size = new System.Drawing.Size(166, 262);
+            this.dataGridViewDates.TabIndex = 12;
+            // 
+            // columnDate
+            // 
+            this.columnDate.HeaderText = "Dates";
+            this.columnDate.Name = "columnDate";
+            this.columnDate.ReadOnly = true;
             // 
             // groupBoxDatesSequence
             // 
@@ -213,6 +237,33 @@
             this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(261, 79);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
+            // tableLayoutPanelStartDate
+            // 
+            this.tableLayoutPanelStartDate.AutoSize = true;
+            this.tableLayoutPanelStartDate.ColumnCount = 2;
+            this.tableLayoutPanelStartDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelStartDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelStartDate.Controls.Add(this.dateTimePickerStartDate, 0, 0);
+            this.tableLayoutPanelStartDate.Controls.Add(this.checkBoxExclude, 1, 0);
+            this.tableLayoutPanelStartDate.Location = new System.Drawing.Point(63, 0);
+            this.tableLayoutPanelStartDate.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanelStartDate.Name = "tableLayoutPanelStartDate";
+            this.tableLayoutPanelStartDate.RowCount = 1;
+            this.tableLayoutPanelStartDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelStartDate.Size = new System.Drawing.Size(197, 26);
+            this.tableLayoutPanelStartDate.TabIndex = 13;
+            // 
+            // checkBoxExclude
+            // 
+            this.checkBoxExclude.AutoSize = true;
+            this.checkBoxExclude.Location = new System.Drawing.Point(119, 3);
+            this.checkBoxExclude.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.checkBoxExclude.Name = "checkBoxExclude";
+            this.checkBoxExclude.Size = new System.Drawing.Size(75, 20);
+            this.checkBoxExclude.TabIndex = 5;
+            this.checkBoxExclude.Text = "Exclude";
+            this.checkBoxExclude.UseVisualStyleBackColor = true;
+            // 
             // groupBoxParameterInfo
             // 
             this.groupBoxParameterInfo.AutoSize = true;
@@ -247,6 +298,27 @@
             this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(261, 26);
             this.tableLayoutPanelParameterInfo.TabIndex = 0;
             // 
+            // flowLayoutPanelButtons
+            // 
+            this.flowLayoutPanelButtons.AutoSize = true;
+            this.flowLayoutPanelButtons.Controls.Add(this.buttonUpdate);
+            this.flowLayoutPanelButtons.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanelButtons.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanelButtons.Location = new System.Drawing.Point(448, 3);
+            this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
+            this.tableLayoutPanelDefinition.SetRowSpan(this.flowLayoutPanelButtons, 3);
+            this.flowLayoutPanelButtons.Size = new System.Drawing.Size(81, 262);
+            this.flowLayoutPanelButtons.TabIndex = 13;
+            // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Location = new System.Drawing.Point(3, 3);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.TabIndex = 12;
+            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            // 
             // tabControlMain
             // 
             this.tabControlMain.Controls.Add(this.tabPageDefinition);
@@ -255,7 +327,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(3, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(546, 300);
+            this.tabControlMain.Size = new System.Drawing.Size(546, 294);
             this.tabControlMain.TabIndex = 12;
             // 
             // tabPageDefinition
@@ -264,7 +336,7 @@
             this.tabPageDefinition.Location = new System.Drawing.Point(4, 22);
             this.tabPageDefinition.Name = "tabPageDefinition";
             this.tabPageDefinition.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDefinition.Size = new System.Drawing.Size(538, 274);
+            this.tabPageDefinition.Size = new System.Drawing.Size(538, 268);
             this.tabPageDefinition.TabIndex = 0;
             this.tabPageDefinition.Text = "Definition";
             this.tabPageDefinition.UseVisualStyleBackColor = true;
@@ -275,7 +347,7 @@
             this.tabPagePublishing.Location = new System.Drawing.Point(4, 22);
             this.tabPagePublishing.Name = "tabPagePublishing";
             this.tabPagePublishing.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePublishing.Size = new System.Drawing.Size(352, 307);
+            this.tabPagePublishing.Size = new System.Drawing.Size(538, 268);
             this.tabPagePublishing.TabIndex = 2;
             this.tabPagePublishing.Text = "Publishing";
             this.tabPagePublishing.UseVisualStyleBackColor = true;
@@ -288,8 +360,40 @@
             this.publishingInfoControl.Export = false;
             this.publishingInfoControl.Location = new System.Drawing.Point(3, 3);
             this.publishingInfoControl.Name = "publishingInfoControl";
-            this.publishingInfoControl.Size = new System.Drawing.Size(346, 301);
+            this.publishingInfoControl.Size = new System.Drawing.Size(532, 262);
             this.publishingInfoControl.TabIndex = 0;
+            // 
+            // tableLayoutPanelMain
+            // 
+            this.tableLayoutPanelMain.ColumnCount = 1;
+            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelMain.Controls.Add(this.tabControlMain, 0, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelStatusBar, 0, 1);
+            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
+            this.tableLayoutPanelMain.RowCount = 2;
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(552, 353);
+            this.tableLayoutPanelMain.TabIndex = 14;
+            // 
+            // tableLayoutPanelStatusBar
+            // 
+            this.tableLayoutPanelStatusBar.AutoSize = true;
+            this.tableLayoutPanelStatusBar.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanelStatusBar.ColumnCount = 2;
+            this.tableLayoutPanelStatusBar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelStatusBar.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelStatusBar.Controls.Add(this.tableLayoutPanelButtons, 1, 0);
+            this.tableLayoutPanelStatusBar.Controls.Add(this.labelElementsCount, 0, 0);
+            this.tableLayoutPanelStatusBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanelStatusBar.Location = new System.Drawing.Point(3, 303);
+            this.tableLayoutPanelStatusBar.Name = "tableLayoutPanelStatusBar";
+            this.tableLayoutPanelStatusBar.RowCount = 1;
+            this.tableLayoutPanelStatusBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelStatusBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
+            this.tableLayoutPanelStatusBar.Size = new System.Drawing.Size(546, 47);
+            this.tableLayoutPanelStatusBar.TabIndex = 13;
             // 
             // tableLayoutPanelButtons
             // 
@@ -300,14 +404,14 @@
             this.tableLayoutPanelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanelButtons.Controls.Add(this.buttonCancel, 1, 0);
             this.tableLayoutPanelButtons.Controls.Add(this.buttonOk, 0, 0);
-            this.tableLayoutPanelButtons.Location = new System.Drawing.Point(371, 321);
+            this.tableLayoutPanelButtons.Location = new System.Drawing.Point(365, 15);
             this.tableLayoutPanelButtons.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.tableLayoutPanelButtons.Name = "tableLayoutPanelButtons";
             this.tableLayoutPanelButtons.RowCount = 1;
             this.tableLayoutPanelButtons.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelButtons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanelButtons.Size = new System.Drawing.Size(178, 29);
-            this.tableLayoutPanelButtons.TabIndex = 13;
+            this.tableLayoutPanelButtons.TabIndex = 14;
             // 
             // buttonCancel
             // 
@@ -331,88 +435,15 @@
             this.buttonOk.Text = "Ok";
             this.buttonOk.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanelMain
+            // labelElementsCount
             // 
-            this.tableLayoutPanelMain.ColumnCount = 1;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.Controls.Add(this.tableLayoutPanelButtons, 0, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.tabControlMain, 0, 0);
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 2;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(552, 353);
-            this.tableLayoutPanelMain.TabIndex = 14;
-            // 
-            // dataGridViewDates
-            // 
-            this.dataGridViewDates.AllowUserToAddRows = false;
-            this.dataGridViewDates.AllowUserToDeleteRows = false;
-            this.dataGridViewDates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.columnDate});
-            this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewDates.Location = new System.Drawing.Point(276, 3);
-            this.dataGridViewDates.Name = "dataGridViewDates";
-            this.dataGridViewDates.ReadOnly = true;
-            this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
-            this.dataGridViewDates.Size = new System.Drawing.Size(166, 262);
-            this.dataGridViewDates.TabIndex = 12;
-            // 
-            // columnDate
-            // 
-            this.columnDate.HeaderText = "Dates";
-            this.columnDate.Name = "columnDate";
-            this.columnDate.ReadOnly = true;
-            // 
-            // flowLayoutPanelButtons
-            // 
-            this.flowLayoutPanelButtons.AutoSize = true;
-            this.flowLayoutPanelButtons.Controls.Add(this.buttonUpdate);
-            this.flowLayoutPanelButtons.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanelButtons.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelButtons.Location = new System.Drawing.Point(448, 3);
-            this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
-            this.tableLayoutPanelDefinition.SetRowSpan(this.flowLayoutPanelButtons, 3);
-            this.flowLayoutPanelButtons.Size = new System.Drawing.Size(81, 262);
-            this.flowLayoutPanelButtons.TabIndex = 13;
-            // 
-            // buttonUpdate
-            // 
-            this.buttonUpdate.Location = new System.Drawing.Point(3, 3);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
-            this.buttonUpdate.TabIndex = 12;
-            this.buttonUpdate.Text = "Update";
-            this.buttonUpdate.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanelStartDate
-            // 
-            this.tableLayoutPanelStartDate.AutoSize = true;
-            this.tableLayoutPanelStartDate.ColumnCount = 2;
-            this.tableLayoutPanelStartDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanelStartDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelStartDate.Controls.Add(this.dateTimePickerStartDate, 0, 0);
-            this.tableLayoutPanelStartDate.Controls.Add(this.checkBoxExclude, 1, 0);
-            this.tableLayoutPanelStartDate.Location = new System.Drawing.Point(63, 0);
-            this.tableLayoutPanelStartDate.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanelStartDate.Name = "tableLayoutPanelStartDate";
-            this.tableLayoutPanelStartDate.RowCount = 1;
-            this.tableLayoutPanelStartDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelStartDate.Size = new System.Drawing.Size(197, 26);
-            this.tableLayoutPanelStartDate.TabIndex = 13;
-            // 
-            // checkBoxExclude
-            // 
-            this.checkBoxExclude.AutoSize = true;
-            this.checkBoxExclude.Location = new System.Drawing.Point(119, 3);
-            this.checkBoxExclude.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.checkBoxExclude.Name = "checkBoxExclude";
-            this.checkBoxExclude.Size = new System.Drawing.Size(75, 20);
-            this.checkBoxExclude.TabIndex = 5;
-            this.checkBoxExclude.Text = "Exclude";
-            this.checkBoxExclude.UseVisualStyleBackColor = true;
+            this.labelElementsCount.AutoSize = true;
+            this.labelElementsCount.Location = new System.Drawing.Point(8, 0);
+            this.labelElementsCount.Margin = new System.Windows.Forms.Padding(8, 0, 3, 0);
+            this.labelElementsCount.Name = "labelElementsCount";
+            this.labelElementsCount.Size = new System.Drawing.Size(59, 13);
+            this.labelElementsCount.TabIndex = 15;
+            this.labelElementsCount.Text = "0 Elements";
             // 
             // DateSequenceForm
             // 
@@ -420,6 +451,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(555, 356);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.MaximizeBox = false;
@@ -432,25 +464,27 @@
             this.Text = "Edit dates sequence";
             this.tableLayoutPanelDefinition.ResumeLayout(false);
             this.tableLayoutPanelDefinition.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).EndInit();
             this.groupBoxDatesSequence.ResumeLayout(false);
             this.groupBoxDatesSequence.PerformLayout();
             this.tableLayoutPanelDatesSequence.ResumeLayout(false);
             this.tableLayoutPanelDatesSequence.PerformLayout();
+            this.tableLayoutPanelStartDate.ResumeLayout(false);
+            this.tableLayoutPanelStartDate.PerformLayout();
             this.groupBoxParameterInfo.ResumeLayout(false);
             this.groupBoxParameterInfo.PerformLayout();
             this.tableLayoutPanelParameterInfo.ResumeLayout(false);
             this.tableLayoutPanelParameterInfo.PerformLayout();
+            this.flowLayoutPanelButtons.ResumeLayout(false);
             this.tabControlMain.ResumeLayout(false);
             this.tabPageDefinition.ResumeLayout(false);
             this.tabPageDefinition.PerformLayout();
             this.tabPagePublishing.ResumeLayout(false);
-            this.tableLayoutPanelButtons.ResumeLayout(false);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.tableLayoutPanelMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).EndInit();
-            this.flowLayoutPanelButtons.ResumeLayout(false);
-            this.tableLayoutPanelStartDate.ResumeLayout(false);
-            this.tableLayoutPanelStartDate.PerformLayout();
+            this.tableLayoutPanelStatusBar.ResumeLayout(false);
+            this.tableLayoutPanelStatusBar.PerformLayout();
+            this.tableLayoutPanelButtons.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -474,9 +508,6 @@
         private System.Windows.Forms.TabPage tabPageDefinition;
         private System.Windows.Forms.TabPage tabPagePublishing;
         private DVPForms.Controls.PublishingInfoControl publishingInfoControl;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelButtons;
-        private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
         private System.Windows.Forms.DataGridView dataGridViewDates;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDate;
@@ -484,5 +515,10 @@
         private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelStartDate;
         private System.Windows.Forms.CheckBox checkBoxExclude;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelStatusBar;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelButtons;
+        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Button buttonOk;
+        private System.Windows.Forms.Label labelElementsCount;
     }
 }
