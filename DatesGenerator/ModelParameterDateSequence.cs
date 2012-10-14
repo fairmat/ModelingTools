@@ -136,6 +136,19 @@ namespace DatesGenerator
 
             StartDate = info.GetDateTime("_StartDate");
             EndDate = info.GetDateTime("_EndDate");
+			
+            try
+            {
+                this.StartDate = new DateTime(info.GetInt64("_StartDate"));
+                this.EndDate = new DateTime(info.GetInt64("_EndDate"));
+            }
+            catch (Exception)
+            {
+                // In case the calibration time was serialized in a different way.
+                this.StartDate = info.GetDateTime("_StartDate");
+                this.EndDate = info.GetDateTime("_EndDate");
+            }
+			
             int frequency = info.GetInt32("_Frequency");
             Array enumValues = Enum.GetValues(typeof(DateFrequency));
             foreach (DateFrequency value in enumValues)
@@ -212,8 +225,8 @@ namespace DatesGenerator
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("_StartDate", this.StartDate);
-            info.AddValue("_EndDate", this.EndDate);
+            info.AddValue("_StartDate", this.StartDate.Ticks);
+            info.AddValue("_EndDate", this.EndDate.Ticks);
             info.AddValue("_Frequency", (int)this.Frequency);
             info.AddValue("_ExcludeStartDate", ExcludeStartDate);
             info.AddValue("_VersionDateSequence", version);
