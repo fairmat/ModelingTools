@@ -134,9 +134,6 @@ namespace DatesGenerator
                 serialializedVersion = 0;
             }
 
-            StartDate = info.GetDateTime("_StartDate");
-            EndDate = info.GetDateTime("_EndDate");
-			
             try
             {
                 this.StartDate = new DateTime(info.GetInt64("_StartDate"));
@@ -148,7 +145,7 @@ namespace DatesGenerator
                 this.StartDate = info.GetDateTime("_StartDate");
                 this.EndDate = info.GetDateTime("_EndDate");
             }
-			
+
             int frequency = info.GetInt32("_Frequency");
             Array enumValues = Enum.GetValues(typeof(DateFrequency));
             foreach (DateFrequency value in enumValues)
@@ -196,7 +193,7 @@ namespace DatesGenerator
                     while (tempDate.CompareTo(EndDate) < 0)
                     {
                         rv = RightValue.ConvertFrom(tempDate, true);
-                       
+
                         dates.Add(rv);
                         tempDate = AddPeriod(Frequency, StartDate, ++i);
                     }
@@ -204,7 +201,7 @@ namespace DatesGenerator
 
                 // Add the last date
                 rv = RightValue.ConvertFrom(EndDate, true);
-               
+
                 dates.Add(rv);
 
                 // Set the model parameter array values
