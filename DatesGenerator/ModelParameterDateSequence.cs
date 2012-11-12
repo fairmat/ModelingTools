@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using DVPLDOM;
 using DVPLI;
+using DVPLUtils;
 
 namespace DatesGenerator
 {
@@ -27,14 +28,16 @@ namespace DatesGenerator
     /// Implements a model parameter that represents a sequence of dates.
     /// </summary>
     [Serializable]
-    public class ModelParameterDateSequence : ModelParameterArray
+    public class ModelParameterDateSequence : ModelParameterArray, IExportableContainer
     {
         #region Fields
+
         /// <summary>
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
         private int version = 1;
+
         #endregion // Fields
 
         #region Properties
@@ -283,5 +286,25 @@ namespace DatesGenerator
             }
         }
         #endregion // Helper methods
+
+        #region IExportableContainer Members
+
+        /// <summary>
+        /// Gets the objects exported from this parameter.
+        /// </summary>
+        /// <param name="recursive">True if export has to be recursive; otherwise false.</param>
+        /// <returns>A list of the objects exported from this parameter.</returns>
+        public List<IExportable> ExportObjects(bool recursive)
+        {
+            List<IExportable> retVal = new List<IExportable>();
+            ExportablePropertyAssociator<DateTime> startDate = new ExportablePropertyAssociator<DateTime>("StartDate", this, VarName + " Start Date");
+            ExportablePropertyAssociator<DateTime> endDate = new ExportablePropertyAssociator<DateTime>("EndDate", this, VarName + " End Date");
+            ExportablePropertyAssociator<DateFrequency> frequency = new ExportablePropertyAssociator<DateFrequency>("Frequency", this, VarName + " Frequency");
+            retVal.AddRange(new IExportable[] { this, startDate, endDate, frequency });
+
+            return retVal;
+        }
+
+        #endregion
     }
 }
