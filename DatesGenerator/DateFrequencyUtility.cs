@@ -35,10 +35,8 @@ namespace DatesGenerator
             {
                 case DateFrequency.BiWeekly:
                     return "Bi-weekly";
-                case DateFrequency.ThreeMonths:
-                    return "Quarterly";
-                case DateFrequency.SixMonths:
-                    return "Semiannual";
+                case DateFrequency.Semiannual:
+                    return "Semi-annual";
                 default:
                     return frequency.ToString();
             }
@@ -59,10 +57,8 @@ namespace DatesGenerator
             {
                 case "Bi-weekly":
                     return DateFrequency.BiWeekly;
-                case "Quarterly":
-                    return DateFrequency.ThreeMonths;
-                case "Semiannual":
-                    return DateFrequency.SixMonths;
+                case "Semi-annual":
+                    return DateFrequency.Semiannual;
                 default:
                     return (DateFrequency)Enum.Parse(typeof(DateFrequency), value);
             }

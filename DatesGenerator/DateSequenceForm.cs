@@ -31,25 +31,11 @@ namespace DatesGenerator
     public partial class DateSequenceForm : Form, IEditorEx
     {
         #region Fields
-        /// <summary>
-        /// The start date.
-        /// </summary>
-        private DateTime startDate;
 
         /// <summary>
         /// A flag that indicates whether or not the start date has to be excluded.
         /// </summary>
         private bool excludeStartDate;
-
-        /// <summary>
-        /// The end date.
-        /// </summary>
-        private DateTime endDate;
-
-        /// <summary>
-        /// The frequency of the dates generated between the start and end dates.
-        /// </summary>
-        private DateFrequency frequency;
 
         /// <summary>
         /// True if the object has already been initialized, false otherwise.
@@ -188,16 +174,16 @@ namespace DatesGenerator
                 if (this.editedObject is ModelParameterDateSequence)
                 {
                     // Binds the date sequence specific information to the GUI
-                    this.dateTimePickerStartDate.Value = ((ModelParameterDateSequence)this.editedObject).StartDate;
-                    this.dateTimePickerEndDate.Value = ((ModelParameterDateSequence)this.editedObject).EndDate;
-                    this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).Frequency.StringRepresentation();
+                    this.expressionStartDate.Text = ((ModelParameterDateSequence)this.editedObject).StartDateExpression;
+                    this.expressionEndDate.Text = ((ModelParameterDateSequence)this.editedObject).EndDateExpression;
+                    this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
                     this.checkBoxExclude.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
                 }
                 else
                 {
                     // Initialize the other elements of the GUI to their default
-                    this.dateTimePickerStartDate.Value = DateTime.Now.Date;
-                    this.dateTimePickerEndDate.Value = DateTime.Now.Date;
+                    this.expressionStartDate.Text = DateTime.Now.Date.ToShortDateString();
+                    this.expressionEndDate.Text = DateTime.Now.Date.ToShortDateString();
                     this.comboBoxFrequency.SelectedIndex = 0;
                 }
             }
@@ -256,32 +242,7 @@ namespace DatesGenerator
                 }
             }
 
-            // Date
-            this.startDate = this.dateTimePickerStartDate.Value;
             this.excludeStartDate = this.checkBoxExclude.Checked;
-            this.endDate = this.dateTimePickerEndDate.Value;
-            if (this.startDate.CompareTo(this.endDate) > 0)
-            {
-                validationErrors += "The end date must be greater or equal than the start date.\n\r";
-                errors = true;
-            }
-
-            // Frequency
-            bool frequencyValid = true;
-            try
-            {
-                this.frequency = DateFrequencyUtility.ParseDateFrequency(this.comboBoxFrequency.Text);
-            }
-            catch
-            {
-                frequencyValid = false;
-            }
-
-            if (!frequencyValid)
-            {
-                validationErrors += "The frequency is not a valid value.\n\r";
-                errors = true;
-            }
 
             // Check for errors
             if (errors)
@@ -304,10 +265,10 @@ namespace DatesGenerator
             {
                 // Initialize the model parameter representing the sequence of dates
                 ModelParameterDateSequence modelParameterDateSequence = (ModelParameterDateSequence)this.editedObject;
-                modelParameterDateSequence.StartDate = this.startDate;
+                modelParameterDateSequence.StartDateExpression = this.expressionStartDate.Text;
                 modelParameterDateSequence.ExcludeStartDate = this.excludeStartDate;
-                modelParameterDateSequence.EndDate = this.endDate;
-                modelParameterDateSequence.Frequency = this.frequency;
+                modelParameterDateSequence.EndDateExpression = this.expressionEndDate.Text;
+                modelParameterDateSequence.FrequencyExpression = this.comboBoxFrequency.Text;
                 modelParameterDateSequence.VarName = this.textBoxName.Text;
                 modelParameterDateSequence.Tag = null;
 
@@ -317,7 +278,10 @@ namespace DatesGenerator
             else
             {
                 // Initialize the array to the sequence of dates
-                ModelParameterDateSequence modelParameterDateSequence = new ModelParameterDateSequence(this.startDate, this.endDate, this.frequency);
+                ModelParameterDateSequence modelParameterDateSequence = new ModelParameterDateSequence(this.expressionStartDate.Text,
+                                                                                                       this.expressionEndDate.Text,
+                                                                                                       this.comboBoxFrequency.Text);
+
                 modelParameterDateSequence.ExcludeStartDate = this.excludeStartDate;
                 modelParameterDateSequence.Parse(this.project);
                 this.editedObject.Values = modelParameterDateSequence.Values;
@@ -334,7 +298,10 @@ namespace DatesGenerator
         {
             if (Validation(true))
             {
-                ModelParameterDateSequence preview = new ModelParameterDateSequence(this.startDate, this.endDate, this.frequency);
+                ModelParameterDateSequence preview = new ModelParameterDateSequence(this.expressionStartDate.Text,
+                                                                                    this.expressionEndDate.Text,
+                                                                                    this.comboBoxFrequency.Text);
+
                 preview.ExcludeStartDate = this.excludeStartDate;
                 preview.Parse(project);
                 this.dataGridViewDates.Rows.Clear();
@@ -346,6 +313,7 @@ namespace DatesGenerator
                 }
             }
         }
+
         #endregion // Helper methods
     }
 }

@@ -30,12 +30,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.labelStartDate = new System.Windows.Forms.Label();
             this.labelEndDate = new System.Windows.Forms.Label();
             this.labelFrequency = new System.Windows.Forms.Label();
-            this.dateTimePickerStartDate = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePickerEndDate = new System.Windows.Forms.DateTimePicker();
-            this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.labelName = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.tableLayoutPanelDefinition = new System.Windows.Forms.TableLayoutPanel();
@@ -59,6 +57,9 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelElementsCount = new System.Windows.Forms.Label();
+            this.expressionEndDate = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanelDefinition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
@@ -80,7 +81,7 @@
             this.labelStartDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelStartDate.AutoSize = true;
             this.labelStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelStartDate.Location = new System.Drawing.Point(3, 6);
+            this.labelStartDate.Location = new System.Drawing.Point(3, 7);
             this.labelStartDate.Name = "labelStartDate";
             this.labelStartDate.Size = new System.Drawing.Size(53, 13);
             this.labelStartDate.TabIndex = 1;
@@ -91,7 +92,7 @@
             this.labelEndDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelEndDate.AutoSize = true;
             this.labelEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelEndDate.Location = new System.Drawing.Point(3, 32);
+            this.labelEndDate.Location = new System.Drawing.Point(3, 34);
             this.labelEndDate.Name = "labelEndDate";
             this.labelEndDate.Size = new System.Drawing.Size(50, 13);
             this.labelEndDate.TabIndex = 2;
@@ -102,39 +103,11 @@
             this.labelFrequency.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelFrequency.AutoSize = true;
             this.labelFrequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFrequency.Location = new System.Drawing.Point(3, 59);
+            this.labelFrequency.Location = new System.Drawing.Point(3, 61);
             this.labelFrequency.Name = "labelFrequency";
             this.labelFrequency.Size = new System.Drawing.Size(57, 13);
             this.labelFrequency.TabIndex = 3;
             this.labelFrequency.Text = "Frequency";
-            // 
-            // dateTimePickerStartDate
-            // 
-            this.dateTimePickerStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePickerStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerStartDate.Location = new System.Drawing.Point(3, 3);
-            this.dateTimePickerStartDate.Name = "dateTimePickerStartDate";
-            this.dateTimePickerStartDate.Size = new System.Drawing.Size(103, 20);
-            this.dateTimePickerStartDate.TabIndex = 4;
-            // 
-            // dateTimePickerEndDate
-            // 
-            this.dateTimePickerEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePickerEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerEndDate.Location = new System.Drawing.Point(66, 29);
-            this.dateTimePickerEndDate.Name = "dateTimePickerEndDate";
-            this.dateTimePickerEndDate.Size = new System.Drawing.Size(103, 20);
-            this.dateTimePickerEndDate.TabIndex = 5;
-            // 
-            // comboBoxFrequency
-            // 
-            this.comboBoxFrequency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxFrequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxFrequency.FormattingEnabled = true;
-            this.comboBoxFrequency.Location = new System.Drawing.Point(66, 55);
-            this.comboBoxFrequency.Name = "comboBoxFrequency";
-            this.comboBoxFrequency.Size = new System.Drawing.Size(192, 21);
-            this.comboBoxFrequency.TabIndex = 6;
             // 
             // labelName
             // 
@@ -186,11 +159,11 @@
             this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDate});
             this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewDates.Location = new System.Drawing.Point(276, 3);
+            this.dataGridViewDates.Location = new System.Drawing.Point(275, 3);
             this.dataGridViewDates.Name = "dataGridViewDates";
             this.dataGridViewDates.ReadOnly = true;
             this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
-            this.dataGridViewDates.Size = new System.Drawing.Size(166, 262);
+            this.dataGridViewDates.Size = new System.Drawing.Size(167, 262);
             this.dataGridViewDates.TabIndex = 12;
             // 
             // columnDate
@@ -209,7 +182,7 @@
             this.groupBoxDatesSequence.Location = new System.Drawing.Point(3, 70);
             this.groupBoxDatesSequence.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.groupBoxDatesSequence.Name = "groupBoxDatesSequence";
-            this.groupBoxDatesSequence.Size = new System.Drawing.Size(267, 100);
+            this.groupBoxDatesSequence.Size = new System.Drawing.Size(266, 102);
             this.groupBoxDatesSequence.TabIndex = 12;
             this.groupBoxDatesSequence.TabStop = false;
             this.groupBoxDatesSequence.Text = "Dates Sequence";
@@ -225,8 +198,8 @@
             this.tableLayoutPanelDatesSequence.Controls.Add(this.tableLayoutPanelStartDate, 1, 0);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.labelEndDate, 0, 1);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.labelFrequency, 0, 2);
+            this.tableLayoutPanelDatesSequence.Controls.Add(this.expressionEndDate, 1, 1);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.comboBoxFrequency, 1, 2);
-            this.tableLayoutPanelDatesSequence.Controls.Add(this.dateTimePickerEndDate, 1, 1);
             this.tableLayoutPanelDatesSequence.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelDatesSequence.Location = new System.Drawing.Point(3, 18);
             this.tableLayoutPanelDatesSequence.Name = "tableLayoutPanelDatesSequence";
@@ -234,7 +207,7 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(261, 79);
+            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(260, 81);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
             // tableLayoutPanelStartDate
@@ -243,14 +216,14 @@
             this.tableLayoutPanelStartDate.ColumnCount = 2;
             this.tableLayoutPanelStartDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanelStartDate.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelStartDate.Controls.Add(this.dateTimePickerStartDate, 0, 0);
             this.tableLayoutPanelStartDate.Controls.Add(this.checkBoxExclude, 1, 0);
+            this.tableLayoutPanelStartDate.Controls.Add(this.expressionStartDate, 0, 0);
             this.tableLayoutPanelStartDate.Location = new System.Drawing.Point(63, 0);
             this.tableLayoutPanelStartDate.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelStartDate.Name = "tableLayoutPanelStartDate";
             this.tableLayoutPanelStartDate.RowCount = 1;
             this.tableLayoutPanelStartDate.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelStartDate.Size = new System.Drawing.Size(197, 26);
+            this.tableLayoutPanelStartDate.Size = new System.Drawing.Size(197, 27);
             this.tableLayoutPanelStartDate.TabIndex = 13;
             // 
             // checkBoxExclude
@@ -274,7 +247,7 @@
             this.groupBoxParameterInfo.Location = new System.Drawing.Point(3, 5);
             this.groupBoxParameterInfo.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.groupBoxParameterInfo.Name = "groupBoxParameterInfo";
-            this.groupBoxParameterInfo.Size = new System.Drawing.Size(267, 47);
+            this.groupBoxParameterInfo.Size = new System.Drawing.Size(266, 47);
             this.groupBoxParameterInfo.TabIndex = 12;
             this.groupBoxParameterInfo.TabStop = false;
             this.groupBoxParameterInfo.Text = "Parameter information";
@@ -295,7 +268,7 @@
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(261, 26);
+            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(260, 26);
             this.tableLayoutPanelParameterInfo.TabIndex = 0;
             // 
             // flowLayoutPanelButtons
@@ -445,6 +418,38 @@
             this.labelElementsCount.TabIndex = 15;
             this.labelElementsCount.Text = "0 Elements";
             // 
+            // expressionEndDate
+            // 
+            this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.expressionEndDate.KeyboardEventsEnabled = true;
+            this.expressionEndDate.Location = new System.Drawing.Point(66, 30);
+            this.expressionEndDate.Multiline = false;
+            this.expressionEndDate.Name = "expressionEndDate";
+            this.expressionEndDate.Size = new System.Drawing.Size(103, 21);
+            this.expressionEndDate.TabIndex = 14;
+            this.expressionEndDate.Text = "";
+            this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // expressionStartDate
+            // 
+            this.expressionStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.expressionStartDate.KeyboardEventsEnabled = true;
+            this.expressionStartDate.Location = new System.Drawing.Point(3, 3);
+            this.expressionStartDate.Multiline = false;
+            this.expressionStartDate.Name = "expressionStartDate";
+            this.expressionStartDate.Size = new System.Drawing.Size(103, 21);
+            this.expressionStartDate.TabIndex = 6;
+            this.expressionStartDate.Text = "";
+            this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // comboBoxFrequency
+            // 
+            this.comboBoxFrequency.FormattingEnabled = true;
+            this.comboBoxFrequency.Location = new System.Drawing.Point(66, 57);
+            this.comboBoxFrequency.Name = "comboBoxFrequency";
+            this.comboBoxFrequency.Size = new System.Drawing.Size(103, 24);
+            this.comboBoxFrequency.TabIndex = 15;
+            // 
             // DateSequenceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -494,9 +499,6 @@
         private System.Windows.Forms.Label labelStartDate;
         private System.Windows.Forms.Label labelEndDate;
         private System.Windows.Forms.Label labelFrequency;
-        private System.Windows.Forms.DateTimePicker dateTimePickerStartDate;
-        private System.Windows.Forms.DateTimePicker dateTimePickerEndDate;
-        private System.Windows.Forms.ComboBox comboBoxFrequency;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelDefinition;
@@ -520,5 +522,8 @@
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.Label labelElementsCount;
+        private ExpressionTypyingHelper.OneLineExpressionControl expressionStartDate;
+        private ExpressionTypyingHelper.OneLineExpressionControl expressionEndDate;
+        private System.Windows.Forms.ComboBox comboBoxFrequency;
     }
 }

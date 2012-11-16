@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateFrequencyExport.cs" />
     <Compile Include="DateFrequency.cs" />
     <Compile Include="DateFrequencyUtility.cs" />
     <Compile Include="DateSequenceForm.cs">

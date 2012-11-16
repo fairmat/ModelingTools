@@ -15,46 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using DVPLI;
+using Mono.Addins;
+using System;
+
 namespace DatesGenerator
 {
     /// <summary>
-    /// The frequency between each date.
+    /// Exports the date frequency enumerator into the Fairmat UI.
     /// </summary>
-    public enum DateFrequency
+    [Extension("/Fairmat/ChoicesListType")]
+    public class DateFrequencyExport : ITypedScalarType
     {
-        /// <summary>
-        /// One day.
-        /// </summary>
-        Daily,
+
+        #region ITypedScalarType Members
 
         /// <summary>
-        /// One week.
+        /// Gets the available enumerators that can be used for the symbols representing
+        /// an enumerator.
         /// </summary>
-        Weekly,
+        /// <param name="forceDiscovery">
+        /// true if the discovery process has to be forced; otherwise false.
+        /// </param>
+        /// <returns>
+        /// A list containing the types of available enumerators with the corresponding description.
+        /// </returns>
+        public Tuple<Type, string>[] GetTypes()
+        {
+            return new Tuple<Type, string>[] { new Tuple<Type, string>(typeof(DateFrequency), "Date Frequency") };
+        }
 
-        /// <summary>
-        /// Two weeks.
-        /// </summary>
-        BiWeekly,
-
-        /// <summary>
-        /// One month.
-        /// </summary>
-        Monthly,
-
-        /// <summary>
-        /// Three months.
-        /// </summary>
-        Quarterly,
-
-        /// <summary>
-        /// Six months.
-        /// </summary>
-        Semiannual,
-
-        /// <summary>
-        /// One year.
-        /// </summary>
-        Annual
+        #endregion
     }
 }

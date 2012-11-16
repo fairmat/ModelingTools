@@ -36,15 +36,47 @@ namespace DatesGenerator
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
-        private int version = 1;
+        private int version = 2;
+
+        /// <summary>
+        /// Backing field for the EndDate property.
+        /// </summary>
+        private DateTime startDate;
+
+        /// <summary>
+        /// Backing field for the EndDate property.
+        /// </summary>
+        private DateTime endDate;
+
+        /// <summary>
+        /// Backing field for the Frequency property.
+        /// </summary>
+        private DateFrequency frequency;
 
         #endregion // Fields
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the start date.
         /// </summary>
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate
+        {
+            get
+            {
+                return this.startDate;
+            }
+            set
+            {
+                this.startDate = value;
+                StartDateExpression = value.ToShortDateString();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the expression of the start date.
+        /// </summary>
+        public string StartDateExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the start date has to be excluded.
@@ -54,12 +86,43 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the end date.
         /// </summary>
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate 
+        {
+            get
+            {
+                return this.endDate;
+            }
+            set
+            {
+                this.endDate = value;
+                EndDateExpression = value.ToShortDateString();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the expression of the end date.
+        /// </summary>
+        public string EndDateExpression { get; set; }
 
         /// <summary>
         /// Gets or sets the frequency of the dates generated between the start and end dates.
         /// </summary>
-        public DateFrequency Frequency { get; set; }
+        public DateFrequency Frequency {
+            get
+            {
+                return this.frequency;
+            }
+            set
+            {
+                this.frequency = value;
+                FrequencyExpression = DateFrequencyUtility.StringRepresentation(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the expression representing the date frequency.
+        /// </summary>
+        public string FrequencyExpression { get; set; }
 
         /// <summary>
         /// Gets or sets the expression that generates the object.
@@ -69,9 +132,9 @@ namespace DatesGenerator
             get
             {
                 object[,] retValue = new object[3, 1];
-                retValue[0, 0] = StartDate;
-                retValue[1, 0] = EndDate;
-                retValue[2, 0] = (int)this.Frequency;
+                retValue[0, 0] = StartDateExpression;
+                retValue[1, 0] = EndDateExpression;
+                retValue[2, 0] = FrequencyExpression;
                 return retValue;
             }
 
@@ -79,9 +142,9 @@ namespace DatesGenerator
             {
                 try
                 {
-                    StartDate = (DateTime)value.GetValue(0, 0);
-                    EndDate = (DateTime)value.GetValue(1, 0);
-                    Frequency = (DateFrequency)value.GetValue(2, 0);
+                    StartDateExpression = (string)value.GetValue(0, 0);
+                    EndDateExpression = (string)value.GetValue(1, 0);
+                    FrequencyExpression = (string)value.GetValue(2, 0);
                 }
                 catch
                 {
@@ -102,9 +165,11 @@ namespace DatesGenerator
                 return Values == null ? null : Values.ToArray();
             }
         }
+
         #endregion // Properties
 
         #region Constructor
+
         /// <summary>
         /// Initializes the object.
         /// </summary>
@@ -116,6 +181,19 @@ namespace DatesGenerator
             StartDate = startDate;
             EndDate = endDate;
             Frequency = frequency;
+        }
+
+        /// <summary>
+        /// Initializes the object.
+        /// </summary>
+        /// <param name="startDateExpression">The expression for the start date.</param>
+        /// <param name="endDateExpression">The expression for the end date.</param>
+        /// <param name="frequencyExpression">The expression for the frequency.</param>
+        public ModelParameterDateSequence(string startDateExpression, string endDateExpression, string frequencyExpression)
+        {
+            StartDateExpression = startDateExpression;
+            EndDateExpression = endDateExpression;
+            FrequencyExpression = frequencyExpression;
         }
 
         /// <summary>
@@ -137,39 +215,53 @@ namespace DatesGenerator
                 serialializedVersion = 0;
             }
 
-            try
+            if (serialializedVersion < 2)
             {
-                this.StartDate = new DateTime(info.GetInt64("_StartDate"));
-                this.EndDate = new DateTime(info.GetInt64("_EndDate"));
-            }
-            catch (Exception)
-            {
-                // In case the calibration time was serialized in a different way.
-                this.StartDate = info.GetDateTime("_StartDate");
-                this.EndDate = info.GetDateTime("_EndDate");
-            }
-
-            int frequency = info.GetInt32("_Frequency");
-            Array enumValues = Enum.GetValues(typeof(DateFrequency));
-            foreach (DateFrequency value in enumValues)
-            {
-                if ((int)value == frequency)
+                #region No expressions
+                try
                 {
-                    Frequency = value;
-                    break;
+                    this.StartDate = new DateTime(info.GetInt64("_StartDate"));
+                    this.EndDate = new DateTime(info.GetInt64("_EndDate"));
                 }
-            }
+                catch (Exception)
+                {
+                    // In case the calibration time was serialized in a different way.
+                    this.StartDate = info.GetDateTime("_StartDate");
+                    this.EndDate = info.GetDateTime("_EndDate");
+                }
 
-            if (serialializedVersion >= 1)
-            {
-                // Introduction of ExludeStartDate
-                ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
+                int frequency = info.GetInt32("_Frequency");
+                Array enumValues = Enum.GetValues(typeof(DateFrequency));
+                foreach (DateFrequency value in enumValues)
+                {
+                    if ((int)value == frequency)
+                    {
+                        Frequency = value;
+                        break;
+                    }
+                }
+
+                if (serialializedVersion >= 1)
+                {
+                    // Introduction of ExludeStartDate
+                    ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
+                }
+                else
+                {
+                    ExcludeStartDate = false;
+                }
+
+                #endregion // No expressions
             }
             else
             {
-                ExcludeStartDate = false;
+                StartDateExpression = info.GetString("_StartDateExpression");
+                EndDateExpression = info.GetString("_EndDateExpression");
+                FrequencyExpression = info.GetString("_FrequencyExpression");
+                ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
             }
         }
+
         #endregion // Constructor
 
         #region Overrided methods
@@ -180,6 +272,9 @@ namespace DatesGenerator
         /// <returns>true if an error occurred during the parsing, false otherwise.</returns>
         public override bool Parse(IProject p_Context)
         {
+            if (InitializeObject(p_Context as Project))
+                return true;
+
             if (Validation())
             {
                 List<RightValue> dates = new List<RightValue>();
@@ -225,9 +320,9 @@ namespace DatesGenerator
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("_StartDate", this.StartDate.Ticks);
-            info.AddValue("_EndDate", this.EndDate.Ticks);
-            info.AddValue("_Frequency", (int)this.Frequency);
+            info.AddValue("_StartDateExpression", this.StartDateExpression);
+            info.AddValue("_EndDateExpression", this.EndDateExpression);
+            info.AddValue("_FrequencyExpression", this.FrequencyExpression);
             info.AddValue("_ExcludeStartDate", ExcludeStartDate);
             info.AddValue("_VersionDateSequence", version);
         }
@@ -275,16 +370,119 @@ namespace DatesGenerator
                     return startDate.AddDays(14 * periods);
                 case DateFrequency.Monthly:
                     return startDate.AddMonths(periods);
-                case DateFrequency.ThreeMonths:
+                case DateFrequency.Quarterly:
                     return startDate.AddMonths(3 * periods);
-                case DateFrequency.SixMonths:
+                case DateFrequency.Semiannual:
                     return startDate.AddMonths(6 * periods);
-                case DateFrequency.Year:
+                case DateFrequency.Annual:
                     return startDate.AddYears(periods);
                 default:
                     return startDate;
             }
         }
+
+        /// <summary>
+        /// Parses the given expression in order to find the date represented by the expression.
+        /// </summary>
+        /// <param name="project">The object to use as context for the expression.</param>
+        /// <param name="expression">The expression to parse.</param>
+        /// <returns>The date represented by the given expression.</returns>
+        private DateTime GetDate(Project project, string expression)
+        {
+            if (project == null)
+                throw new Exception("Invalid context");
+
+            DateTime retVal;
+            if (DateTime.TryParse(expression, out retVal))
+                return retVal;
+
+            try
+            {
+                int expId = Engine.Parser.Parse(expression);
+                double dateAsDouble = Engine.Parser.Evaluate(expId);
+                return project.GetDate(dateAsDouble);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(expression + " is not valid expression.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Parses the given expression in order to find the frequency represented by the expression.
+        /// </summary>
+        /// <param name="project">The object to use as context for the expression.</param>
+        /// <param name="expression">The expression to parse.</param>
+        /// <returns>The frequency represented by the given expression.</returns>
+        private DateFrequency GetDateFrequency(Project project, string expression)
+        {
+            if (project == null)
+                throw new Exception("Invalid context");
+
+            try
+            {
+                return DateFrequencyUtility.ParseDateFrequency(expression);
+            }
+            catch
+            {
+                int expId = Engine.Parser.Parse(expression);
+                double frequencyAsDouble = Engine.Parser.Evaluate(expId);
+                if ((int)frequencyAsDouble == frequencyAsDouble)
+                {
+                    int enumAsInt = (int)frequencyAsDouble;
+                    int[] enumValues = (int[])Enum.GetValues(typeof(DateFrequency));
+                    for (int i = 0; i < enumValues.Length; i++)
+                    {
+                        if ((int)enumValues[i] == enumAsInt)
+                            return (DateFrequency)enumValues[i];
+                    }
+                }
+            }
+
+            throw new Exception(expression + " is not a valid frequency");
+        }
+
+        /// <summary>
+        /// Initializes the object based on the current expressions using the given object as
+        /// context.
+        /// </summary>
+        /// <param name="context">The context for the expressions.</param>
+        /// <returns>false if the initialization is unsuccessfull; otherwise false.</returns>
+        private bool InitializeObject(Project context)
+        {
+            try
+            {
+                startDate = GetDate(context as Project, StartDateExpression);
+            }
+            catch (Exception ex)
+            {
+                context.AddError("Start date is not valid. Details: " + ex.Message);
+                return true;
+            }
+
+            try
+            {
+                endDate = GetDate(context as Project, EndDateExpression);
+            }
+            catch (Exception ex)
+            {
+                context.AddError("End date is not valid. Details: " + ex.Message);
+                return true;
+            }
+
+            try
+            {
+                frequency = GetDateFrequency((Project)context, FrequencyExpression);
+            }
+            catch (Exception ex)
+            {
+                context.AddError("Frequency is not valid. Details: " + ex.Message);
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion // Helper methods
 
         #region IExportableContainer Members
@@ -297,9 +495,9 @@ namespace DatesGenerator
         public List<IExportable> ExportObjects(bool recursive)
         {
             List<IExportable> retVal = new List<IExportable>();
-            ExportablePropertyAssociator<DateTime> startDate = new ExportablePropertyAssociator<DateTime>("StartDate", this, VarName + " Start Date");
-            ExportablePropertyAssociator<DateTime> endDate = new ExportablePropertyAssociator<DateTime>("EndDate", this, VarName + " End Date");
-            ExportablePropertyAssociator<DateFrequency> frequency = new ExportablePropertyAssociator<DateFrequency>("Frequency", this, VarName + " Frequency");
+            ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this, VarName + " Start Date");
+            ExportablePropertyAssociator<string> endDate = new ExportablePropertyAssociator<string>("EndDateExpression", this, VarName + " End Date");
+            ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpression", this, VarName + " Frequency");
             retVal.AddRange(new IExportable[] { this, startDate, endDate, frequency });
 
             return retVal;
