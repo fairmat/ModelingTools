@@ -199,6 +199,16 @@ namespace DatesGenerator
             if (parameters != null)
             {
                 this.project = (Project)parameters[0];
+
+                try
+                {
+                    this.project.Initialize(true);
+                }
+                catch
+                {
+                    //ignore errors at this level
+                }
+
                 try
                 {
                     this.initialized = (bool)parameters[1];
