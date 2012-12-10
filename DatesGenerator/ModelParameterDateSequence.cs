@@ -15,12 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using DVPLDOM;
 using DVPLI;
 using DVPLUtils;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Runtime.Serialization;
 
 namespace DatesGenerator
 {
@@ -47,6 +48,16 @@ namespace DatesGenerator
         /// Backing field for the EndDate property.
         /// </summary>
         private DateTime endDate;
+
+        /// <summary>
+        /// Backing field for the StartDateExpression property.
+        /// </summary>
+        private string startDateExpression;
+
+        /// <summary>
+        /// Backing field for the StartDateExpression property.
+        /// </summary>
+        private string endDateExpression;
 
         /// <summary>
         /// Backing field for the Frequency property.
@@ -76,7 +87,26 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the expression of the start date.
         /// </summary>
-        public string StartDateExpression { get; set; }
+        public string StartDateExpression
+        {
+            get
+            {
+                DateTime tmp;
+                if (DateTime.TryParseExact(startDateExpression, "yyyy-MM-dd", null, DateTimeStyles.None, out tmp))
+
+                    return tmp.ToShortDateString();
+
+                return startDateExpression;
+            }
+            set
+            {
+                DateTime tmp;
+                if (DateTime.TryParse(value, out tmp))
+                    startDateExpression = tmp.ToString("yyyy-MM-dd");
+                else
+                    startDateExpression = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the start date has to be excluded.
@@ -102,7 +132,25 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the expression of the end date.
         /// </summary>
-        public string EndDateExpression { get; set; }
+        public string EndDateExpression
+        {
+            get
+            {
+                DateTime tmp;
+                if (DateTime.TryParseExact(endDateExpression, "yyyy-MM-dd", null, DateTimeStyles.None, out tmp))
+                    return tmp.ToShortDateString();
+
+                return endDateExpression;
+            }
+            set
+            {
+                DateTime tmp;
+                if (DateTime.TryParse(value, out tmp))
+                    endDateExpression = tmp.ToString("yyyy-MM-dd");
+                else
+                    endDateExpression = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the frequency of the dates generated between the start and end dates.
@@ -255,8 +303,16 @@ namespace DatesGenerator
             }
             else
             {
-                StartDateExpression = info.GetString("_StartDateExpression");
-                EndDateExpression = info.GetString("_EndDateExpression");
+                DateTime tmp;
+
+                startDateExpression = info.GetString("_StartDateExpression");
+                if (DateTime.TryParse(startDateExpression, out tmp))
+                    StartDateExpression = tmp.ToShortDateString();
+
+                endDateExpression = info.GetString("_EndDateExpression");
+                if (DateTime.TryParse(endDateExpression, out tmp))
+                    EndDateExpression = tmp.ToShortDateString();
+
                 FrequencyExpression = info.GetString("_FrequencyExpression");
                 ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
             }
@@ -320,8 +376,8 @@ namespace DatesGenerator
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("_StartDateExpression", this.StartDateExpression);
-            info.AddValue("_EndDateExpression", this.EndDateExpression);
+            info.AddValue("_StartDateExpression", this.startDateExpression);
+            info.AddValue("_EndDateExpression", this.endDateExpression);
             info.AddValue("_FrequencyExpression", this.FrequencyExpression);
             info.AddValue("_ExcludeStartDate", ExcludeStartDate);
             info.AddValue("_VersionDateSequence", version);
