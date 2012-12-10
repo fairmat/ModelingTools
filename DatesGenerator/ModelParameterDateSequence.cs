@@ -93,7 +93,6 @@ namespace DatesGenerator
             {
                 DateTime tmp;
                 if (DateTime.TryParseExact(startDateExpression, "yyyy-MM-dd", null, DateTimeStyles.None, out tmp))
-
                     return tmp.ToShortDateString();
 
                 return startDateExpression;
