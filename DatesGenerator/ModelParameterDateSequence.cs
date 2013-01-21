@@ -172,6 +172,37 @@ namespace DatesGenerator
         public string FrequencyExpression { get; set; }
 
         /// <summary>
+        /// Gets or sets the expression representing the date frequency during the export.
+        /// </summary>
+        public string FrequencyExpressionExport
+        {
+            get
+            {
+                try
+                {
+                    DateFrequency frequency = DateFrequencyUtility.ParseDateFrequency(FrequencyExpression);
+                    return frequency.ToString();
+                }
+                catch
+                {
+                    return FrequencyExpression;
+                }
+            }
+            set
+            {
+                try
+                {
+                    DateFrequency frequency = DateFrequencyUtility.ParseDateFrequency(value);
+                    FrequencyExpression = frequency.StringRepresentation();
+                }
+                catch
+                {
+                    FrequencyExpression = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the expression that generates the object.
         /// </summary>
         public override Array Expr
@@ -550,9 +581,9 @@ namespace DatesGenerator
         public List<IExportable> ExportObjects(bool recursive)
         {
             List<IExportable> retVal = new List<IExportable>();
-            ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this, VarName + " Start Date");
-            ExportablePropertyAssociator<string> endDate = new ExportablePropertyAssociator<string>("EndDateExpression", this, VarName + " End Date");
-            ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpression", this, VarName + " Frequency", typeof(DateFrequency));
+            ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this," Start Date");
+            ExportablePropertyAssociator<string> endDate = new ExportablePropertyAssociator<string>("EndDateExpression", this, "End Date");
+            ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpressionExport", this, "Frequency", typeof(DateFrequency));
             retVal.AddRange(new IExportable[] { this, startDate, endDate, frequency });
 
             return retVal;
