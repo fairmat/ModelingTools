@@ -578,7 +578,7 @@ namespace DatesGenerator
         /// </summary>
         /// <param name="recursive">True if export has to be recursive; otherwise false.</param>
         /// <returns>A list of the objects exported from this parameter.</returns>
-        public List<IExportable> ExportObjects(bool recursive)
+        public override List<IExportable> ExportObjects(bool recursive)
         {
             List<IExportable> retVal = new List<IExportable>();
             ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this,"Start Date");
