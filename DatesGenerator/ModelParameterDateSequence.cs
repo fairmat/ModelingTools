@@ -538,7 +538,7 @@ namespace DatesGenerator
         {
             try
             {
-                startDate = GetDate(context as Project, StartDateExpression);
+                startDate = GetDate(context as Project, StartDateExpression).Date;
             }
             catch (Exception ex)
             {
@@ -548,7 +548,7 @@ namespace DatesGenerator
 
             try
             {
-                endDate = GetDate(context as Project, EndDateExpression);
+                endDate = GetDate(context as Project, EndDateExpression).Date;
             }
             catch (Exception ex)
             {
