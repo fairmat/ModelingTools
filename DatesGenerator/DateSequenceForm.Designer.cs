@@ -43,6 +43,9 @@
             this.tableLayoutPanelDatesSequence = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanelStartDate = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxExclude = new System.Windows.Forms.CheckBox();
+            this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.expressionEndDate = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.groupBoxParameterInfo = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelParameterInfo = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
@@ -57,9 +60,6 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelElementsCount = new System.Windows.Forms.Label();
-            this.expressionEndDate = new ExpressionTypyingHelper.OneLineExpressionControl();
-            this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
-            this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanelDefinition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
@@ -103,7 +103,7 @@
             this.labelFrequency.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelFrequency.AutoSize = true;
             this.labelFrequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFrequency.Location = new System.Drawing.Point(3, 61);
+            this.labelFrequency.Location = new System.Drawing.Point(3, 62);
             this.labelFrequency.Name = "labelFrequency";
             this.labelFrequency.Size = new System.Drawing.Size(57, 13);
             this.labelFrequency.TabIndex = 3;
@@ -182,7 +182,7 @@
             this.groupBoxDatesSequence.Location = new System.Drawing.Point(3, 70);
             this.groupBoxDatesSequence.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.groupBoxDatesSequence.Name = "groupBoxDatesSequence";
-            this.groupBoxDatesSequence.Size = new System.Drawing.Size(266, 102);
+            this.groupBoxDatesSequence.Size = new System.Drawing.Size(266, 105);
             this.groupBoxDatesSequence.TabIndex = 12;
             this.groupBoxDatesSequence.TabStop = false;
             this.groupBoxDatesSequence.Text = "Dates Sequence";
@@ -207,7 +207,7 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(260, 81);
+            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(260, 84);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
             // tableLayoutPanelStartDate
@@ -236,6 +236,42 @@
             this.checkBoxExclude.TabIndex = 5;
             this.checkBoxExclude.Text = "Exclude";
             this.checkBoxExclude.UseVisualStyleBackColor = true;
+            this.checkBoxExclude.CheckedChanged += new System.EventHandler(this.checkBoxExclude_CheckedChanged);
+            // 
+            // expressionStartDate
+            // 
+            this.expressionStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.expressionStartDate.KeyboardEventsEnabled = true;
+            this.expressionStartDate.Location = new System.Drawing.Point(3, 3);
+            this.expressionStartDate.Multiline = false;
+            this.expressionStartDate.Name = "expressionStartDate";
+            this.expressionStartDate.Size = new System.Drawing.Size(103, 21);
+            this.expressionStartDate.TabIndex = 6;
+            this.expressionStartDate.Text = "";
+            this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.expressionStartDate.TextChanged += new System.EventHandler(this.expressionStartDate_TextChanged);
+            // 
+            // expressionEndDate
+            // 
+            this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.expressionEndDate.KeyboardEventsEnabled = true;
+            this.expressionEndDate.Location = new System.Drawing.Point(66, 30);
+            this.expressionEndDate.Multiline = false;
+            this.expressionEndDate.Name = "expressionEndDate";
+            this.expressionEndDate.Size = new System.Drawing.Size(103, 21);
+            this.expressionEndDate.TabIndex = 14;
+            this.expressionEndDate.Text = "";
+            this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            this.expressionEndDate.TextChanged += new System.EventHandler(this.expressionEndDate_TextChanged);
+            // 
+            // comboBoxFrequency
+            // 
+            this.comboBoxFrequency.FormattingEnabled = true;
+            this.comboBoxFrequency.Location = new System.Drawing.Point(66, 57);
+            this.comboBoxFrequency.Name = "comboBoxFrequency";
+            this.comboBoxFrequency.Size = new System.Drawing.Size(103, 24);
+            this.comboBoxFrequency.TabIndex = 15;
+            this.comboBoxFrequency.SelectedIndexChanged += new System.EventHandler(this.comboBoxFrequency_SelectedIndexChanged);
             // 
             // groupBoxParameterInfo
             // 
@@ -291,6 +327,7 @@
             this.buttonUpdate.TabIndex = 12;
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Visible = false;
             // 
             // tabControlMain
             // 
@@ -327,6 +364,7 @@
             // 
             // publishingInfoControl
             // 
+            this.publishingInfoControl.Category = "";
             this.publishingInfoControl.Comments = "";
             this.publishingInfoControl.Description = "";
             this.publishingInfoControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -417,38 +455,6 @@
             this.labelElementsCount.Size = new System.Drawing.Size(59, 13);
             this.labelElementsCount.TabIndex = 15;
             this.labelElementsCount.Text = "0 Elements";
-            // 
-            // expressionEndDate
-            // 
-            this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.expressionEndDate.KeyboardEventsEnabled = true;
-            this.expressionEndDate.Location = new System.Drawing.Point(66, 30);
-            this.expressionEndDate.Multiline = false;
-            this.expressionEndDate.Name = "expressionEndDate";
-            this.expressionEndDate.Size = new System.Drawing.Size(103, 21);
-            this.expressionEndDate.TabIndex = 14;
-            this.expressionEndDate.Text = "";
-            this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // expressionStartDate
-            // 
-            this.expressionStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.expressionStartDate.KeyboardEventsEnabled = true;
-            this.expressionStartDate.Location = new System.Drawing.Point(3, 3);
-            this.expressionStartDate.Multiline = false;
-            this.expressionStartDate.Name = "expressionStartDate";
-            this.expressionStartDate.Size = new System.Drawing.Size(103, 21);
-            this.expressionStartDate.TabIndex = 6;
-            this.expressionStartDate.Text = "";
-            this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // comboBoxFrequency
-            // 
-            this.comboBoxFrequency.FormattingEnabled = true;
-            this.comboBoxFrequency.Location = new System.Drawing.Point(66, 57);
-            this.comboBoxFrequency.Name = "comboBoxFrequency";
-            this.comboBoxFrequency.Size = new System.Drawing.Size(103, 24);
-            this.comboBoxFrequency.TabIndex = 15;
             // 
             // DateSequenceForm
             // 

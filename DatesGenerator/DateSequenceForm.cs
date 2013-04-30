@@ -132,6 +132,50 @@ namespace DatesGenerator
         {
             InitializeDatesPreview();
         }
+
+        /// <summary>
+        /// Automatically updates the dates to be shown each time there is change
+        /// in the <see cref="expressionStartDate"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        private void expressionStartDate_TextChanged(object sender, EventArgs e)
+        {
+            HandleAutomaticPreview();
+        }
+
+        /// <summary>
+        /// Automatically updates the dates to be shown each time there is change
+        /// in the <see cref="checkBoxExclude"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        private void checkBoxExclude_CheckedChanged(object sender, EventArgs e)
+        {
+            HandleAutomaticPreview();
+        }
+
+        /// <summary>
+        /// Automatically updates the dates to be shown each time there is change
+        /// in the <see cref="expressionEndDate"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        private void expressionEndDate_TextChanged(object sender, EventArgs e)
+        {
+            HandleAutomaticPreview();
+        }
+
+        /// <summary>
+        /// Automatically updates the dates to be shown each time there is change
+        /// in the <see cref="comboBoxFrequency"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        private void comboBoxFrequency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            HandleAutomaticPreview();
+        }
         #endregion // Handlers
 
         #region IEditorEx implementation
@@ -219,10 +263,7 @@ namespace DatesGenerator
                 }
 
                 this.textBoxName.Enabled = !initialized;
-                if (initialized)
-                {
-                    InitializeDatesPreview();
-                }
+                HandleAutomaticPreview();
             }
         }
         #endregion // IEditorEx implementation
@@ -322,6 +363,19 @@ namespace DatesGenerator
                     this.dataGridViewDates.Rows.Add(preview.Values[i]);
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles the automatic preview by ignoring all errors.
+        /// </summary>
+        private void HandleAutomaticPreview()
+        {
+            try
+            {
+                InitializeDatesPreview();
+            }
+            catch (Exception)
+            { }
         }
 
         #endregion // Helper methods
