@@ -551,7 +551,7 @@ namespace DatesGenerator
         /// <returns>The kind of data represented.</returns>
         public override string GetStringKind()
         {
-            return "Date Sequence";
+            return "Dates Sequence";
         }
 
         #endregion // Overridden methods
