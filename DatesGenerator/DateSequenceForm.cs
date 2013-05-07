@@ -33,11 +33,6 @@ namespace DatesGenerator
         #region Fields
 
         /// <summary>
-        /// A flag that indicates whether or not the start date has to be excluded.
-        /// </summary>
-        private bool excludeStartDate;
-
-        /// <summary>
         /// True if the object has already been initialized, false otherwise.
         /// </summary>
         private bool initialized;
@@ -51,6 +46,7 @@ namespace DatesGenerator
         /// The model parameter being edited.
         /// </summary>
         private ModelParameterArray editedObject;
+
         #endregion // Fields
 
         #region Constructors
@@ -92,6 +88,8 @@ namespace DatesGenerator
             this.buttonOk.Click += new EventHandler(buttonOk_Click);
             this.buttonCancel.Click += new EventHandler(buttonCancel_Click);
             this.buttonUpdate.Click += new EventHandler(buttonUpdate_Click);
+            this.checkBoxGenerateFromStart.CheckedChanged += checkBoxGenerateFromStart_CheckedChanged;
+            this.checkBoxFollowFrequency.CheckedChanged += (obj, args) => HandleAutomaticPreview();
         }
 
         #endregion // Initialization
@@ -146,7 +144,7 @@ namespace DatesGenerator
 
         /// <summary>
         /// Automatically updates the dates to be shown each time there is change
-        /// in the <see cref="checkBoxExclude"/> control.
+        /// in the <see cref="checkBoxExcludeStartDate"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">An EventArgs that contains the event data.</param>
@@ -176,6 +174,26 @@ namespace DatesGenerator
         {
             HandleAutomaticPreview();
         }
+
+        /// <summary>
+        /// Automatically updates the dates to be shown each time there is change
+        /// in the <see cref="comboBoxFrequency"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        void checkBoxGenerateFromStart_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.checkBoxGenerateFromStart.Checked)
+                this.checkBoxExcludeStartDate.Enabled = true;
+            else
+            {
+                this.checkBoxExcludeStartDate.Checked = false;
+                this.checkBoxExcludeStartDate.Enabled = false;
+            }
+
+            HandleAutomaticPreview();
+        }
+
         #endregion // Handlers
 
         #region IEditorEx implementation
@@ -221,7 +239,9 @@ namespace DatesGenerator
                     this.expressionStartDate.Text = ((ModelParameterDateSequence)this.editedObject).StartDateExpression;
                     this.expressionEndDate.Text = ((ModelParameterDateSequence)this.editedObject).EndDateExpression;
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
-                    this.checkBoxExclude.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
+                    this.checkBoxExcludeStartDate.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
+                    this.checkBoxFollowFrequency.Checked = ((ModelParameterDateSequence)this.editedObject).FollowFrequency;
+                    this.checkBoxGenerateFromStart.Checked = ((ModelParameterDateSequence)this.editedObject).GenerateSequenceFromStartDate;
                 }
                 else
                 {
@@ -229,6 +249,13 @@ namespace DatesGenerator
                     this.expressionStartDate.Text = DateTime.Now.Date.ToShortDateString();
                     this.expressionEndDate.Text = DateTime.Now.Date.ToShortDateString();
                     this.comboBoxFrequency.SelectedIndex = 0;
+                }
+
+                // Disable the possibility of excluding the start date when generated backward
+                if (!this.checkBoxGenerateFromStart.Checked)
+                {
+                    this.checkBoxExcludeStartDate.Checked = false;
+                    this.checkBoxExcludeStartDate.Enabled = false;
                 }
             }
         }
@@ -293,8 +320,6 @@ namespace DatesGenerator
                 }
             }
 
-            this.excludeStartDate = this.checkBoxExclude.Checked;
-
             // Check for errors
             if (errors)
             {
@@ -317,9 +342,11 @@ namespace DatesGenerator
                 // Initialize the model parameter representing the sequence of dates
                 ModelParameterDateSequence modelParameterDateSequence = (ModelParameterDateSequence)this.editedObject;
                 modelParameterDateSequence.StartDateExpression = this.expressionStartDate.Text;
-                modelParameterDateSequence.ExcludeStartDate = this.excludeStartDate;
+                modelParameterDateSequence.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
+                modelParameterDateSequence.FollowFrequency = this.checkBoxFollowFrequency.Checked;
                 modelParameterDateSequence.EndDateExpression = this.expressionEndDate.Text;
                 modelParameterDateSequence.FrequencyExpression = this.comboBoxFrequency.Text;
+                modelParameterDateSequence.GenerateSequenceFromStartDate = this.checkBoxGenerateFromStart.Checked;
                 modelParameterDateSequence.VarName = this.textBoxName.Text;
                 modelParameterDateSequence.Tag = null;
 
@@ -333,8 +360,9 @@ namespace DatesGenerator
                                                                                                        this.expressionEndDate.Text,
                                                                                                        this.comboBoxFrequency.Text);
 
-                modelParameterDateSequence.ExcludeStartDate = this.excludeStartDate;
+                modelParameterDateSequence.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
                 modelParameterDateSequence.Parse(this.project);
+                modelParameterDateSequence.GenerateSequenceFromStartDate = this.checkBoxGenerateFromStart.Checked;
                 this.editedObject.Values = modelParameterDateSequence.Values;
             }
 
@@ -353,7 +381,9 @@ namespace DatesGenerator
                                                                                     this.expressionEndDate.Text,
                                                                                     this.comboBoxFrequency.Text);
 
-                preview.ExcludeStartDate = this.excludeStartDate;
+                preview.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
+                preview.FollowFrequency = this.checkBoxFollowFrequency.Checked;
+                preview.GenerateSequenceFromStartDate = this.checkBoxGenerateFromStart.Checked;
                 preview.Parse(project);
                 this.dataGridViewDates.Rows.Clear();
 

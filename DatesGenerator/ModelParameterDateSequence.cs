@@ -37,7 +37,7 @@ namespace DatesGenerator
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
-        private int version = 2;
+        private int version = 3;
 
         /// <summary>
         /// Backing field for the EndDate property.
@@ -115,7 +115,7 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the end date.
         /// </summary>
-        public DateTime EndDate 
+        public DateTime EndDate
         {
             get
             {
@@ -154,7 +154,8 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the frequency of the dates generated between the start and end dates.
         /// </summary>
-        public DateFrequency Frequency {
+        public DateFrequency Frequency
+        {
             get
             {
                 return this.frequency;
@@ -165,6 +166,11 @@ namespace DatesGenerator
                 FrequencyExpression = DateFrequencyUtility.StringRepresentation(value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the frequency has to be followed strictly.
+        /// </summary>
+        public bool FollowFrequency { get; set; }
 
         /// <summary>
         /// Gets or sets the expression representing the date frequency.
@@ -201,6 +207,12 @@ namespace DatesGenerator
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the sequence has to be generated from
+        /// the start date (otherwise the sequence will be generated from the end date).
+        /// </summary>
+        public bool GenerateSequenceFromStartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the expression that generates the object.
@@ -259,6 +271,8 @@ namespace DatesGenerator
             StartDate = startDate;
             EndDate = endDate;
             Frequency = frequency;
+            GenerateSequenceFromStartDate = true;
+            FollowFrequency = true;
         }
 
         /// <summary>
@@ -272,6 +286,8 @@ namespace DatesGenerator
             StartDateExpression = startDateExpression;
             EndDateExpression = endDateExpression;
             FrequencyExpression = frequencyExpression;
+            GenerateSequenceFromStartDate = true;
+            FollowFrequency = true;
         }
 
         /// <summary>
@@ -283,6 +299,10 @@ namespace DatesGenerator
         public ModelParameterDateSequence(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            // Set the default for GenerateSequenceFromStartDate and FollowFrequency
+            GenerateSequenceFromStartDate = true;
+            FollowFrequency = true;
+
             int serialializedVersion;
             try
             {
@@ -345,12 +365,20 @@ namespace DatesGenerator
 
                 FrequencyExpression = info.GetString("_FrequencyExpression");
                 ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
+
+                if (serialializedVersion >= 3)
+                {
+                    // FollowFrequency and GenerateSequenceFromStartDate in version 3
+                    FollowFrequency = info.GetBoolean("_FollowFrequency");
+                    GenerateSequenceFromStartDate = info.GetBoolean("_GenerateSequenceFromStartDate");
+                }
             }
         }
 
         #endregion // Constructor
 
         #region Overrided methods
+
         /// <summary>
         /// Parses the object.
         /// </summary>
@@ -363,37 +391,139 @@ namespace DatesGenerator
 
             if (Validation())
             {
-                List<RightValue> dates = new List<RightValue>();
-                RightValue rv;
-                int i = 0;
+                List<RightValue> dates;
 
-                if (StartDate != EndDate)
-                {
-                    // Add the dates from the designated start date adding the interval each time
-                    DateTime tempDate = StartDate;
-                    if (ExcludeStartDate)
-                        tempDate = AddPeriod(Frequency, StartDate, ++i);
+                if (GenerateSequenceFromStartDate)
+                    dates = GenerateForward();
+                else
+                    dates = GenerateBackward();
 
-                    while (tempDate.CompareTo(EndDate) < 0)
-                    {
-                        rv = RightValue.ConvertFrom(tempDate, true);
-
-                        dates.Add(rv);
-                        tempDate = AddPeriod(Frequency, StartDate, ++i);
-                    }
-                }
-
-                // Add the last date
-                rv = RightValue.ConvertFrom(EndDate, true);
-
-                dates.Add(rv);
+                if (dates.Count == 0)
+                    return true;
 
                 // Set the model parameter array values
                 this.Values = dates;
                 return base.Parse(p_Context);
             }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Generates the list of dates from the start date.
+        /// </summary>
+        /// <returns>The generated dates list.</returns>
+        private List<RightValue> GenerateForward()
+        {
+            List<RightValue> dates = new List<RightValue>();
+            int i = 0;
+            RightValue rv;
+
+            // Add the dates from the designated start date adding the interval each time
+            DateTime tempDate = StartDate;
+            if (ExcludeStartDate)
+                tempDate = AddPeriod(Frequency, StartDate, ++i, GenerateSequenceFromStartDate);
+
+            while (tempDate.CompareTo(EndDate) < 0)
+            {
+                rv = RightValue.ConvertFrom(tempDate, true);
+
+                dates.Add(rv);
+                tempDate = AddPeriod(Frequency, StartDate, ++i, GenerateSequenceFromStartDate);
+            }
+
+            if (tempDate.Equals(EndDate))
+            {
+                // The end date follow the frequency scheme so no need to control it
+                dates.Add(RightValue.ConvertFrom(EndDate, true));
+            }
             else
-                return true;
+            {
+                if (FollowFrequency)
+                {
+                    // Follow the frequency schema strictly
+                    dates.Add(RightValue.ConvertFrom(EndDate, true));
+                }
+                else
+                {
+                    // The end date doesn't follow the frequency schema so replace the
+                    // last current date genrated with the last date of the sequence
+                    DateTime startMinPeriod = new DateTime(tempDate.Year, tempDate.Month, 1);
+                    DateTime endMinPeriod = AddPeriod(Frequency, startMinPeriod, 1, true);
+                    if (EndDate.CompareTo(startMinPeriod) >= 0 &&
+                        EndDate.CompareTo(endMinPeriod) < 0)
+                    {
+                        // Add the date since there is no date for this period in the sequence
+                        dates.Add(RightValue.ConvertFrom(EndDate, true));
+                    }
+                    else
+                    {
+                        // A date is already present for the period so replace the last date
+                        dates[dates.Count - 1] = RightValue.ConvertFrom(EndDate, true);
+                    }
+                }
+            }
+
+            return dates;
+        }
+
+        /// <summary>
+        /// Generates the list of dates from the end date.
+        /// </summary>
+        /// <returns>The generated dates list.</returns>
+        private List<RightValue> GenerateBackward()
+        {
+            List<RightValue> dates = new List<RightValue>();
+            RightValue rv;
+            int i = 0;
+
+            // Add the dates from the designated end date adding the interval each time
+            DateTime tempDate = EndDate;
+            while (tempDate.CompareTo(StartDate) > 0)
+            {
+                rv = RightValue.ConvertFrom(tempDate, true);
+
+                dates.Add(rv);
+                tempDate = AddPeriod(Frequency, EndDate, ++i, GenerateSequenceFromStartDate);
+            }
+
+            if (tempDate.Equals(StartDate))
+            {
+                // The end date follow the frequency scheme so no need to control it
+                dates.Add(RightValue.ConvertFrom(StartDate, true));
+            }
+            else
+            {
+                // The end date doesn't follow the frequency schema so replace the
+                // last current date genrated with the last date of the sequence
+                DateTime startMinPeriod = new DateTime(tempDate.Year, tempDate.Month, 1);
+                DateTime endMinPeriod = AddPeriod(Frequency, startMinPeriod, 1, true);
+                if (StartDate.CompareTo(startMinPeriod) >= 0 &&
+                    StartDate.CompareTo(endMinPeriod) < 0)
+                {
+                    if (FollowFrequency)
+                    {
+                        // Follow the frequency schema strictly
+                        dates.Add(RightValue.ConvertFrom(tempDate, true));
+                    }
+                    else
+                    {
+                        // Add the start date since the sequence can be generated loosely
+                        dates.Add(RightValue.ConvertFrom(StartDate, true));
+                    }
+                }
+                else
+                {
+                    if (!FollowFrequency)
+                    {
+                        // Follow the frequency schema strictly
+                        dates.Add(RightValue.ConvertFrom(StartDate, true));
+                    }
+                }
+            }
+
+            dates.Reverse();
+            return dates;
         }
 
         /// <summary>
@@ -410,6 +540,8 @@ namespace DatesGenerator
             info.AddValue("_EndDateExpression", this.endDateExpression);
             info.AddValue("_FrequencyExpression", this.FrequencyExpression);
             info.AddValue("_ExcludeStartDate", ExcludeStartDate);
+            info.AddValue("_FollowFrequency", FollowFrequency);
+            info.AddValue("_GenerateSequenceFromStartDate", GenerateSequenceFromStartDate);
             info.AddValue("_VersionDateSequence", version);
         }
 
@@ -421,6 +553,7 @@ namespace DatesGenerator
         {
             return "Date Sequence";
         }
+
         #endregion // Overridden methods
 
         #region Helper methods
@@ -440,30 +573,32 @@ namespace DatesGenerator
         /// add to the start date.
         /// </summary>
         /// <param name="frequency">The frequency of the dates generation.</param>
-        /// <param name="startDate">The start date.</param>
+        /// <param name="date">The reference date.</param>
         /// <param name="periods">The number of periods to add to the start date.</param>
+        /// <param name="add">A value indicating if the period has to be added.</param>
         /// <returns>The DateTime where the specified number of periods has been added to
         /// the start date.</returns>
-        private DateTime AddPeriod(DateFrequency frequency, DateTime startDate, int periods)
+        private DateTime AddPeriod(DateFrequency frequency, DateTime date, int periods, bool add)
         {
+            periods = add ? periods : -periods;
             switch (frequency)
             {
                 case DateFrequency.Daily:
-                    return startDate.AddDays(periods);
+                    return date.AddDays(periods);
                 case DateFrequency.Weekly:
-                    return startDate.AddDays(7 * periods);
+                    return date.AddDays(7 * periods);
                 case DateFrequency.BiWeekly:
-                    return startDate.AddDays(14 * periods);
+                    return date.AddDays(14 * periods);
                 case DateFrequency.Monthly:
-                    return startDate.AddMonths(periods);
+                    return date.AddMonths(periods);
                 case DateFrequency.Quarterly:
-                    return startDate.AddMonths(3 * periods);
+                    return date.AddMonths(3 * periods);
                 case DateFrequency.Semiannual:
-                    return startDate.AddMonths(6 * periods);
+                    return date.AddMonths(6 * periods);
                 case DateFrequency.Annual:
-                    return startDate.AddYears(periods);
+                    return date.AddYears(periods);
                 default:
-                    return startDate;
+                    return date;
             }
         }
 
@@ -488,7 +623,7 @@ namespace DatesGenerator
                 double dateAsDouble = Engine.Parser.Evaluate(expId);
                 return project.GetDate(dateAsDouble);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(expression + " is not valid expression.", ex);
             }
@@ -566,6 +701,9 @@ namespace DatesGenerator
                 return true;
             }
 
+            if (!GenerateSequenceFromStartDate)
+                ExcludeStartDate = false;
+
             return false;
         }
 
@@ -581,7 +719,7 @@ namespace DatesGenerator
         public override List<IExportable> ExportObjects(bool recursive)
         {
             List<IExportable> retVal = new List<IExportable>();
-            ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this,"Start Date");
+            ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this, "Start Date");
             ExportablePropertyAssociator<string> endDate = new ExportablePropertyAssociator<string>("EndDateExpression", this, "End Date");
             ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpressionExport", this, "Frequency", typeof(DateFrequency));
             retVal.AddRange(new IExportable[] { this, startDate, endDate, frequency });
