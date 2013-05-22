@@ -46,6 +46,7 @@
             this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
             this.checkBoxGenerateFromStart = new System.Windows.Forms.CheckBox();
+            this.checkBoxFollowFrequency = new System.Windows.Forms.CheckBox();
             this.groupBoxParameterInfo = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelParameterInfo = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
@@ -60,7 +61,7 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelElementsCount = new System.Windows.Forms.Label();
-            this.checkBoxFollowFrequency = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanelDefinition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
@@ -125,7 +126,7 @@
             this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxName.Location = new System.Drawing.Point(44, 3);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(125, 20);
+            this.textBoxName.Size = new System.Drawing.Size(213, 20);
             this.textBoxName.TabIndex = 9;
             // 
             // tableLayoutPanelDefinition
@@ -225,6 +226,7 @@
             this.checkBoxExcludeStartDate.Size = new System.Drawing.Size(75, 20);
             this.checkBoxExcludeStartDate.TabIndex = 5;
             this.checkBoxExcludeStartDate.Text = "Exclude";
+            this.toolTip1.SetToolTip(this.checkBoxExcludeStartDate, "If checked, the starting date will not be included in the generated sequence.");
             this.checkBoxExcludeStartDate.UseVisualStyleBackColor = true;
             this.checkBoxExcludeStartDate.CheckedChanged += new System.EventHandler(this.checkBoxExclude_CheckedChanged);
             // 
@@ -269,10 +271,23 @@
             this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxGenerateFromStart, 3);
             this.checkBoxGenerateFromStart.Location = new System.Drawing.Point(3, 113);
             this.checkBoxGenerateFromStart.Name = "checkBoxGenerateFromStart";
-            this.checkBoxGenerateFromStart.Size = new System.Drawing.Size(244, 20);
+            this.checkBoxGenerateFromStart.Size = new System.Drawing.Size(242, 20);
             this.checkBoxGenerateFromStart.TabIndex = 17;
-            this.checkBoxGenerateFromStart.Text = "Generate Sequence From Start Date";
+            this.checkBoxGenerateFromStart.Text = "Generate Sequence From Start date";
+            this.toolTip1.SetToolTip(this.checkBoxGenerateFromStart, "Generate the date sequence going forward, as opposed to generate sequences starti" +
+        "ng from the End date going backward");
             this.checkBoxGenerateFromStart.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxFollowFrequency
+            // 
+            this.checkBoxFollowFrequency.AutoSize = true;
+            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxFollowFrequency, 3);
+            this.checkBoxFollowFrequency.Location = new System.Drawing.Point(3, 87);
+            this.checkBoxFollowFrequency.Name = "checkBoxFollowFrequency";
+            this.checkBoxFollowFrequency.Size = new System.Drawing.Size(177, 20);
+            this.checkBoxFollowFrequency.TabIndex = 18;
+            this.checkBoxFollowFrequency.Text = "Exact frequency following";
+            this.checkBoxFollowFrequency.UseVisualStyleBackColor = true;
             // 
             // groupBoxParameterInfo
             // 
@@ -457,17 +472,6 @@
             this.labelElementsCount.TabIndex = 15;
             this.labelElementsCount.Text = "0 Elements";
             // 
-            // checkBoxFollowFrequency
-            // 
-            this.checkBoxFollowFrequency.AutoSize = true;
-            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxFollowFrequency, 3);
-            this.checkBoxFollowFrequency.Location = new System.Drawing.Point(3, 87);
-            this.checkBoxFollowFrequency.Name = "checkBoxFollowFrequency";
-            this.checkBoxFollowFrequency.Size = new System.Drawing.Size(133, 20);
-            this.checkBoxFollowFrequency.TabIndex = 18;
-            this.checkBoxFollowFrequency.Text = "Follow Frequency";
-            this.checkBoxFollowFrequency.UseVisualStyleBackColor = true;
-            // 
             // DateSequenceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -542,5 +546,6 @@
         private System.Windows.Forms.ComboBox comboBoxFrequency;
         private System.Windows.Forms.CheckBox checkBoxGenerateFromStart;
         private System.Windows.Forms.CheckBox checkBoxFollowFrequency;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
