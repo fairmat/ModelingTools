@@ -45,7 +45,6 @@
             this.expressionEndDate = new ExpressionTypyingHelper.OneLineExpressionControl();
             this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
-            this.checkBoxGenerateFromStart = new System.Windows.Forms.CheckBox();
             this.checkBoxFollowFrequency = new System.Windows.Forms.CheckBox();
             this.groupBoxParameterInfo = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelParameterInfo = new System.Windows.Forms.TableLayoutPanel();
@@ -62,6 +61,8 @@
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelElementsCount = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.comboBoxDatesGeneration = new System.Windows.Forms.ComboBox();
+            this.labelDatesGeneration = new System.Windows.Forms.Label();
             this.tableLayoutPanelDefinition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
@@ -160,11 +161,11 @@
             this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDate});
             this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewDates.Location = new System.Drawing.Point(275, 3);
+            this.dataGridViewDates.Location = new System.Drawing.Point(321, 3);
             this.dataGridViewDates.Name = "dataGridViewDates";
             this.dataGridViewDates.ReadOnly = true;
             this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
-            this.dataGridViewDates.Size = new System.Drawing.Size(167, 262);
+            this.dataGridViewDates.Size = new System.Drawing.Size(121, 262);
             this.dataGridViewDates.TabIndex = 12;
             // 
             // columnDate
@@ -183,7 +184,7 @@
             this.groupBoxDatesSequence.Location = new System.Drawing.Point(3, 70);
             this.groupBoxDatesSequence.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.groupBoxDatesSequence.Name = "groupBoxDatesSequence";
-            this.groupBoxDatesSequence.Size = new System.Drawing.Size(266, 157);
+            this.groupBoxDatesSequence.Size = new System.Drawing.Size(312, 158);
             this.groupBoxDatesSequence.TabIndex = 12;
             this.groupBoxDatesSequence.TabStop = false;
             this.groupBoxDatesSequence.Text = "Dates Sequence";
@@ -203,8 +204,9 @@
             this.tableLayoutPanelDatesSequence.Controls.Add(this.expressionEndDate, 1, 1);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.comboBoxFrequency, 1, 2);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.expressionStartDate, 1, 0);
-            this.tableLayoutPanelDatesSequence.Controls.Add(this.checkBoxGenerateFromStart, 0, 4);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.checkBoxFollowFrequency, 0, 3);
+            this.tableLayoutPanelDatesSequence.Controls.Add(this.comboBoxDatesGeneration, 1, 4);
+            this.tableLayoutPanelDatesSequence.Controls.Add(this.labelDatesGeneration, 0, 4);
             this.tableLayoutPanelDatesSequence.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanelDatesSequence.Location = new System.Drawing.Point(3, 18);
             this.tableLayoutPanelDatesSequence.Name = "tableLayoutPanelDatesSequence";
@@ -214,13 +216,13 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(260, 136);
+            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(306, 137);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
             // checkBoxExcludeStartDate
             // 
             this.checkBoxExcludeStartDate.AutoSize = true;
-            this.checkBoxExcludeStartDate.Location = new System.Drawing.Point(182, 3);
+            this.checkBoxExcludeStartDate.Location = new System.Drawing.Point(228, 3);
             this.checkBoxExcludeStartDate.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.checkBoxExcludeStartDate.Name = "checkBoxExcludeStartDate";
             this.checkBoxExcludeStartDate.Size = new System.Drawing.Size(75, 20);
@@ -234,7 +236,7 @@
             // 
             this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.expressionEndDate.KeyboardEventsEnabled = true;
-            this.expressionEndDate.Location = new System.Drawing.Point(66, 30);
+            this.expressionEndDate.Location = new System.Drawing.Point(112, 30);
             this.expressionEndDate.Multiline = false;
             this.expressionEndDate.Name = "expressionEndDate";
             this.expressionEndDate.Size = new System.Drawing.Size(103, 21);
@@ -246,7 +248,7 @@
             // comboBoxFrequency
             // 
             this.comboBoxFrequency.FormattingEnabled = true;
-            this.comboBoxFrequency.Location = new System.Drawing.Point(66, 57);
+            this.comboBoxFrequency.Location = new System.Drawing.Point(112, 57);
             this.comboBoxFrequency.Name = "comboBoxFrequency";
             this.comboBoxFrequency.Size = new System.Drawing.Size(103, 24);
             this.comboBoxFrequency.TabIndex = 15;
@@ -256,7 +258,7 @@
             // 
             this.expressionStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.expressionStartDate.KeyboardEventsEnabled = true;
-            this.expressionStartDate.Location = new System.Drawing.Point(66, 3);
+            this.expressionStartDate.Location = new System.Drawing.Point(112, 3);
             this.expressionStartDate.Multiline = false;
             this.expressionStartDate.Name = "expressionStartDate";
             this.expressionStartDate.Size = new System.Drawing.Size(103, 21);
@@ -264,19 +266,6 @@
             this.expressionStartDate.Text = "";
             this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
             this.expressionStartDate.TextChanged += new System.EventHandler(this.expressionStartDate_TextChanged);
-            // 
-            // checkBoxGenerateFromStart
-            // 
-            this.checkBoxGenerateFromStart.AutoSize = true;
-            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxGenerateFromStart, 3);
-            this.checkBoxGenerateFromStart.Location = new System.Drawing.Point(3, 113);
-            this.checkBoxGenerateFromStart.Name = "checkBoxGenerateFromStart";
-            this.checkBoxGenerateFromStart.Size = new System.Drawing.Size(242, 20);
-            this.checkBoxGenerateFromStart.TabIndex = 17;
-            this.checkBoxGenerateFromStart.Text = "Generate Sequence From Start date";
-            this.toolTip1.SetToolTip(this.checkBoxGenerateFromStart, "Generate the date sequence going forward, as opposed to generate sequences starti" +
-        "ng from the End date going backward");
-            this.checkBoxGenerateFromStart.UseVisualStyleBackColor = true;
             // 
             // checkBoxFollowFrequency
             // 
@@ -299,7 +288,7 @@
             this.groupBoxParameterInfo.Location = new System.Drawing.Point(3, 5);
             this.groupBoxParameterInfo.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.groupBoxParameterInfo.Name = "groupBoxParameterInfo";
-            this.groupBoxParameterInfo.Size = new System.Drawing.Size(266, 47);
+            this.groupBoxParameterInfo.Size = new System.Drawing.Size(312, 47);
             this.groupBoxParameterInfo.TabIndex = 12;
             this.groupBoxParameterInfo.TabStop = false;
             this.groupBoxParameterInfo.Text = "Parameter information";
@@ -320,7 +309,7 @@
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(260, 26);
+            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(306, 26);
             this.tableLayoutPanelParameterInfo.TabIndex = 0;
             // 
             // flowLayoutPanelButtons
@@ -472,6 +461,30 @@
             this.labelElementsCount.TabIndex = 15;
             this.labelElementsCount.Text = "0 Elements";
             // 
+            // comboBoxDatesGeneration
+            // 
+            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.comboBoxDatesGeneration, 2);
+            this.comboBoxDatesGeneration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDatesGeneration.FormattingEnabled = true;
+            this.comboBoxDatesGeneration.Items.AddRange(new object[] {
+            "Forward",
+            "Backward"});
+            this.comboBoxDatesGeneration.Location = new System.Drawing.Point(112, 113);
+            this.comboBoxDatesGeneration.Name = "comboBoxDatesGeneration";
+            this.comboBoxDatesGeneration.Size = new System.Drawing.Size(131, 24);
+            this.comboBoxDatesGeneration.TabIndex = 19;
+            // 
+            // labelDatesGeneration
+            // 
+            this.labelDatesGeneration.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelDatesGeneration.AutoSize = true;
+            this.labelDatesGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDatesGeneration.Location = new System.Drawing.Point(3, 116);
+            this.labelDatesGeneration.Name = "labelDatesGeneration";
+            this.labelDatesGeneration.Size = new System.Drawing.Size(103, 15);
+            this.labelDatesGeneration.TabIndex = 20;
+            this.labelDatesGeneration.Text = "Dates Generation";
+            // 
             // DateSequenceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -544,8 +557,9 @@
         private ExpressionTypyingHelper.OneLineExpressionControl expressionStartDate;
         private ExpressionTypyingHelper.OneLineExpressionControl expressionEndDate;
         private System.Windows.Forms.ComboBox comboBoxFrequency;
-        private System.Windows.Forms.CheckBox checkBoxGenerateFromStart;
         private System.Windows.Forms.CheckBox checkBoxFollowFrequency;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ComboBox comboBoxDatesGeneration;
+        private System.Windows.Forms.Label labelDatesGeneration;
     }
 }

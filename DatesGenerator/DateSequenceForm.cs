@@ -88,7 +88,7 @@ namespace DatesGenerator
             this.buttonOk.Click += new EventHandler(buttonOk_Click);
             this.buttonCancel.Click += new EventHandler(buttonCancel_Click);
             this.buttonUpdate.Click += new EventHandler(buttonUpdate_Click);
-            this.checkBoxGenerateFromStart.CheckedChanged += checkBoxGenerateFromStart_CheckedChanged;
+            this.comboBoxDatesGeneration.SelectedIndexChanged += comboBoxDatesGeneration_SelectedIndexChanged;
             this.checkBoxFollowFrequency.CheckedChanged += (obj, args) => HandleAutomaticPreview();
         }
 
@@ -177,13 +177,13 @@ namespace DatesGenerator
 
         /// <summary>
         /// Automatically updates the dates to be shown each time there is change
-        /// in the <see cref="comboBoxFrequency"/> control.
+        /// in the <see cref="comboBoxDatesGeneration"/> control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">An EventArgs that contains the event data.</param>
-        void checkBoxGenerateFromStart_CheckedChanged(object sender, EventArgs e)
+        void comboBoxDatesGeneration_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.checkBoxGenerateFromStart.Checked)
+            if (this.comboBoxDatesGeneration.SelectedIndex == 0)
                 this.checkBoxExcludeStartDate.Enabled = true;
             else
             {
@@ -241,7 +241,7 @@ namespace DatesGenerator
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
                     this.checkBoxExcludeStartDate.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
                     this.checkBoxFollowFrequency.Checked = ((ModelParameterDateSequence)this.editedObject).FollowFrequency;
-                    this.checkBoxGenerateFromStart.Checked = ((ModelParameterDateSequence)this.editedObject).GenerateSequenceFromStartDate;
+                    this.comboBoxDatesGeneration.SelectedIndex = ((ModelParameterDateSequence)this.editedObject).GenerateSequenceFromStartDate ? 0 : 1;
                 }
                 else
                 {
@@ -252,7 +252,7 @@ namespace DatesGenerator
                 }
 
                 // Disable the possibility of excluding the start date when generated backward
-                if (!this.checkBoxGenerateFromStart.Checked)
+                if (this.comboBoxDatesGeneration.SelectedIndex != 0)
                 {
                     this.checkBoxExcludeStartDate.Checked = false;
                     this.checkBoxExcludeStartDate.Enabled = false;
@@ -346,7 +346,7 @@ namespace DatesGenerator
                 modelParameterDateSequence.FollowFrequency = this.checkBoxFollowFrequency.Checked;
                 modelParameterDateSequence.EndDateExpression = this.expressionEndDate.Text;
                 modelParameterDateSequence.FrequencyExpression = this.comboBoxFrequency.Text;
-                modelParameterDateSequence.GenerateSequenceFromStartDate = this.checkBoxGenerateFromStart.Checked;
+                modelParameterDateSequence.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
                 modelParameterDateSequence.VarName = this.textBoxName.Text;
                 modelParameterDateSequence.Tag = null;
 
@@ -362,7 +362,7 @@ namespace DatesGenerator
 
                 modelParameterDateSequence.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
                 modelParameterDateSequence.Parse(this.project);
-                modelParameterDateSequence.GenerateSequenceFromStartDate = this.checkBoxGenerateFromStart.Checked;
+                modelParameterDateSequence.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
                 this.editedObject.Values = modelParameterDateSequence.Values;
             }
 
@@ -383,7 +383,7 @@ namespace DatesGenerator
 
                 preview.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
                 preview.FollowFrequency = this.checkBoxFollowFrequency.Checked;
-                preview.GenerateSequenceFromStartDate = this.checkBoxGenerateFromStart.Checked;
+                preview.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
                 preview.Parse(project);
                 this.dataGridViewDates.Rows.Clear();
 
