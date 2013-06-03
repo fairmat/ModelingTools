@@ -46,6 +46,8 @@
             this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
             this.checkBoxFollowFrequency = new System.Windows.Forms.CheckBox();
+            this.comboBoxDatesGeneration = new System.Windows.Forms.ComboBox();
+            this.labelDatesGeneration = new System.Windows.Forms.Label();
             this.groupBoxParameterInfo = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelParameterInfo = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
@@ -61,8 +63,6 @@
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelElementsCount = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.comboBoxDatesGeneration = new System.Windows.Forms.ComboBox();
-            this.labelDatesGeneration = new System.Windows.Forms.Label();
             this.tableLayoutPanelDefinition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
@@ -161,11 +161,11 @@
             this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDate});
             this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewDates.Location = new System.Drawing.Point(321, 3);
+            this.dataGridViewDates.Location = new System.Drawing.Point(324, 3);
             this.dataGridViewDates.Name = "dataGridViewDates";
             this.dataGridViewDates.ReadOnly = true;
             this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
-            this.dataGridViewDates.Size = new System.Drawing.Size(121, 262);
+            this.dataGridViewDates.Size = new System.Drawing.Size(118, 262);
             this.dataGridViewDates.TabIndex = 12;
             // 
             // columnDate
@@ -184,7 +184,7 @@
             this.groupBoxDatesSequence.Location = new System.Drawing.Point(3, 70);
             this.groupBoxDatesSequence.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.groupBoxDatesSequence.Name = "groupBoxDatesSequence";
-            this.groupBoxDatesSequence.Size = new System.Drawing.Size(312, 158);
+            this.groupBoxDatesSequence.Size = new System.Drawing.Size(315, 161);
             this.groupBoxDatesSequence.TabIndex = 12;
             this.groupBoxDatesSequence.TabStop = false;
             this.groupBoxDatesSequence.Text = "Dates Sequence";
@@ -216,13 +216,13 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(306, 137);
+            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(309, 140);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
             // checkBoxExcludeStartDate
             // 
             this.checkBoxExcludeStartDate.AutoSize = true;
-            this.checkBoxExcludeStartDate.Location = new System.Drawing.Point(228, 3);
+            this.checkBoxExcludeStartDate.Location = new System.Drawing.Point(231, 3);
             this.checkBoxExcludeStartDate.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.checkBoxExcludeStartDate.Name = "checkBoxExcludeStartDate";
             this.checkBoxExcludeStartDate.Size = new System.Drawing.Size(75, 20);
@@ -236,7 +236,7 @@
             // 
             this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.expressionEndDate.KeyboardEventsEnabled = true;
-            this.expressionEndDate.Location = new System.Drawing.Point(112, 30);
+            this.expressionEndDate.Location = new System.Drawing.Point(115, 30);
             this.expressionEndDate.Multiline = false;
             this.expressionEndDate.Name = "expressionEndDate";
             this.expressionEndDate.Size = new System.Drawing.Size(103, 21);
@@ -248,7 +248,7 @@
             // comboBoxFrequency
             // 
             this.comboBoxFrequency.FormattingEnabled = true;
-            this.comboBoxFrequency.Location = new System.Drawing.Point(112, 57);
+            this.comboBoxFrequency.Location = new System.Drawing.Point(115, 57);
             this.comboBoxFrequency.Name = "comboBoxFrequency";
             this.comboBoxFrequency.Size = new System.Drawing.Size(103, 24);
             this.comboBoxFrequency.TabIndex = 15;
@@ -258,7 +258,7 @@
             // 
             this.expressionStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.expressionStartDate.KeyboardEventsEnabled = true;
-            this.expressionStartDate.Location = new System.Drawing.Point(112, 3);
+            this.expressionStartDate.Location = new System.Drawing.Point(115, 3);
             this.expressionStartDate.Multiline = false;
             this.expressionStartDate.Name = "expressionStartDate";
             this.expressionStartDate.Size = new System.Drawing.Size(103, 21);
@@ -278,6 +278,30 @@
             this.checkBoxFollowFrequency.Text = "Exact frequency following";
             this.checkBoxFollowFrequency.UseVisualStyleBackColor = true;
             // 
+            // comboBoxDatesGeneration
+            // 
+            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.comboBoxDatesGeneration, 2);
+            this.comboBoxDatesGeneration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDatesGeneration.FormattingEnabled = true;
+            this.comboBoxDatesGeneration.Items.AddRange(new object[] {
+            "Forward",
+            "Backward"});
+            this.comboBoxDatesGeneration.Location = new System.Drawing.Point(115, 113);
+            this.comboBoxDatesGeneration.Name = "comboBoxDatesGeneration";
+            this.comboBoxDatesGeneration.Size = new System.Drawing.Size(131, 24);
+            this.comboBoxDatesGeneration.TabIndex = 19;
+            // 
+            // labelDatesGeneration
+            // 
+            this.labelDatesGeneration.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelDatesGeneration.AutoSize = true;
+            this.labelDatesGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDatesGeneration.Location = new System.Drawing.Point(3, 117);
+            this.labelDatesGeneration.Name = "labelDatesGeneration";
+            this.labelDatesGeneration.Size = new System.Drawing.Size(106, 15);
+            this.labelDatesGeneration.TabIndex = 20;
+            this.labelDatesGeneration.Text = "Generation versus";
+            // 
             // groupBoxParameterInfo
             // 
             this.groupBoxParameterInfo.AutoSize = true;
@@ -288,7 +312,7 @@
             this.groupBoxParameterInfo.Location = new System.Drawing.Point(3, 5);
             this.groupBoxParameterInfo.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.groupBoxParameterInfo.Name = "groupBoxParameterInfo";
-            this.groupBoxParameterInfo.Size = new System.Drawing.Size(312, 47);
+            this.groupBoxParameterInfo.Size = new System.Drawing.Size(315, 47);
             this.groupBoxParameterInfo.TabIndex = 12;
             this.groupBoxParameterInfo.TabStop = false;
             this.groupBoxParameterInfo.Text = "Parameter information";
@@ -309,7 +333,7 @@
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(306, 26);
+            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(309, 26);
             this.tableLayoutPanelParameterInfo.TabIndex = 0;
             // 
             // flowLayoutPanelButtons
@@ -460,30 +484,6 @@
             this.labelElementsCount.Size = new System.Drawing.Size(59, 13);
             this.labelElementsCount.TabIndex = 15;
             this.labelElementsCount.Text = "0 Elements";
-            // 
-            // comboBoxDatesGeneration
-            // 
-            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.comboBoxDatesGeneration, 2);
-            this.comboBoxDatesGeneration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxDatesGeneration.FormattingEnabled = true;
-            this.comboBoxDatesGeneration.Items.AddRange(new object[] {
-            "Forward",
-            "Backward"});
-            this.comboBoxDatesGeneration.Location = new System.Drawing.Point(112, 113);
-            this.comboBoxDatesGeneration.Name = "comboBoxDatesGeneration";
-            this.comboBoxDatesGeneration.Size = new System.Drawing.Size(131, 24);
-            this.comboBoxDatesGeneration.TabIndex = 19;
-            // 
-            // labelDatesGeneration
-            // 
-            this.labelDatesGeneration.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelDatesGeneration.AutoSize = true;
-            this.labelDatesGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDatesGeneration.Location = new System.Drawing.Point(3, 116);
-            this.labelDatesGeneration.Name = "labelDatesGeneration";
-            this.labelDatesGeneration.Size = new System.Drawing.Size(103, 15);
-            this.labelDatesGeneration.TabIndex = 20;
-            this.labelDatesGeneration.Text = "Dates Generation";
             // 
             // DateSequenceForm
             // 
