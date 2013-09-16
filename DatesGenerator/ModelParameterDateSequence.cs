@@ -685,6 +685,8 @@ namespace DatesGenerator
         {
             List<IExportable> retVal = new List<IExportable>();
             ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpressionExport", this, "Frequency", typeof(DateFrequency));
+            StartDateExpression.Description = StartDateExpression.Name = "Start Date";
+            EndDateExpression.Description = EndDateExpression.Name = "End Date";
             retVal.AddRange(new IExportable[] { this, StartDateExpression, EndDateExpression, frequency });
             return retVal;
         }
