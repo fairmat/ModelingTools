@@ -37,7 +37,7 @@ namespace DatesGenerator
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
-        private int version = 3;
+        private int version = 4;
 
         /// <summary>
         /// Backing field for the EndDate property.
@@ -48,16 +48,6 @@ namespace DatesGenerator
         /// Backing field for the EndDate property.
         /// </summary>
         private DateTime endDate;
-
-        /// <summary>
-        /// Backing field for the StartDateExpression property.
-        /// </summary>
-        private string startDateExpression;
-
-        /// <summary>
-        /// Backing field for the StartDateExpression property.
-        /// </summary>
-        private string endDateExpression;
 
         /// <summary>
         /// Backing field for the Frequency property.
@@ -87,25 +77,7 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the expression of the start date.
         /// </summary>
-        public string StartDateExpression
-        {
-            get
-            {
-                DateTime tmp;
-                if (DateTime.TryParseExact(startDateExpression, "yyyy-MM-dd", null, DateTimeStyles.None, out tmp))
-                    return tmp.ToShortDateString();
-
-                return startDateExpression;
-            }
-            set
-            {
-                DateTime tmp;
-                if (DateTime.TryParse(value, out tmp))
-                    startDateExpression = tmp.ToString("yyyy-MM-dd");
-                else
-                    startDateExpression = value;
-            }
-        }
+        public ModelParameter StartDateExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the start date has to be excluded.
@@ -131,25 +103,7 @@ namespace DatesGenerator
         /// <summary>
         /// Gets or sets the expression of the end date.
         /// </summary>
-        public string EndDateExpression
-        {
-            get
-            {
-                DateTime tmp;
-                if (DateTime.TryParseExact(endDateExpression, "yyyy-MM-dd", null, DateTimeStyles.None, out tmp))
-                    return tmp.ToShortDateString();
-
-                return endDateExpression;
-            }
-            set
-            {
-                DateTime tmp;
-                if (DateTime.TryParse(value, out tmp))
-                    endDateExpression = tmp.ToString("yyyy-MM-dd");
-                else
-                    endDateExpression = value;
-            }
-        }
+        public ModelParameter EndDateExpression { get; set; }
 
         /// <summary>
         /// Gets or sets the frequency of the dates generated between the start and end dates.
@@ -222,8 +176,8 @@ namespace DatesGenerator
             get
             {
                 object[,] retValue = new object[3, 1];
-                retValue[0, 0] = StartDateExpression;
-                retValue[1, 0] = EndDateExpression;
+                retValue[0, 0] = StartDateExpression.Expr.GetValue(0, 0);
+                retValue[1, 0] = EndDateExpression.Expr.GetValue(0, 0); ;
                 retValue[2, 0] = FrequencyExpression;
                 return retValue;
             }
@@ -353,15 +307,26 @@ namespace DatesGenerator
             }
             else
             {
-                DateTime tmp;
+                if (serialializedVersion < 4)
+                {
+                    string tmpS = info.GetString("_StartDateExpression");
+                    DateTime tmpD;
+                    if (DateTime.TryParseExact(tmpS, "yyyy-MM-dd", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpD))
+                        StartDate = tmpD;
+                    else
+                        StartDateExpression = new ModelParameter(tmpS);
 
-                startDateExpression = info.GetString("_StartDateExpression");
-                if (DateTime.TryParse(startDateExpression, out tmp))
-                    StartDateExpression = tmp.ToShortDateString();
-
-                endDateExpression = info.GetString("_EndDateExpression");
-                if (DateTime.TryParse(endDateExpression, out tmp))
-                    EndDateExpression = tmp.ToShortDateString();
+                    tmpS = info.GetString("_EndDateExpression");
+                    if (DateTime.TryParseExact(tmpS, "yyyy-MM-dd", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpD))
+                        EndDate = tmpD;
+                    else
+                        EndDateExpression = new ModelParameter(tmpS);
+                }
+                else
+                {
+                    StartDateExpression = (ModelParameter)info.GetValue("_StartDateExpression", typeof(ModelParameter));
+                    EndDateExpression = (ModelParameter)info.GetValue("_EndDateExpression", typeof(ModelParameter));
+                }
 
                 FrequencyExpression = info.GetString("_FrequencyExpression");
                 ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
@@ -536,8 +501,8 @@ namespace DatesGenerator
         {
             base.GetObjectData(info, context);
 
-            info.AddValue("_StartDateExpression", this.startDateExpression);
-            info.AddValue("_EndDateExpression", this.endDateExpression);
+            info.AddValue("_StartDateExpression", StartDateExpression);
+            info.AddValue("_EndDateExpression", EndDateExpression);
             info.AddValue("_FrequencyExpression", this.FrequencyExpression);
             info.AddValue("_ExcludeStartDate", ExcludeStartDate);
             info.AddValue("_FollowFrequency", FollowFrequency);
@@ -673,7 +638,7 @@ namespace DatesGenerator
         {
             try
             {
-                startDate = GetDate(context as Project, StartDateExpression).Date;
+                startDate = GetDate(context as Project, StartDateExpression.Expr.GetValue(0, 0).ToString()).Date;
             }
             catch (Exception ex)
             {
@@ -683,7 +648,7 @@ namespace DatesGenerator
 
             try
             {
-                endDate = GetDate(context as Project, EndDateExpression).Date;
+                endDate = GetDate(context as Project, EndDateExpression.Expr.GetValue(0, 0).ToString()).Date;
             }
             catch (Exception ex)
             {
@@ -719,11 +684,8 @@ namespace DatesGenerator
         public override List<IExportable> ExportObjects(bool recursive)
         {
             List<IExportable> retVal = new List<IExportable>();
-            ExportablePropertyAssociator<string> startDate = new ExportablePropertyAssociator<string>("StartDateExpression", this, "Start Date");
-            ExportablePropertyAssociator<string> endDate = new ExportablePropertyAssociator<string>("EndDateExpression", this, "End Date");
             ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpressionExport", this, "Frequency", typeof(DateFrequency));
-            retVal.AddRange(new IExportable[] { this, startDate, endDate, frequency });
-
+            retVal.AddRange(new IExportable[] { this, StartDateExpression, EndDateExpression, frequency });
             return retVal;
         }
 

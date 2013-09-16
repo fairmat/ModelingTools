@@ -236,8 +236,18 @@ namespace DatesGenerator
                 if (this.editedObject is ModelParameterDateSequence)
                 {
                     // Binds the date sequence specific information to the GUI
-                    this.expressionStartDate.Text = ((ModelParameterDateSequence)this.editedObject).StartDateExpression;
-                    this.expressionEndDate.Text = ((ModelParameterDateSequence)this.editedObject).EndDateExpression;
+                    object startDateExpression = ((ModelParameterDateSequence)this.editedObject).StartDateExpression.Expr.GetValue(0, 0);
+                    if (startDateExpression is DateTime)
+                        this.expressionStartDate.Text = ((DateTime)startDateExpression).ToShortDateString();
+                    else
+                        this.expressionStartDate.Text = startDateExpression.ToString();
+
+                    object endDateExpression = ((ModelParameterDateSequence)this.editedObject).EndDateExpression.Expr.GetValue(0, 0);
+                    if(endDateExpression is DateTime)
+                        this.expressionEndDate.Text = ((DateTime)endDateExpression).ToShortDateString();
+                    else
+                    this.expressionEndDate.Text = endDateExpression.ToString();
+
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
                     this.checkBoxExcludeStartDate.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
                     this.checkBoxFollowFrequency.Checked = ((ModelParameterDateSequence)this.editedObject).FollowFrequency;
