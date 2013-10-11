@@ -186,8 +186,8 @@ namespace DatesGenerator
             {
                 try
                 {
-                    StartDateExpression = (string)value.GetValue(0, 0);
-                    EndDateExpression = (string)value.GetValue(1, 0);
+                    StartDateExpression = (ModelParameter)value.GetValue(0, 0).ToString();
+                    EndDateExpression = (ModelParameter)value.GetValue(1, 0).ToString();
                     FrequencyExpression = (string)value.GetValue(2, 0);
                 }
                 catch
