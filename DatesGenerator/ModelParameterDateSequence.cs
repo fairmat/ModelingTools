@@ -326,6 +326,7 @@ namespace DatesGenerator
                 {
                     StartDateExpression = (ModelParameter)info.GetValue("_StartDateExpression", typeof(ModelParameter));
                     EndDateExpression = (ModelParameter)info.GetValue("_EndDateExpression", typeof(ModelParameter));
+                    SetupExportedIDs();
                 }
 
                 FrequencyExpression = info.GetString("_FrequencyExpression");
@@ -351,6 +352,13 @@ namespace DatesGenerator
         /// <returns>true if an error occurred during the parsing, false otherwise.</returns>
         public override bool Parse(IProject p_Context)
         {
+            if (StartDateExpression.Parse(p_Context))
+                return true;
+            if (EndDateExpression.Parse(p_Context))
+                return true;
+          
+
+
             if (InitializeObject(p_Context as Project))
                 return true;
 
@@ -685,13 +693,23 @@ namespace DatesGenerator
         {
             List<IExportable> retVal = new List<IExportable>();
             ExportablePropertyAssociator<string> frequency = new ExportablePropertyAssociator<string>("FrequencyExpressionExport", this, "Frequency", typeof(DateFrequency));
-            StartDateExpression.Description = StartDateExpression.Name = "Start Date";
-            EndDateExpression.Description = EndDateExpression.Name = "End Date";
+            StartDateExpression.Description = "Start Date";
+            EndDateExpression.Description = "End Date";
+            SetupExportedIDs();
             retVal.AddRange(new IExportable[] { this, StartDateExpression, EndDateExpression, frequency });
             return retVal;
         }
-
         #endregion
+
+        /// <summary>
+        /// Ids for exported objects must be univoque
+        /// </summary>
+        void SetupExportedIDs()
+        {
+             //ToDo: set an object name only if the object is going to be published, otherwise set to empty string.
+             StartDateExpression.Name = VarName + "StartDate";
+             EndDateExpression.Name = VarName + "EndDate";
+        }
 
         /// <summary>
         /// Parses the object for preview purposes.
