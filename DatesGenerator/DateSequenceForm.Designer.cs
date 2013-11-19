@@ -230,7 +230,6 @@
             this.checkBoxExcludeStartDate.Text = "Exclude";
             this.toolTip1.SetToolTip(this.checkBoxExcludeStartDate, "If checked, the starting date will not be included in the generated sequence.");
             this.checkBoxExcludeStartDate.UseVisualStyleBackColor = true;
-            this.checkBoxExcludeStartDate.CheckedChanged += new System.EventHandler(this.checkBoxExclude_CheckedChanged);
             // 
             // expressionEndDate
             // 
@@ -243,7 +242,6 @@
             this.expressionEndDate.TabIndex = 14;
             this.expressionEndDate.Text = "";
             this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.expressionEndDate.TextChanged += new System.EventHandler(this.expressionEndDate_TextChanged);
             // 
             // comboBoxFrequency
             // 
@@ -252,7 +250,6 @@
             this.comboBoxFrequency.Name = "comboBoxFrequency";
             this.comboBoxFrequency.Size = new System.Drawing.Size(103, 24);
             this.comboBoxFrequency.TabIndex = 15;
-            this.comboBoxFrequency.SelectedIndexChanged += new System.EventHandler(this.comboBoxFrequency_SelectedIndexChanged);
             // 
             // expressionStartDate
             // 
@@ -265,7 +262,6 @@
             this.expressionStartDate.TabIndex = 6;
             this.expressionStartDate.Text = "";
             this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
-            this.expressionStartDate.TextChanged += new System.EventHandler(this.expressionStartDate_TextChanged);
             // 
             // checkBoxFollowFrequency
             // 

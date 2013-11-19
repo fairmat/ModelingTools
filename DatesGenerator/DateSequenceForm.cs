@@ -20,6 +20,7 @@ using System.Windows.Forms;
 using DVPLDOM;
 using DVPLI;
 using Mono.Addins;
+using System.Threading;
 
 namespace DatesGenerator
 {
@@ -47,6 +48,13 @@ namespace DatesGenerator
         /// </summary>
         private ModelParameterArray editedObject;
 
+        /// <summary>
+        /// THe thread used for the preview of the items
+        /// </summary>
+        private Thread previewThread;
+
+        private bool previewAborted;
+
         #endregion // Fields
 
         #region Constructors
@@ -57,7 +65,7 @@ namespace DatesGenerator
         {
             InitializeComponent();
             FinalizeInitialization();
-            InitializeHandlers();
+            
         }
         #endregion // Constructors
 
@@ -85,11 +93,15 @@ namespace DatesGenerator
         /// </summary>
         private void InitializeHandlers()
         {
-            this.buttonOk.Click += new EventHandler(buttonOk_Click);
-            this.buttonCancel.Click += new EventHandler(buttonCancel_Click);
-            this.buttonUpdate.Click += new EventHandler(buttonUpdate_Click);
+            this.buttonOk.Click += buttonOk_Click;
+            this.buttonCancel.Click += buttonCancel_Click;
+            this.buttonUpdate.Click += buttonUpdate_Click;
             this.comboBoxDatesGeneration.SelectedIndexChanged += comboBoxDatesGeneration_SelectedIndexChanged;
+            this.comboBoxFrequency.SelectedIndexChanged += comboBoxFrequency_SelectedIndexChanged;
+            this.checkBoxExcludeStartDate.CheckedChanged += checkBoxExclude_CheckedChanged;
             this.checkBoxFollowFrequency.CheckedChanged += (obj, args) => HandleAutomaticPreview();
+            this.expressionEndDate.TextChanged += expressionEndDate_TextChanged;
+            this.expressionStartDate.TextChanged += expressionStartDate_TextChanged;
         }
 
         #endregion // Initialization
@@ -243,10 +255,10 @@ namespace DatesGenerator
                         this.expressionStartDate.Text = startDateExpression.ToString();
 
                     object endDateExpression = ((ModelParameterDateSequence)this.editedObject).EndDateExpression.Expr.GetValue(0, 0);
-                    if(endDateExpression is DateTime)
+                    if (endDateExpression is DateTime)
                         this.expressionEndDate.Text = ((DateTime)endDateExpression).ToShortDateString();
                     else
-                    this.expressionEndDate.Text = endDateExpression.ToString();
+                        this.expressionEndDate.Text = endDateExpression.ToString();
 
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
                     this.checkBoxExcludeStartDate.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
@@ -301,6 +313,9 @@ namespace DatesGenerator
 
                 this.textBoxName.Enabled = !initialized;
                 HandleAutomaticPreview();
+
+                // From now initialize the handlers in order to avoid unnecessary preview attempt
+                InitializeHandlers();
             }
         }
         #endregion // IEditorEx implementation
@@ -385,24 +400,155 @@ namespace DatesGenerator
         /// </summary>
         private void InitializeDatesPreview()
         {
+            // Check if the thread is running and in case abort it and wait for it to stop
+            if (previewThread != null &&
+                previewThread.ThreadState == ThreadState.Running)
+            {
+                this.previewAborted = true;
+                previewThread.Abort();
+                previewThread.Join();
+            }
+
+            // Start the thread
+            string startDate = this.expressionStartDate.Text;
+            string endDate = this.expressionEndDate.Text;
+            string frequency = this.comboBoxFrequency.Text;
+            bool excludeStartDate = this.checkBoxExcludeStartDate.Checked;
+            bool followFrequency = this.checkBoxFollowFrequency.Checked;
+            bool generateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
+            previewThread = new Thread(() => InitializeDatesPreviewThreadWorker(startDate, 
+                                                                                endDate, 
+                                                                                frequency, 
+                                                                                excludeStartDate, 
+                                                                                followFrequency, 
+                                                                                generateSequenceFromStartDate));
+
+            previewThread.IsBackground = true;
+            previewThread.Start();
+        }
+
+        private void InitializeDatesPreview2()
+        {
+            ModelParameterDateSequence preview = new ModelParameterDateSequence(this.expressionStartDate.Text,
+                                                                                this.expressionEndDate.Text,
+                                                                                this.comboBoxFrequency.Text);
+
+            preview.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
+            preview.FollowFrequency = this.checkBoxFollowFrequency.Checked;
+            preview.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
+
+            DateTime minDate = new DateTime(1900, 1, 1);
+            DateTime maxDate = new DateTime(2100, 12, 31);
+            preview.ParsePreview(project, minDate, maxDate);
+            int elements = Math.Min(50, preview.Values.Count);
+
+            // Check if the thread is running and in case abort it and wait for it to stop
+            if (previewThread != null &&
+                previewThread.ThreadState == ThreadState.Running)
+            {
+                previewThread.Abort();
+                previewThread.Join();
+            }
+
+            this.previewAborted = false;
+            previewThread = new Thread(() => InitializeUiPreview(preview, minDate, maxDate, elements));
+            previewThread.IsBackground = true;
+            previewThread.Start();
+        }
+
+        private void InitializeDatesPreviewThreadWorker(string startDate, 
+                                                        string endDate, 
+                                                        string frequency, 
+                                                        bool excludeStartDate, 
+                                                        bool followFrequency, 
+                                                        bool generateSequenceFromStartDate)
+        {
             if (Validation(true))
             {
-                ModelParameterDateSequence preview = new ModelParameterDateSequence(this.expressionStartDate.Text,
-                                                                                    this.expressionEndDate.Text,
-                                                                                    this.comboBoxFrequency.Text);
-
-                preview.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
-                preview.FollowFrequency = this.checkBoxFollowFrequency.Checked;
-                preview.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
-                preview.Parse(project);
-                this.dataGridViewDates.Rows.Clear();
-
-                this.labelElementsCount.Text = preview.Values.Count + " Elements";
-                for (int i = 0; i < preview.Values.Count; i++)
+                ModelParameterDateSequence preview;
+                try
                 {
-                    this.dataGridViewDates.Rows.Add(preview.Values[i]);
+                    preview = new ModelParameterDateSequence(startDate,
+                                                             endDate,
+                                                             frequency);
+                }
+                catch
+                {
+                    // Error, don't show the preview
+                    InitializeUiEmptyPreview();
+                    return;
+                }
+
+                preview.ExcludeStartDate = excludeStartDate;
+                preview.FollowFrequency = followFrequency;
+                preview.GenerateSequenceFromStartDate = generateSequenceFromStartDate;
+
+                DateTime minDate = new DateTime(1900, 1, 1);
+                DateTime maxDate = new DateTime(2100, 12, 31);
+                try
+                {
+                    project.Initialize(true);
+                    Engine.Parser.Parse("EffectiveDate");
+                }
+                catch
+                {
+                    // Ignore project initialization error during the preview
+                }
+
+                preview.ParsePreview(project, minDate, maxDate);
+
+                int elements = Math.Min(50, preview.Values.Count);
+                InitializeUiPreview(preview, minDate, maxDate, elements);
+            }
+        }
+
+        private void InitializeUiPreview(ModelParameterDateSequence preview, DateTime minDate, DateTime maxDate, int elements)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(() => InitializeUiPreview(preview, minDate, maxDate, elements)));
+                return;
+            }
+
+            // Update the label
+            if (preview.StartDate < minDate || preview.EndDate > maxDate)
+            {
+                this.labelElementsCount.Text = string.Format("Preview generated only between {0} and {1}",
+                                                             minDate.ToShortDateString(),
+                                                             maxDate.ToShortDateString());
+            }
+            else
+            {
+                this.labelElementsCount.Text = string.Format("{0} Elements", preview.Values.Count);
+                if (elements != preview.Values.Count)
+                {
+                    this.labelElementsCount.Text += string.Format(", First {0} Shown", elements);
                 }
             }
+
+            if (previewAborted)
+                return;
+
+            this.dataGridViewDates.Rows.Clear();
+            for (int i = 0; i < elements; i++)
+            {
+                if (previewAborted)
+                    return;
+
+                this.dataGridViewDates.Rows.Add(preview.Values[i]);
+            }
+        }
+
+        private void InitializeUiEmptyPreview()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(InitializeUiEmptyPreview));
+                return;
+            }
+
+            this.labelElementsCount.Text = string.Empty;
+            this.dataGridViewDates.Rows.Clear();
         }
 
         /// <summary>

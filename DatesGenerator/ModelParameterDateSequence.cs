@@ -692,5 +692,46 @@ namespace DatesGenerator
         }
 
         #endregion
+
+        /// <summary>
+        /// Parses the object for preview purposes.
+        /// </summary>
+        /// <param name="p_Context">The project in which to parse the object.</param>
+        /// <param name="minDate">The minimum date of the preview.</param>
+        /// <param name="maxDate">The maximum date of the preview.</param>
+        /// <returns>true if an error occurred during the parsing, false otherwise.</returns>
+        public bool ParsePreview(IProject p_Context, DateTime minDate, DateTime maxDate)
+        {
+            if (InitializeObject(p_Context as Project))
+                return true;
+
+            if (Validation())
+            {
+                List<RightValue> dates;
+
+                if (StartDate >= minDate &&
+                    EndDate <= maxDate)
+                {
+
+                    if (GenerateSequenceFromStartDate)
+                        dates = GenerateForward();
+                    else
+                        dates = GenerateBackward();
+
+                    if (dates.Count == 0)
+                        return true;
+                }
+                else
+                {
+                    dates = new List<RightValue>();
+                }
+
+                // Set the model parameter array values
+                this.Values = dates;
+                return base.Parse(p_Context);
+            }
+
+            return true;
+        }
     }
 }
