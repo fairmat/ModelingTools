@@ -21,6 +21,7 @@ using DVPLDOM;
 using DVPLI;
 using Mono.Addins;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace DatesGenerator
 {
@@ -115,11 +116,16 @@ namespace DatesGenerator
         /// <param name="e">The event arguments.</param>
         private void buttonOk_Click(object sender, EventArgs e)
         {
+            var backup = StoreValues(this.editedObject);
+
             if (Validation(false))
             {
-                InitializeModelParameter();
                 this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 this.Close();
+            }
+            else
+            {
+                RestoreValues(this.editedObject, backup);
             }
         }
 
@@ -343,6 +349,26 @@ namespace DatesGenerator
                     validationErrors += "The name used is either already in use or invalid.\n\r";
                     errors = true;
                 }
+
+                InitializeModelParameter();
+                this.project.m_ErrorList.Clear();
+                this.project.m_RuntimeErrorList.Clear();
+                if (this.editedObject.Parse(project))
+                {
+                    // Error list
+                    foreach (var error in this.project.m_ErrorList)
+                    {
+                        validationErrors += error.Message + "\n\r";
+                    }
+
+                    // Runtime error list
+                    foreach (var error in this.project.m_RuntimeErrorList)
+                    {
+                        validationErrors += error.Message + "\n\r";
+                    }
+
+                    errors = true;
+                }
             }
 
             // Check for errors
@@ -390,9 +416,6 @@ namespace DatesGenerator
                 modelParameterDateSequence.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
                 this.editedObject.Values = modelParameterDateSequence.Values;
             }
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
 
         /// <summary>
@@ -423,35 +446,6 @@ namespace DatesGenerator
                                                                                 followFrequency, 
                                                                                 generateSequenceFromStartDate));
 
-            previewThread.IsBackground = true;
-            previewThread.Start();
-        }
-
-        private void InitializeDatesPreview2()
-        {
-            ModelParameterDateSequence preview = new ModelParameterDateSequence(this.expressionStartDate.Text,
-                                                                                this.expressionEndDate.Text,
-                                                                                this.comboBoxFrequency.Text);
-
-            preview.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
-            preview.FollowFrequency = this.checkBoxFollowFrequency.Checked;
-            preview.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
-
-            DateTime minDate = new DateTime(1900, 1, 1);
-            DateTime maxDate = new DateTime(2100, 12, 31);
-            preview.ParsePreview(project, minDate, maxDate);
-            int elements = Math.Min(50, preview.Values.Count);
-
-            // Check if the thread is running and in case abort it and wait for it to stop
-            if (previewThread != null &&
-                previewThread.ThreadState == ThreadState.Running)
-            {
-                previewThread.Abort();
-                previewThread.Join();
-            }
-
-            this.previewAborted = false;
-            previewThread = new Thread(() => InitializeUiPreview(preview, minDate, maxDate, elements));
             previewThread.IsBackground = true;
             previewThread.Start();
         }
@@ -562,6 +556,56 @@ namespace DatesGenerator
             }
             catch (Exception)
             { }
+        }
+
+        /// <summary>
+        /// Saves the values of the parameter.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>A dictionary containing the values of the parameter.</returns>
+        private IDictionary<string, object> StoreValues(ModelParameterArray parameter)
+        {
+            IDictionary<string, object> dictionary = new Dictionary<string, object>();
+
+            if (parameter is ModelParameterDateSequence)
+            {
+                var dateSequence = (ModelParameterDateSequence)parameter;
+                dictionary.Add("StartDateExpression", dateSequence.StartDateExpression);
+                dictionary.Add("ExcludeStartDate", dateSequence.ExcludeStartDate);
+                dictionary.Add("FollowFrequency", dateSequence.FollowFrequency);
+                dictionary.Add("EndDateExpression", dateSequence.EndDateExpression);
+                dictionary.Add("FrequencyExpression", dateSequence.FrequencyExpression);
+                dictionary.Add("GenerateSequenceFromStartDate", dateSequence.GenerateSequenceFromStartDate);
+            }
+            else
+            {
+                dictionary.Add("Expr", parameter.Expr);
+            }
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Restores the values of the parameter.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <param name="dictionary">A dictionary containing the values of the parameter.</param>
+        private void RestoreValues(ModelParameterArray parameter, IDictionary<string, object> dictionary)
+        {
+            if (parameter is ModelParameterDateSequence)
+            {
+                var dateSequence = (ModelParameterDateSequence)parameter;
+                dateSequence.StartDateExpression = (ModelParameter)dictionary["StartDateExpression"];
+                dateSequence.ExcludeStartDate = (bool)dictionary["ExcludeStartDate"];
+                dateSequence.FollowFrequency = (bool)dictionary["FollowFrequency"];
+                dateSequence.EndDateExpression = (ModelParameter)dictionary["EndDateExpression"];
+                dateSequence.FrequencyExpression = (string)dictionary["FrequencyExpression"];
+                dateSequence.GenerateSequenceFromStartDate = (bool)dictionary["GenerateSequenceFromStartDate"];
+            }
+            else
+            {
+                parameter.Expr = (Array)dictionary["Expr"];
+            }
         }
 
         #endregion // Helper methods

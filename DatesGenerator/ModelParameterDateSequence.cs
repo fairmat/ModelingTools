@@ -177,7 +177,7 @@ namespace DatesGenerator
             {
                 object[,] retValue = new object[3, 1];
                 retValue[0, 0] = StartDateExpression.Expr.GetValue(0, 0);
-                retValue[1, 0] = EndDateExpression.Expr.GetValue(0, 0); ;
+                retValue[1, 0] = EndDateExpression.Expr.GetValue(0, 0);
                 retValue[2, 0] = FrequencyExpression;
                 return retValue;
             }
@@ -356,8 +356,6 @@ namespace DatesGenerator
                 return true;
             if (EndDateExpression.Parse(p_Context))
                 return true;
-          
-
 
             if (InitializeObject(p_Context as Project))
                 return true;
@@ -706,9 +704,9 @@ namespace DatesGenerator
         /// </summary>
         void SetupExportedIDs()
         {
-             //ToDo: set an object name only if the object is going to be published, otherwise set to empty string.
-             StartDateExpression.Name = VarName + "StartDate";
-             EndDateExpression.Name = VarName + "EndDate";
+            // ToDo: set an object name only if the object is going to be published, otherwise set to empty string.
+            StartDateExpression.Name = VarName + "StartDate";
+            EndDateExpression.Name = VarName + "EndDate";
         }
 
         /// <summary>
