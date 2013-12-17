@@ -42,7 +42,7 @@ namespace DatesGenerator
         /// </returns>
         public Tuple<Type, string>[] GetTypes()
         {
-            return new Tuple<Type, string>[] { new Tuple<Type, string>(typeof(DateFrequency), "Date Frequency") };
+            return new Tuple<Type, string>[] { new Tuple<Type, string>(typeof(DateFrequency), "Dates' Sequence Frequency") };
         }
 
         #endregion
