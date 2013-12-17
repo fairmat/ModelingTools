@@ -128,7 +128,7 @@
             this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxName.Location = new System.Drawing.Point(44, 3);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(426, 20);
+            this.textBoxName.Size = new System.Drawing.Size(338, 20);
             this.textBoxName.TabIndex = 9;
             // 
             // tableLayoutPanelDefinition
@@ -162,11 +162,11 @@
             this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDate});
             this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewDates.Location = new System.Drawing.Point(488, 3);
+            this.dataGridViewDates.Location = new System.Drawing.Point(400, 3);
             this.dataGridViewDates.Name = "dataGridViewDates";
             this.dataGridViewDates.ReadOnly = true;
             this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
-            this.dataGridViewDates.Size = new System.Drawing.Size(107, 288);
+            this.dataGridViewDates.Size = new System.Drawing.Size(195, 288);
             this.dataGridViewDates.TabIndex = 12;
             // 
             // columnDate
@@ -185,7 +185,7 @@
             this.groupBoxDatesSequence.Location = new System.Drawing.Point(3, 70);
             this.groupBoxDatesSequence.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.groupBoxDatesSequence.Name = "groupBoxDatesSequence";
-            this.groupBoxDatesSequence.Size = new System.Drawing.Size(479, 183);
+            this.groupBoxDatesSequence.Size = new System.Drawing.Size(391, 183);
             this.groupBoxDatesSequence.TabIndex = 12;
             this.groupBoxDatesSequence.TabStop = false;
             this.groupBoxDatesSequence.Text = "Dates Sequence";
@@ -220,7 +220,7 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(473, 162);
+            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(385, 162);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
             // expressionStartDate
@@ -323,7 +323,7 @@
             this.groupBoxParameterInfo.Location = new System.Drawing.Point(3, 5);
             this.groupBoxParameterInfo.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.groupBoxParameterInfo.Name = "groupBoxParameterInfo";
-            this.groupBoxParameterInfo.Size = new System.Drawing.Size(479, 47);
+            this.groupBoxParameterInfo.Size = new System.Drawing.Size(391, 47);
             this.groupBoxParameterInfo.TabIndex = 12;
             this.groupBoxParameterInfo.TabStop = false;
             this.groupBoxParameterInfo.Text = "Parameter information";
@@ -344,7 +344,7 @@
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(473, 26);
+            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(385, 26);
             this.tableLayoutPanelParameterInfo.TabIndex = 0;
             // 
             // flowLayoutPanelButtons
@@ -503,7 +503,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(701, 356);
+            this.ClientSize = new System.Drawing.Size(705, 356);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
