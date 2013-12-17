@@ -99,7 +99,7 @@ namespace DatesGenerator
             this.buttonUpdate.Click += buttonUpdate_Click;
             this.comboBoxDatesGeneration.SelectedIndexChanged += comboBoxDatesGeneration_SelectedIndexChanged;
             this.comboBoxFrequency.SelectedIndexChanged += comboBoxFrequency_SelectedIndexChanged;
-            this.checkBoxExcludeStartDate.CheckedChanged += checkBoxExclude_CheckedChanged;
+            this.expressionSkipPeriods.TextChanged += checkBoxExclude_CheckedChanged;
             this.checkBoxFollowFrequency.CheckedChanged += (obj, args) => HandleAutomaticPreview();
             this.expressionEndDate.TextChanged += expressionEndDate_TextChanged;
             this.expressionStartDate.TextChanged += expressionStartDate_TextChanged;
@@ -202,11 +202,11 @@ namespace DatesGenerator
         void comboBoxDatesGeneration_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.comboBoxDatesGeneration.SelectedIndex == 0)
-                this.checkBoxExcludeStartDate.Enabled = true;
+                this.expressionSkipPeriods.Enabled = true;
             else
             {
-                this.checkBoxExcludeStartDate.Checked = false;
-                this.checkBoxExcludeStartDate.Enabled = false;
+                this.expressionSkipPeriods.Text = string.Empty;
+                this.expressionSkipPeriods.Enabled = false;
             }
 
             HandleAutomaticPreview();
@@ -267,7 +267,7 @@ namespace DatesGenerator
                         this.expressionEndDate.Text = endDateExpression.ToString();
 
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
-                    this.checkBoxExcludeStartDate.Checked = ((ModelParameterDateSequence)this.editedObject).ExcludeStartDate;
+                    this.expressionSkipPeriods.Text = ((ModelParameterDateSequence)this.editedObject).SkipPeriods.Expr.GetValue(0, 0).ToString();
                     this.checkBoxFollowFrequency.Checked = ((ModelParameterDateSequence)this.editedObject).FollowFrequency;
                     this.comboBoxDatesGeneration.SelectedIndex = ((ModelParameterDateSequence)this.editedObject).GenerateSequenceFromStartDate ? 0 : 1;
                 }
@@ -282,8 +282,8 @@ namespace DatesGenerator
                 // Disable the possibility of excluding the start date when generated backward
                 if (this.comboBoxDatesGeneration.SelectedIndex != 0)
                 {
-                    this.checkBoxExcludeStartDate.Checked = false;
-                    this.checkBoxExcludeStartDate.Enabled = false;
+                    this.expressionSkipPeriods.Text = string.Empty;
+                    this.expressionSkipPeriods.Enabled = false;
                 }
             }
         }
@@ -393,7 +393,7 @@ namespace DatesGenerator
                 // Initialize the model parameter representing the sequence of dates
                 ModelParameterDateSequence modelParameterDateSequence = (ModelParameterDateSequence)this.editedObject;
                 modelParameterDateSequence.StartDateExpression = this.expressionStartDate.Text;
-                modelParameterDateSequence.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
+                modelParameterDateSequence.SkipPeriods = this.expressionSkipPeriods.Text;
                 modelParameterDateSequence.FollowFrequency = this.checkBoxFollowFrequency.Checked;
                 modelParameterDateSequence.EndDateExpression = this.expressionEndDate.Text;
                 modelParameterDateSequence.FrequencyExpression = this.comboBoxFrequency.Text;
@@ -411,7 +411,7 @@ namespace DatesGenerator
                                                                                                        this.expressionEndDate.Text,
                                                                                                        this.comboBoxFrequency.Text);
 
-                modelParameterDateSequence.ExcludeStartDate = this.checkBoxExcludeStartDate.Checked;
+                modelParameterDateSequence.SkipPeriods = this.expressionSkipPeriods.Text;
                 modelParameterDateSequence.Parse(this.project);
                 modelParameterDateSequence.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
                 this.editedObject.Values = modelParameterDateSequence.Values;
@@ -436,13 +436,13 @@ namespace DatesGenerator
             string startDate = this.expressionStartDate.Text;
             string endDate = this.expressionEndDate.Text;
             string frequency = this.comboBoxFrequency.Text;
-            bool excludeStartDate = this.checkBoxExcludeStartDate.Checked;
+            string skipPeriods = this.expressionSkipPeriods.Text;
             bool followFrequency = this.checkBoxFollowFrequency.Checked;
             bool generateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
             previewThread = new Thread(() => InitializeDatesPreviewThreadWorker(startDate, 
                                                                                 endDate, 
-                                                                                frequency, 
-                                                                                excludeStartDate, 
+                                                                                frequency,
+                                                                                skipPeriods, 
                                                                                 followFrequency, 
                                                                                 generateSequenceFromStartDate));
 
@@ -453,7 +453,7 @@ namespace DatesGenerator
         private void InitializeDatesPreviewThreadWorker(string startDate, 
                                                         string endDate, 
                                                         string frequency, 
-                                                        bool excludeStartDate, 
+                                                        string skipPeriods, 
                                                         bool followFrequency, 
                                                         bool generateSequenceFromStartDate)
         {
@@ -473,7 +473,7 @@ namespace DatesGenerator
                     return;
                 }
 
-                preview.ExcludeStartDate = excludeStartDate;
+                preview.SkipPeriods = skipPeriods;
                 preview.FollowFrequency = followFrequency;
                 preview.GenerateSequenceFromStartDate = generateSequenceFromStartDate;
 
@@ -571,7 +571,7 @@ namespace DatesGenerator
             {
                 var dateSequence = (ModelParameterDateSequence)parameter;
                 dictionary.Add("StartDateExpression", dateSequence.StartDateExpression);
-                dictionary.Add("ExcludeStartDate", dateSequence.ExcludeStartDate);
+                dictionary.Add("SkipPeriods", dateSequence.SkipPeriods);
                 dictionary.Add("FollowFrequency", dateSequence.FollowFrequency);
                 dictionary.Add("EndDateExpression", dateSequence.EndDateExpression);
                 dictionary.Add("FrequencyExpression", dateSequence.FrequencyExpression);
@@ -596,7 +596,7 @@ namespace DatesGenerator
             {
                 var dateSequence = (ModelParameterDateSequence)parameter;
                 dateSequence.StartDateExpression = (ModelParameter)dictionary["StartDateExpression"];
-                dateSequence.ExcludeStartDate = (bool)dictionary["ExcludeStartDate"];
+                dateSequence.SkipPeriods = (ModelParameter)dictionary["SkipPeriods"];
                 dateSequence.FollowFrequency = (bool)dictionary["FollowFrequency"];
                 dateSequence.EndDateExpression = (ModelParameter)dictionary["EndDateExpression"];
                 dateSequence.FrequencyExpression = (string)dictionary["FrequencyExpression"];

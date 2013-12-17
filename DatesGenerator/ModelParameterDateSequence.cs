@@ -37,7 +37,7 @@ namespace DatesGenerator
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
-        private int version = 4;
+        private int version = 5;
 
         /// <summary>
         /// Backing field for the EndDate property.
@@ -53,6 +53,11 @@ namespace DatesGenerator
         /// Backing field for the Frequency property.
         /// </summary>
         private DateFrequency frequency;
+
+        /// <summary>
+        /// The numerical value of the number of periods to skip (truncated to int)
+        /// </summary>
+        private int skipPeriodsParsed;
 
         #endregion // Fields
 
@@ -80,9 +85,9 @@ namespace DatesGenerator
         public ModelParameter StartDateExpression { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the start date has to be excluded.
+        /// Gets or sets the number of periods to skip during the generation (as an expression).
         /// </summary>
-        public bool ExcludeStartDate { get; set; }
+        public ModelParameter SkipPeriods { get; set; }
 
         /// <summary>
         /// Gets or sets the end date.
@@ -227,6 +232,7 @@ namespace DatesGenerator
             Frequency = frequency;
             GenerateSequenceFromStartDate = true;
             FollowFrequency = true;
+            SkipPeriods = new ModelParameter((double)0);
         }
 
         /// <summary>
@@ -242,6 +248,7 @@ namespace DatesGenerator
             FrequencyExpression = frequencyExpression;
             GenerateSequenceFromStartDate = true;
             FollowFrequency = true;
+            SkipPeriods = new ModelParameter((double)0);
         }
 
         /// <summary>
@@ -295,12 +302,13 @@ namespace DatesGenerator
 
                 if (serialializedVersion >= 1)
                 {
-                    // Introduction of ExludeStartDate
-                    ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
+                    // Introduction of ExcludeStartDate
+                    bool exclude = info.GetBoolean("_ExcludeStartDate");
+                    SkipPeriods = exclude ? new ModelParameter(1) : new ModelParameter((double)0);
                 }
                 else
                 {
-                    ExcludeStartDate = false;
+                    SkipPeriods = new ModelParameter((double)0);
                 }
 
                 #endregion // No expressions
@@ -330,13 +338,23 @@ namespace DatesGenerator
                 }
 
                 FrequencyExpression = info.GetString("_FrequencyExpression");
-                ExcludeStartDate = info.GetBoolean("_ExcludeStartDate");
 
                 if (serialializedVersion >= 3)
                 {
                     // FollowFrequency and GenerateSequenceFromStartDate in version 3
                     FollowFrequency = info.GetBoolean("_FollowFrequency");
                     GenerateSequenceFromStartDate = info.GetBoolean("_GenerateSequenceFromStartDate");
+                }
+
+                // Skip Periods introduced in version 5
+                if (serialializedVersion < 5)
+                {
+                    bool exclude = info.GetBoolean("_ExcludeStartDate");
+                    SkipPeriods = exclude ? new ModelParameter(1) : new ModelParameter((double)0);
+                }
+                else
+                {
+                    SkipPeriods = (ModelParameter)info.GetValue("_SkipPeriods", typeof(ModelParameter));
                 }
             }
         }
@@ -354,7 +372,11 @@ namespace DatesGenerator
         {
             if (StartDateExpression.Parse(p_Context))
                 return true;
+
             if (EndDateExpression.Parse(p_Context))
+                return true;
+
+            if (SkipPeriods.Parse(p_Context))
                 return true;
 
             if (InitializeObject(p_Context as Project))
@@ -392,14 +414,20 @@ namespace DatesGenerator
 
             // Add the dates from the designated start date adding the interval each time
             DateTime tempDate = StartDate;
-            if (ExcludeStartDate)
-                tempDate = AddPeriod(Frequency, StartDate, ++i, GenerateSequenceFromStartDate);
+            int datesSkipped = 0;
 
             while (tempDate.CompareTo(EndDate) < 0)
             {
-                rv = RightValue.ConvertFrom(tempDate, true);
+                if (datesSkipped < skipPeriodsParsed)
+                {
+                    datesSkipped++;
+                }
+                else
+                {
+                    rv = RightValue.ConvertFrom(tempDate, true);
+                    dates.Add(rv);
+                }
 
-                dates.Add(rv);
                 tempDate = AddPeriod(Frequency, StartDate, ++i, GenerateSequenceFromStartDate);
             }
 
@@ -510,7 +538,7 @@ namespace DatesGenerator
             info.AddValue("_StartDateExpression", StartDateExpression);
             info.AddValue("_EndDateExpression", EndDateExpression);
             info.AddValue("_FrequencyExpression", this.FrequencyExpression);
-            info.AddValue("_ExcludeStartDate", ExcludeStartDate);
+            info.AddValue("_SkipPeriods", SkipPeriods);
             info.AddValue("_FollowFrequency", FollowFrequency);
             info.AddValue("_GenerateSequenceFromStartDate", GenerateSequenceFromStartDate);
             info.AddValue("_VersionDateSequence", version);
@@ -673,7 +701,17 @@ namespace DatesGenerator
             }
 
             if (!GenerateSequenceFromStartDate)
-                ExcludeStartDate = false;
+                SkipPeriods = new ModelParameter((double)0);
+
+            try
+            {
+                skipPeriodsParsed = (int)SkipPeriods.V();
+            }
+            catch (Exception ex)
+            {
+                context.AddError("The number of periods to skip is not valid. Details: " + ex.Message);
+                return true;
+            }
 
             return false;
         }
