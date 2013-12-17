@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="DatesGeneratorContextItem.cs" />
     <Compile Include="DatesSequenceSymbolChoice.cs" />
+    <Compile Include="Freq2Period.cs" />
     <Compile Include="ModelParameterDateSequence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

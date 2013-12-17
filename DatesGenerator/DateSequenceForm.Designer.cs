@@ -127,7 +127,7 @@
             this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxName.Location = new System.Drawing.Point(44, 3);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(213, 20);
+            this.textBoxName.Size = new System.Drawing.Size(426, 20);
             this.textBoxName.TabIndex = 9;
             // 
             // tableLayoutPanelDefinition
@@ -150,7 +150,7 @@
             this.tableLayoutPanelDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDefinition.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelDefinition.Size = new System.Drawing.Size(606, 262);
+            this.tableLayoutPanelDefinition.Size = new System.Drawing.Size(685, 262);
             this.tableLayoutPanelDefinition.TabIndex = 11;
             // 
             // dataGridViewDates
@@ -161,11 +161,11 @@
             this.dataGridViewDates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDate});
             this.dataGridViewDates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewDates.Location = new System.Drawing.Point(385, 3);
+            this.dataGridViewDates.Location = new System.Drawing.Point(488, 3);
             this.dataGridViewDates.Name = "dataGridViewDates";
             this.dataGridViewDates.ReadOnly = true;
             this.tableLayoutPanelDefinition.SetRowSpan(this.dataGridViewDates, 3);
-            this.dataGridViewDates.Size = new System.Drawing.Size(131, 262);
+            this.dataGridViewDates.Size = new System.Drawing.Size(107, 262);
             this.dataGridViewDates.TabIndex = 12;
             // 
             // columnDate
@@ -184,7 +184,7 @@
             this.groupBoxDatesSequence.Location = new System.Drawing.Point(3, 70);
             this.groupBoxDatesSequence.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.groupBoxDatesSequence.Name = "groupBoxDatesSequence";
-            this.groupBoxDatesSequence.Size = new System.Drawing.Size(376, 161);
+            this.groupBoxDatesSequence.Size = new System.Drawing.Size(479, 161);
             this.groupBoxDatesSequence.TabIndex = 12;
             this.groupBoxDatesSequence.TabStop = false;
             this.groupBoxDatesSequence.Text = "Dates Sequence";
@@ -216,13 +216,13 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(370, 140);
+            this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(473, 140);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
             // checkBoxExcludeStartDate
             // 
             this.checkBoxExcludeStartDate.AutoSize = true;
-            this.checkBoxExcludeStartDate.Location = new System.Drawing.Point(292, 3);
+            this.checkBoxExcludeStartDate.Location = new System.Drawing.Point(395, 3);
             this.checkBoxExcludeStartDate.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.checkBoxExcludeStartDate.Name = "checkBoxExcludeStartDate";
             this.checkBoxExcludeStartDate.Size = new System.Drawing.Size(75, 20);
@@ -238,7 +238,7 @@
             this.expressionEndDate.Location = new System.Drawing.Point(115, 30);
             this.expressionEndDate.Multiline = false;
             this.expressionEndDate.Name = "expressionEndDate";
-            this.expressionEndDate.Size = new System.Drawing.Size(164, 21);
+            this.expressionEndDate.Size = new System.Drawing.Size(267, 21);
             this.expressionEndDate.TabIndex = 14;
             this.expressionEndDate.Text = "";
             this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
@@ -248,7 +248,7 @@
             this.comboBoxFrequency.FormattingEnabled = true;
             this.comboBoxFrequency.Location = new System.Drawing.Point(115, 57);
             this.comboBoxFrequency.Name = "comboBoxFrequency";
-            this.comboBoxFrequency.Size = new System.Drawing.Size(164, 24);
+            this.comboBoxFrequency.Size = new System.Drawing.Size(267, 24);
             this.comboBoxFrequency.TabIndex = 15;
             // 
             // expressionStartDate
@@ -258,7 +258,7 @@
             this.expressionStartDate.Location = new System.Drawing.Point(115, 3);
             this.expressionStartDate.Multiline = false;
             this.expressionStartDate.Name = "expressionStartDate";
-            this.expressionStartDate.Size = new System.Drawing.Size(164, 21);
+            this.expressionStartDate.Size = new System.Drawing.Size(267, 21);
             this.expressionStartDate.TabIndex = 6;
             this.expressionStartDate.Text = "";
             this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
@@ -284,7 +284,7 @@
             "Backward"});
             this.comboBoxDatesGeneration.Location = new System.Drawing.Point(115, 113);
             this.comboBoxDatesGeneration.Name = "comboBoxDatesGeneration";
-            this.comboBoxDatesGeneration.Size = new System.Drawing.Size(131, 24);
+            this.comboBoxDatesGeneration.Size = new System.Drawing.Size(267, 24);
             this.comboBoxDatesGeneration.TabIndex = 19;
             // 
             // labelDatesGeneration
@@ -308,7 +308,7 @@
             this.groupBoxParameterInfo.Location = new System.Drawing.Point(3, 5);
             this.groupBoxParameterInfo.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.groupBoxParameterInfo.Name = "groupBoxParameterInfo";
-            this.groupBoxParameterInfo.Size = new System.Drawing.Size(376, 47);
+            this.groupBoxParameterInfo.Size = new System.Drawing.Size(479, 47);
             this.groupBoxParameterInfo.TabIndex = 12;
             this.groupBoxParameterInfo.TabStop = false;
             this.groupBoxParameterInfo.Text = "Parameter information";
@@ -329,7 +329,7 @@
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanelParameterInfo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(370, 26);
+            this.tableLayoutPanelParameterInfo.Size = new System.Drawing.Size(473, 26);
             this.tableLayoutPanelParameterInfo.TabIndex = 0;
             // 
             // flowLayoutPanelButtons
@@ -338,7 +338,7 @@
             this.flowLayoutPanelButtons.Controls.Add(this.buttonUpdate);
             this.flowLayoutPanelButtons.Dock = System.Windows.Forms.DockStyle.Left;
             this.flowLayoutPanelButtons.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelButtons.Location = new System.Drawing.Point(522, 3);
+            this.flowLayoutPanelButtons.Location = new System.Drawing.Point(601, 3);
             this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
             this.tableLayoutPanelDefinition.SetRowSpan(this.flowLayoutPanelButtons, 3);
             this.flowLayoutPanelButtons.Size = new System.Drawing.Size(81, 262);
@@ -362,7 +362,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(3, 3);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(620, 294);
+            this.tabControlMain.Size = new System.Drawing.Size(699, 294);
             this.tabControlMain.TabIndex = 12;
             // 
             // tabPageDefinition
@@ -371,7 +371,7 @@
             this.tabPageDefinition.Location = new System.Drawing.Point(4, 22);
             this.tabPageDefinition.Name = "tabPageDefinition";
             this.tabPageDefinition.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDefinition.Size = new System.Drawing.Size(612, 268);
+            this.tabPageDefinition.Size = new System.Drawing.Size(691, 268);
             this.tabPageDefinition.TabIndex = 0;
             this.tabPageDefinition.Text = "Definition";
             this.tabPageDefinition.UseVisualStyleBackColor = true;
@@ -382,7 +382,7 @@
             this.tabPagePublishing.Location = new System.Drawing.Point(4, 22);
             this.tabPagePublishing.Name = "tabPagePublishing";
             this.tabPagePublishing.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePublishing.Size = new System.Drawing.Size(538, 268);
+            this.tabPagePublishing.Size = new System.Drawing.Size(612, 268);
             this.tabPagePublishing.TabIndex = 2;
             this.tabPagePublishing.Text = "Publishing";
             this.tabPagePublishing.UseVisualStyleBackColor = true;
@@ -396,7 +396,7 @@
             this.publishingInfoControl.Export = false;
             this.publishingInfoControl.Location = new System.Drawing.Point(3, 3);
             this.publishingInfoControl.Name = "publishingInfoControl";
-            this.publishingInfoControl.Size = new System.Drawing.Size(532, 262);
+            this.publishingInfoControl.Size = new System.Drawing.Size(606, 262);
             this.publishingInfoControl.TabIndex = 0;
             // 
             // tableLayoutPanelMain
@@ -410,7 +410,7 @@
             this.tableLayoutPanelMain.RowCount = 2;
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(626, 353);
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(705, 353);
             this.tableLayoutPanelMain.TabIndex = 14;
             // 
             // tableLayoutPanelStatusBar
@@ -428,7 +428,7 @@
             this.tableLayoutPanelStatusBar.RowCount = 1;
             this.tableLayoutPanelStatusBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelStatusBar.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
-            this.tableLayoutPanelStatusBar.Size = new System.Drawing.Size(620, 47);
+            this.tableLayoutPanelStatusBar.Size = new System.Drawing.Size(699, 47);
             this.tableLayoutPanelStatusBar.TabIndex = 13;
             // 
             // tableLayoutPanelButtons
@@ -440,7 +440,7 @@
             this.tableLayoutPanelButtons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanelButtons.Controls.Add(this.buttonCancel, 1, 0);
             this.tableLayoutPanelButtons.Controls.Add(this.buttonOk, 0, 0);
-            this.tableLayoutPanelButtons.Location = new System.Drawing.Point(439, 15);
+            this.tableLayoutPanelButtons.Location = new System.Drawing.Point(518, 15);
             this.tableLayoutPanelButtons.Margin = new System.Windows.Forms.Padding(3, 15, 3, 3);
             this.tableLayoutPanelButtons.Name = "tableLayoutPanelButtons";
             this.tableLayoutPanelButtons.RowCount = 1;
@@ -488,7 +488,7 @@
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(627, 356);
+            this.ClientSize = new System.Drawing.Size(701, 356);
             this.Controls.Add(this.tableLayoutPanelMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
