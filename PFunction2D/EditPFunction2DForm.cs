@@ -113,6 +113,11 @@ namespace PFunction2D
             PFunction2D tempFunction = new PFunction2D();
             DataGridToPointFunctionData(tempFunction);
 
+            if (tempFunction.Xcoordinates.Length == 0 || tempFunction.Ycoordinates.Length == 0)
+            {
+                MessageBox.Show(this, "Cannot draw underlying function, it contains inconsistencies!");
+                return;
+            }
             // Get the defined coordinates for the function in order
             // to define its edges and set them for the plot.
             // The values are in this order.
