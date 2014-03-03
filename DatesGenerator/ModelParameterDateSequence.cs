@@ -21,6 +21,7 @@ using DVPLUtils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace DatesGenerator
@@ -494,7 +495,7 @@ namespace DatesGenerator
             else
             {
                 // The end date doesn't follow the frequency schema so replace the
-                // last current date genrated with the last date of the sequence
+                // last current date generated with the last date of the sequence
                 DateTime startMinPeriod = new DateTime(tempDate.Year, tempDate.Month, 1);
                 DateTime endMinPeriod = AddPeriod(Frequency, startMinPeriod, 1, true);
                 if (StartDate.CompareTo(startMinPeriod) >= 0 &&
@@ -522,6 +523,9 @@ namespace DatesGenerator
             }
 
             dates.Reverse();
+            if (dates.Count > skipPeriodsParsed)
+                dates = dates.Skip(skipPeriodsParsed).ToList();
+
             return dates;
         }
 
@@ -699,9 +703,6 @@ namespace DatesGenerator
                 context.AddError("Frequency is not valid. Details: " + ex.Message);
                 return true;
             }
-
-            if (!GenerateSequenceFromStartDate)
-                SkipPeriods = new ModelParameter((double)0);
 
             try
             {

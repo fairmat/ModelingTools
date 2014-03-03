@@ -201,14 +201,6 @@ namespace DatesGenerator
         /// <param name="e">An EventArgs that contains the event data.</param>
         void comboBoxDatesGeneration_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.comboBoxDatesGeneration.SelectedIndex == 0)
-                this.expressionSkipPeriods.Enabled = true;
-            else
-            {
-                this.expressionSkipPeriods.Text = string.Empty;
-                this.expressionSkipPeriods.Enabled = false;
-            }
-
             HandleAutomaticPreview();
         }
 
@@ -277,13 +269,6 @@ namespace DatesGenerator
                     this.expressionStartDate.Text = DateTime.Now.Date.ToShortDateString();
                     this.expressionEndDate.Text = DateTime.Now.Date.ToShortDateString();
                     this.comboBoxFrequency.SelectedIndex = 0;
-                }
-
-                // Disable the possibility of excluding the start date when generated backward
-                if (this.comboBoxDatesGeneration.SelectedIndex != 0)
-                {
-                    this.expressionSkipPeriods.Text = string.Empty;
-                    this.expressionSkipPeriods.Enabled = false;
                 }
             }
         }
