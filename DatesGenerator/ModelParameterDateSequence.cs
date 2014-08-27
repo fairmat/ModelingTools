@@ -181,10 +181,11 @@ namespace DatesGenerator
         {
             get
             {
-                object[,] retValue = new object[3, 1];
+                object[,] retValue = new object[4, 1];
                 retValue[0, 0] = StartDateExpression.Expr.GetValue(0, 0);
                 retValue[1, 0] = EndDateExpression.Expr.GetValue(0, 0);
                 retValue[2, 0] = FrequencyExpression;
+                retValue[3, 0] = SkipPeriods.Expr.GetValue(0, 0);
                 return retValue;
             }
 
@@ -195,6 +196,7 @@ namespace DatesGenerator
                     StartDateExpression = (ModelParameter)value.GetValue(0, 0).ToString();
                     EndDateExpression = (ModelParameter)value.GetValue(1, 0).ToString();
                     FrequencyExpression = (string)value.GetValue(2, 0);
+                    SkipPeriods = (ModelParameter)value.GetValue(3, 0).ToString();
                 }
                 catch
                 {

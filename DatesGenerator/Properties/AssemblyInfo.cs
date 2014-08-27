@@ -52,10 +52,10 @@ using Mono.Addins;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.22")]
-[assembly: AssemblyFileVersion("1.0.22")]
+[assembly: AssemblyVersion("1.0.23")]
+[assembly: AssemblyFileVersion("1.0.23")]
 
 // Plugin information
-[assembly: Addin("Dates Generator", "1.0.22", Category = "Modeling Tools")]
+[assembly: Addin("Dates Generator", "1.0.23", Category = "Modeling Tools")]
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]
