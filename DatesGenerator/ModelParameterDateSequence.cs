@@ -385,7 +385,7 @@ namespace DatesGenerator
             if (InitializeObject(p_Context as Project))
                 return true;
 
-            if (Validation())
+            if (Validation(p_Context))
             {
                 List<RightValue> dates;
 
@@ -566,10 +566,16 @@ namespace DatesGenerator
         /// Validates the data of the object.
         /// </summary>
         /// <returns>true if the data has been successfully validated, false otherwise.</returns>
-        private bool Validation()
+        private bool Validation(IProject p_Context)
         {
-            // The start date has to be smaller than the end date
-            return this.StartDate.CompareTo(EndDate) <= 0;
+            // The start date must antecede than the end date
+            bool valid=this.StartDate.CompareTo(EndDate) <= 0;
+            if (!valid && p_Context != null)
+            {
+                p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antece 'End Date'");
+            }
+
+            return valid;
         }
 
         /// <summary>
@@ -762,7 +768,7 @@ namespace DatesGenerator
             if (InitializeObject(p_Context as Project))
                 return true;
 
-            if (Validation())
+            if (Validation(p_Context))
             {
                 List<RightValue> dates;
 
