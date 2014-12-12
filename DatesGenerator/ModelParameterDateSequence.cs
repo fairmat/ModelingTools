@@ -572,7 +572,7 @@ namespace DatesGenerator
             bool valid=this.StartDate.CompareTo(EndDate) <= 0;
             if (!valid && p_Context != null)
             {
-                p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antece 'End Date'");
+                p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antecede 'End Date'");
             }
 
             return valid;
