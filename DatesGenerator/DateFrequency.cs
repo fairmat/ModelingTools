@@ -55,6 +55,11 @@ namespace DatesGenerator
         /// <summary>
         /// One year.
         /// </summary>
-        Annual
+        Annual,
+
+        /// <summary>
+        /// Four months.
+        /// </summary>
+        ThreePerAnnum
     }
 }
