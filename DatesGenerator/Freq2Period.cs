@@ -50,6 +50,10 @@ namespace DatesGenerator
                     return 1.0 / 52;
                 case DateFrequency.Daily:
                     return 1.0 / 365;
+                case DateFrequency.EveryTwoYears:
+                    return 2;
+                case DateFrequency.EveryThreeYears:
+                    return 3;
                 default:
                     throw new Exception("Freq2Period: wrong input frequency!");
             }

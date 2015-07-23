@@ -60,6 +60,17 @@ namespace DatesGenerator
         /// <summary>
         /// Four months.
         /// </summary>
-        ThreePerAnnum
+        ThreePerAnnum,
+
+        /// <summary>
+        /// Every Two Years.
+        /// </summary>
+        EveryTwoYears,
+
+        /// <summary>
+        /// Every Three Years.
+        /// </summary>
+        EveryThreeYears
+
     }
 }

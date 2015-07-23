@@ -610,6 +610,10 @@ namespace DatesGenerator
                     return date.AddMonths(6 * periods);
                 case DateFrequency.Annual:
                     return date.AddYears(periods);
+                case DateFrequency.EveryTwoYears:
+                    return date.AddYears(2 * periods);
+                case DateFrequency.EveryThreeYears:
+                    return date.AddYears(3 * periods);
                 default:
                     return date;
             }
