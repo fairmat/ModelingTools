@@ -589,7 +589,7 @@ namespace DatesGenerator
         /// <param name="add">A value indicating if the period has to be added.</param>
         /// <returns>The DateTime where the specified number of periods has been added to
         /// the start date.</returns>
-        private DateTime AddPeriod(DateFrequency frequency, DateTime date, int periods, bool add)
+        public DateTime AddPeriod(DateFrequency frequency, DateTime date, int periods, bool add)
         {
             periods = add ? periods : -periods;
             switch (frequency)
