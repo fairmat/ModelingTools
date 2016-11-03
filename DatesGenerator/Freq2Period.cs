@@ -32,6 +32,11 @@ namespace DatesGenerator
         double func(double x)
         {
             DateFrequency df = (DateFrequency)(int)x;
+            return DateFrequency2YearFraction(df);
+        }
+
+       public static double DateFrequency2YearFraction(DateFrequency df)
+        {
             switch (df)
             {
                 case DateFrequency.Annual:
