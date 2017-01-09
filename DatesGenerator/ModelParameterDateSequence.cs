@@ -401,19 +401,28 @@ namespace DatesGenerator
 
             if (Validation(p_Context))
             {
-                List<RightValue> dates;
-
-                if (GenerateSequenceFromStartDate)
-                    dates = GenerateForward();
+                if (ValidVectorRef())
+                {
+                    var arrayReference = GetVectorRef();
+                    this.Values = new List<RightValue>();
+                    this.Values.AddRange(arrayReference.Values);
+                    return false;
+                }
                 else
-                    dates = GenerateBackward();
+                {
+                    List<RightValue> dates;
+                    if (GenerateSequenceFromStartDate)
+                        dates = GenerateForward();
+                    else
+                        dates = GenerateBackward();
 
-                if (dates.Count == 0)
-                    return true;
+                    if (dates.Count == 0)
+                        return true;
 
-                // Set the model parameter array values
-                this.Values = dates;
-                return base.Parse(p_Context);
+                    // Set the model parameter array values
+                    this.Values = dates;
+                    return base.Parse(p_Context);
+                }
             }
 
             return true;
