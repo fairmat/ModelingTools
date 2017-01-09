@@ -38,7 +38,7 @@ namespace DatesGenerator
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
-        private int version = 5;
+        private int version = 6;
 
         /// <summary>
         /// Backing field for the EndDate property.
@@ -89,6 +89,11 @@ namespace DatesGenerator
         /// Gets or sets the number of periods to skip during the generation (as an expression).
         /// </summary>
         public ModelParameter SkipPeriods { get; set; }
+
+        /// <summary>
+        /// Gets or sets the vector reference (if date sequence is not uniform).
+        /// </summary>
+        public string VectorReferenceExpr { get; set; }
 
         /// <summary>
         /// Gets or sets the end date.
@@ -359,6 +364,15 @@ namespace DatesGenerator
                 {
                     SkipPeriods = (ModelParameter)info.GetValue("_SkipPeriods", typeof(ModelParameter));
                 }
+
+                if(serialializedVersion < 6)
+                {
+                    VectorReferenceExpr = string.Empty;
+                }
+                else
+                {
+                    VectorReferenceExpr = info.GetString("_VectorReferenceExpr");
+                }
             }
         }
 
@@ -547,6 +561,7 @@ namespace DatesGenerator
             info.AddValue("_SkipPeriods", SkipPeriods);
             info.AddValue("_FollowFrequency", FollowFrequency);
             info.AddValue("_GenerateSequenceFromStartDate", GenerateSequenceFromStartDate);
+            info.AddValue("_VectorReferenceExpr", VectorReferenceExpr);
             info.AddValue("_VersionDateSequence", version);
         }
 
@@ -562,20 +577,50 @@ namespace DatesGenerator
         #endregion // Overridden methods
 
         #region Helper methods
+
+        private ModelParameterArray GetVectorRef()
+        {
+            var arrayReference = Engine.Parser.EvaluateAsReference(this.VectorReferenceExpr) as ModelParameterArray;
+            return arrayReference;
+        }
+
+        private bool ValidVectorRef()
+        {
+            bool useVector = false;
+            ModelParameterArray arrayReference = null;
+            if (!string.IsNullOrEmpty(this.VectorReferenceExpr))
+            {
+                arrayReference = GetVectorRef();
+                if (!Engine.Parser.GetParserError() && arrayReference != null && arrayReference.Values.Count > 0)
+                {
+                    useVector = true;
+                }
+            }
+
+            return useVector;
+        }
+
         /// <summary>
         /// Validates the data of the object.
         /// </summary>
         /// <returns>true if the data has been successfully validated, false otherwise.</returns>
         private bool Validation(IProject p_Context)
         {
-            // The start date must antecede than the end date
-            bool valid=this.StartDate.CompareTo(EndDate) <= 0;
-            if (!valid && p_Context != null)
+            if (ValidVectorRef())
             {
-                p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antecede 'End Date'");
+                return true;
             }
+            else
+            {
+                // The start date must antecede than the end date
+                bool valid = this.StartDate.CompareTo(EndDate) <= 0;
+                if (!valid && p_Context != null)
+                {
+                    p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antecede 'End Date'");
+                }
 
-            return valid;
+                return valid;
+            }
         }
 
         /// <summary>
@@ -776,28 +821,38 @@ namespace DatesGenerator
 
             if (Validation(p_Context))
             {
-                List<RightValue> dates;
-
-                if (StartDate >= minDate &&
-                    EndDate <= maxDate)
+                if (ValidVectorRef())
                 {
-
-                    if (GenerateSequenceFromStartDate)
-                        dates = GenerateForward();
-                    else
-                        dates = GenerateBackward();
-
-                    if (dates.Count == 0)
-                        return true;
+                    var arrayReference = GetVectorRef();
+                    this.Values = new List<RightValue>();
+                    this.Values.AddRange(arrayReference.Values);
+                    return false;
                 }
                 else
                 {
-                    dates = new List<RightValue>();
-                }
+                    List<RightValue> dates;
 
-                // Set the model parameter array values
-                this.Values = dates;
-                return base.Parse(p_Context);
+                    if (StartDate >= minDate &&
+                        EndDate <= maxDate)
+                    {
+
+                        if (GenerateSequenceFromStartDate)
+                            dates = GenerateForward();
+                        else
+                            dates = GenerateBackward();
+
+                        if (dates.Count == 0)
+                            return true;
+                    }
+                    else
+                    {
+                        dates = new List<RightValue>();
+                    }
+
+                    // Set the model parameter array values
+                    this.Values = dates;
+                    return base.Parse(p_Context);
+                }
             }
 
             return true;

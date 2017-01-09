@@ -66,8 +66,8 @@ namespace DatesGenerator
         {
             InitializeComponent();
             FinalizeInitialization();
-            
         }
+
         #endregion // Constructors
 
         #region Initialization
@@ -103,6 +103,7 @@ namespace DatesGenerator
             this.checkBoxFollowFrequency.CheckedChanged += (obj, args) => HandleAutomaticPreview();
             this.expressionEndDate.TextChanged += expressionEndDate_TextChanged;
             this.expressionStartDate.TextChanged += expressionStartDate_TextChanged;
+            this.expressionVectorRef.TextChanged += expressionVectorRef_TextChanged;
         }
 
         #endregion // Initialization
@@ -204,6 +205,17 @@ namespace DatesGenerator
             HandleAutomaticPreview();
         }
 
+        /// <summary>
+        /// Automatically updates the dates to be shown each time there is change
+        /// in the <see cref="expressionVectorRef"/> control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">An EventArgs that contains the event data.</param>
+        private void expressionVectorRef_TextChanged(object sender, EventArgs e)
+        {
+            HandleAutomaticPreview();
+        }
+
         #endregion // Handlers
 
         #region IEditorEx implementation
@@ -262,6 +274,7 @@ namespace DatesGenerator
                     this.expressionSkipPeriods.Text = ((ModelParameterDateSequence)this.editedObject).SkipPeriods.Expr.GetValue(0, 0).ToString();
                     this.checkBoxFollowFrequency.Checked = ((ModelParameterDateSequence)this.editedObject).FollowFrequency;
                     this.comboBoxDatesGeneration.SelectedIndex = ((ModelParameterDateSequence)this.editedObject).GenerateSequenceFromStartDate ? 0 : 1;
+                    this.expressionVectorRef.Text = ((ModelParameterDateSequence)this.editedObject).VectorReferenceExpr;
                 }
                 else
                 {
@@ -385,6 +398,7 @@ namespace DatesGenerator
                 modelParameterDateSequence.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
                 modelParameterDateSequence.VarName = this.textBoxName.Text;
                 modelParameterDateSequence.Tag = null;
+                modelParameterDateSequence.VectorReferenceExpr = this.expressionVectorRef.Text;
 
                 // Parse the object to generate the array of dates
                 modelParameterDateSequence.Parse(this.project);
@@ -397,8 +411,9 @@ namespace DatesGenerator
                                                                                                        this.comboBoxFrequency.Text);
 
                 modelParameterDateSequence.SkipPeriods = this.expressionSkipPeriods.Text;
-                modelParameterDateSequence.Parse(this.project);
+                modelParameterDateSequence.VectorReferenceExpr = this.expressionVectorRef.Text;
                 modelParameterDateSequence.GenerateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
+                modelParameterDateSequence.Parse(this.project);
                 this.editedObject.Values = modelParameterDateSequence.Values;
             }
         }
@@ -424,23 +439,26 @@ namespace DatesGenerator
             string skipPeriods = this.expressionSkipPeriods.Text;
             bool followFrequency = this.checkBoxFollowFrequency.Checked;
             bool generateSequenceFromStartDate = this.comboBoxDatesGeneration.SelectedIndex == 0;
-            previewThread = new Thread(() => InitializeDatesPreviewThreadWorker(startDate, 
-                                                                                endDate, 
+            string vectorRefExpr = this.expressionVectorRef.Text;
+            previewThread = new Thread(() => InitializeDatesPreviewThreadWorker(startDate,
+                                                                                endDate,
                                                                                 frequency,
-                                                                                skipPeriods, 
-                                                                                followFrequency, 
-                                                                                generateSequenceFromStartDate));
+                                                                                skipPeriods,
+                                                                                followFrequency,
+                                                                                generateSequenceFromStartDate,
+                                                                                vectorRefExpr));
 
             previewThread.IsBackground = true;
             previewThread.Start();
         }
 
-        private void InitializeDatesPreviewThreadWorker(string startDate, 
-                                                        string endDate, 
-                                                        string frequency, 
-                                                        string skipPeriods, 
-                                                        bool followFrequency, 
-                                                        bool generateSequenceFromStartDate)
+        private void InitializeDatesPreviewThreadWorker(string startDate,
+                                                        string endDate,
+                                                        string frequency,
+                                                        string skipPeriods,
+                                                        bool followFrequency,
+                                                        bool generateSequenceFromStartDate,
+                                                        string vectorRefExpr)
         {
             if (Validation(true))
             {
@@ -461,6 +479,7 @@ namespace DatesGenerator
                 preview.SkipPeriods = skipPeriods;
                 preview.FollowFrequency = followFrequency;
                 preview.GenerateSequenceFromStartDate = generateSequenceFromStartDate;
+                preview.VectorReferenceExpr = vectorRefExpr;
 
                 DateTime minDate = new DateTime(1900, 1, 1);
                 DateTime maxDate = new DateTime(2100, 12, 31);
@@ -561,6 +580,7 @@ namespace DatesGenerator
                 dictionary.Add("EndDateExpression", dateSequence.EndDateExpression);
                 dictionary.Add("FrequencyExpression", dateSequence.FrequencyExpression);
                 dictionary.Add("GenerateSequenceFromStartDate", dateSequence.GenerateSequenceFromStartDate);
+                dictionary.Add("VectorReferenceExpr", dateSequence.VectorReferenceExpr);
             }
             else
             {
@@ -586,6 +606,7 @@ namespace DatesGenerator
                 dateSequence.EndDateExpression = (ModelParameter)dictionary["EndDateExpression"];
                 dateSequence.FrequencyExpression = (string)dictionary["FrequencyExpression"];
                 dateSequence.GenerateSequenceFromStartDate = (bool)dictionary["GenerateSequenceFromStartDate"];
+                dateSequence.VectorReferenceExpr = (string)dictionary["VectorReferenceExpr"];
             }
             else
             {
