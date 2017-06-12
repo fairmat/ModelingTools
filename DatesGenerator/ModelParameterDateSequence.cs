@@ -656,6 +656,8 @@ namespace DatesGenerator
                     return date.AddDays(14 * periods);
                 case DateFrequency.Monthly:
                     return date.AddMonths(periods);
+                case DateFrequency.EveryTwoMonths:
+                    return date.AddMonths(2 * periods);
                 case DateFrequency.Quarterly:
                     return date.AddMonths(3 * periods);
                 case DateFrequency.ThreePerAnnum:

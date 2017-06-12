@@ -70,7 +70,12 @@ namespace DatesGenerator
         /// <summary>
         /// Every Three Years.
         /// </summary>
-        EveryThreeYears
+        EveryThreeYears,
+
+        /// <summary>
+        /// Two months periods.
+        /// </summary>
+        EveryTwoMonths
 
     }
 }

@@ -30,7 +30,7 @@ using Mono.Addins;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Fairmat SRL")]
 [assembly: AssemblyProduct("Dates Generator")]
-[assembly: AssemblyCopyright("Copyright © Fairmat SRL 2012")]
+[assembly: AssemblyCopyright("Copyright © Fairmat SRL 2012-2017")]
 [assembly: AssemblyTrademark("Fairmat")]
 [assembly: AssemblyCulture("")]
 
@@ -52,10 +52,10 @@ using Mono.Addins;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.27")]
-[assembly: AssemblyFileVersion("1.0.27")]
+[assembly: AssemblyVersion("1.0.28")]
+[assembly: AssemblyFileVersion("1.0.28")]
 
 // Plugin information
-[assembly: Addin("Dates Generator", "1.0.27", Category = "Modeling Tools")]
+[assembly: Addin("Dates Generator", "1.0.28", Category = "Modeling Tools")]
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]

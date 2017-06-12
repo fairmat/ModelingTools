@@ -45,6 +45,8 @@ namespace DatesGenerator
                     return 0.5;
                 case DateFrequency.Monthly:
                     return 1.0 / 12;
+                case DateFrequency.EveryTwoMonths:
+                    return 2.0 / 12;
                 case DateFrequency.ThreePerAnnum:
                     return 4.0 / 12;
                 case DateFrequency.Quarterly:
