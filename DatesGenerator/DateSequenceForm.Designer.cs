@@ -431,7 +431,6 @@
             this.publishingInfoControl.Comments = "";
             this.publishingInfoControl.Description = "";
             this.publishingInfoControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.publishingInfoControl.Export = false;
             this.publishingInfoControl.Location = new System.Drawing.Point(3, 3);
             this.publishingInfoControl.Name = "publishingInfoControl";
             this.publishingInfoControl.Size = new System.Drawing.Size(685, 285);
