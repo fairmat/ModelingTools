@@ -38,7 +38,7 @@ namespace DatesGenerator
         /// The version of the ModelParameterDateSequence object.
         /// </summary>
         [NonSerialized]
-        private int version = 6;
+        private int version = 7;
 
         /// <summary>
         /// Backing field for the EndDate property.
@@ -59,6 +59,11 @@ namespace DatesGenerator
         /// The numerical value of the number of periods to skip (truncated to int)
         /// </summary>
         private int skipPeriodsParsed;
+
+        /// <summary>
+        /// The numerical value of the number of periods to skip from the vector reference (truncated to int)
+        /// </summary>
+        private int skipPeriodsArrayParsed;
 
         #endregion // Fields
 
@@ -94,6 +99,11 @@ namespace DatesGenerator
         /// Gets or sets the vector reference (if date sequence is not uniform).
         /// </summary>
         public string VectorReferenceExpr { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of periods to skip from the vector reference (as an expression).
+        /// </summary>
+        public ModelParameter SkipPeriodsArray { get; set; }
 
         /// <summary>
         /// Gets or sets the end date.
@@ -241,6 +251,7 @@ namespace DatesGenerator
             GenerateSequenceFromStartDate = true;
             FollowFrequency = true;
             SkipPeriods = new ModelParameter((double)0);
+            SkipPeriodsArray = new ModelParameter((double)0);
         }
 
         /// <summary>
@@ -257,6 +268,7 @@ namespace DatesGenerator
             GenerateSequenceFromStartDate = true;
             FollowFrequency = true;
             SkipPeriods = new ModelParameter((double)0);
+            SkipPeriodsArray = new ModelParameter((double)0);
         }
 
         /// <summary>
@@ -372,6 +384,7 @@ namespace DatesGenerator
                 else
                 {
                     VectorReferenceExpr = info.GetString("_VectorReferenceExpr");
+                    SkipPeriodsArray = ObjectSerialization.GetValue<ModelParameter>(info, "_SkipPeriodsArray", new ModelParameter(0.0));
                 }
             }
         }
@@ -403,9 +416,14 @@ namespace DatesGenerator
             {
                 if (ValidVectorRef())
                 {
+                    if (SkipPeriodsArray.Parse(p_Context))
+                    {
+                        return true;
+                    }
+
                     var arrayReference = GetVectorRef();
                     this.Values = new List<RightValue>();
-                    this.Values.AddRange(arrayReference.Values);
+                    this.Values.AddRange(arrayReference.Values.Skip(skipPeriodsArrayParsed));
                     return false;
                 }
                 else
@@ -571,6 +589,7 @@ namespace DatesGenerator
             info.AddValue("_FollowFrequency", FollowFrequency);
             info.AddValue("_GenerateSequenceFromStartDate", GenerateSequenceFromStartDate);
             info.AddValue("_VectorReferenceExpr", VectorReferenceExpr);
+            info.AddValue("_SkipPeriodsArray", SkipPeriodsArray);
             info.AddValue("_VersionDateSequence", version);
         }
 
@@ -784,6 +803,16 @@ namespace DatesGenerator
                 return true;
             }
 
+            try
+            {
+                skipPeriodsArrayParsed = (int)SkipPeriodsArray.V();
+            }
+            catch (Exception ex)
+            {
+                context.AddError("The number of periods to skip is not valid. Details: " + ex.Message);
+                return true;
+            }
+
             return false;
         }
 
@@ -836,7 +865,7 @@ namespace DatesGenerator
                 {
                     var arrayReference = GetVectorRef();
                     this.Values = new List<RightValue>();
-                    this.Values.AddRange(arrayReference.Values);
+                    this.Values.AddRange(arrayReference.Values.Skip(skipPeriodsArrayParsed));
                     return false;
                 }
                 else
