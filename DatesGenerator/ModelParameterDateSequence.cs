@@ -805,7 +805,8 @@ namespace DatesGenerator
 
             try
             {
-                skipPeriodsArrayParsed = (int)SkipPeriodsArray.V();
+                double v = SkipPeriodsArray?.V() ?? 0.0f;
+                skipPeriodsArrayParsed = (int)v;
             }
             catch (Exception ex)
             {
