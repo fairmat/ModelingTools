@@ -273,7 +273,7 @@ namespace DatesGenerator
 
                     this.comboBoxFrequency.Text = ((ModelParameterDateSequence)this.editedObject).FrequencyExpression;
                     this.expressionSkipPeriods.Text = ((ModelParameterDateSequence)this.editedObject).SkipPeriods.Expr.GetValue(0, 0).ToString();
-                    this.expressionSkipPeriodsArray.Text = ((ModelParameterDateSequence)this.editedObject).SkipPeriodsArray.Expr.GetValue(0, 0).ToString();
+                    this.expressionSkipPeriodsArray.Text = ((ModelParameterDateSequence)this.editedObject).SkipPeriodsArray?.Expr.GetValue(0, 0).ToString();
                     this.checkBoxFollowFrequency.Checked = ((ModelParameterDateSequence)this.editedObject).FollowFrequency;
                     this.comboBoxDatesGeneration.SelectedIndex = ((ModelParameterDateSequence)this.editedObject).GenerateSequenceFromStartDate ? 0 : 1;
                     this.expressionVectorRef.Text = ((ModelParameterDateSequence)this.editedObject).VectorReferenceExpr;
