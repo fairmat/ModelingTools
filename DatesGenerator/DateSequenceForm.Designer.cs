@@ -31,7 +31,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            
+            System.Windows.Forms.Label labelVectorRef;
             this.labelStartDate = new System.Windows.Forms.Label();
             this.labelEndDate = new System.Windows.Forms.Label();
             this.labelFrequency = new System.Windows.Forms.Label();
@@ -42,14 +42,16 @@
             this.groupBoxDatesSequence = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelDatesSequence = new System.Windows.Forms.TableLayoutPanel();
             this.expressionStartDate = new ExpressionTypyingHelper.OneLineExpressionControl();
-            this.expressionSkipPeriods = new ExpressionTypyingHelper.OneLineExpressionControl();
-            this.comboBoxDatesGeneration = new System.Windows.Forms.ComboBox();
-            this.labelDatesGeneration = new System.Windows.Forms.Label();
-            this.checkBoxFollowFrequency = new System.Windows.Forms.CheckBox();
-            this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
-            this.expressionEndDate = new ExpressionTypyingHelper.OneLineExpressionControl();
             this.labelSkipPeriods = new System.Windows.Forms.Label();
+            this.expressionSkipPeriods = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.expressionEndDate = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.comboBoxFrequency = new System.Windows.Forms.ComboBox();
             this.expressionVectorRef = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.labelSkipPeriodsArray = new System.Windows.Forms.Label();
+            this.expressionSkipPeriodsArray = new ExpressionTypyingHelper.OneLineExpressionControl();
+            this.checkBoxFollowFrequency = new System.Windows.Forms.CheckBox();
+            this.labelDatesGeneration = new System.Windows.Forms.Label();
+            this.comboBoxDatesGeneration = new System.Windows.Forms.ComboBox();
             this.groupBoxParameterInfo = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanelParameterInfo = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
@@ -66,9 +68,7 @@
             this.buttonOk = new System.Windows.Forms.Button();
             this.labelElementsCount = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.labelVectorRef = new System.Windows.Forms.Label();
-            this.labelSkipPeriodsArray = new System.Windows.Forms.Label();
-            this.expressionSkipPeriodsArray = new ExpressionTypyingHelper.OneLineExpressionControl();
+            labelVectorRef = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDates)).BeginInit();
             this.groupBoxDatesSequence.SuspendLayout();
             this.tableLayoutPanelDatesSequence.SuspendLayout();
@@ -86,32 +86,21 @@
             // 
             // labelVectorRef
             // 
-            this.labelVectorRef.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelVectorRef.AutoSize = true;
-            this.labelVectorRef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.labelVectorRef.Location = new System.Drawing.Point(3, 115);
-            this.labelVectorRef.Name = "labelVectorRef";
-            this.labelVectorRef.Size = new System.Drawing.Size(91, 13);
-            this.labelVectorRef.TabIndex = 22;
-            this.labelVectorRef.Text = "Vector Reference";
-            // 
-            // labelSkipPeriodsArray
-            // 
-            this.labelSkipPeriodsArray.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelSkipPeriodsArray.AutoSize = true;
-            this.labelSkipPeriodsArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.labelSkipPeriodsArray.Location = new System.Drawing.Point(3, 115);
-            this.labelSkipPeriodsArray.Name = "labelSkipPeriodsArray";
-            this.labelSkipPeriodsArray.Size = new System.Drawing.Size(91, 13);
-            this.labelSkipPeriodsArray.TabIndex = 22;
-            this.labelSkipPeriodsArray.Text = "Skip Periods";
+            labelVectorRef.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            labelVectorRef.AutoSize = true;
+            labelVectorRef.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            labelVectorRef.Location = new System.Drawing.Point(3, 101);
+            labelVectorRef.Name = "labelVectorRef";
+            labelVectorRef.Size = new System.Drawing.Size(91, 13);
+            labelVectorRef.TabIndex = 22;
+            labelVectorRef.Text = "Vector Reference";
             // 
             // labelStartDate
             // 
             this.labelStartDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelStartDate.AutoSize = true;
             this.labelStartDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelStartDate.Location = new System.Drawing.Point(3, 7);
+            this.labelStartDate.Location = new System.Drawing.Point(3, 5);
             this.labelStartDate.Name = "labelStartDate";
             this.labelStartDate.Size = new System.Drawing.Size(53, 13);
             this.labelStartDate.TabIndex = 1;
@@ -122,7 +111,7 @@
             this.labelEndDate.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelEndDate.AutoSize = true;
             this.labelEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelEndDate.Location = new System.Drawing.Point(3, 61);
+            this.labelEndDate.Location = new System.Drawing.Point(3, 53);
             this.labelEndDate.Name = "labelEndDate";
             this.labelEndDate.Size = new System.Drawing.Size(50, 13);
             this.labelEndDate.TabIndex = 2;
@@ -133,7 +122,7 @@
             this.labelFrequency.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelFrequency.AutoSize = true;
             this.labelFrequency.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelFrequency.Location = new System.Drawing.Point(3, 88);
+            this.labelFrequency.Location = new System.Drawing.Point(3, 77);
             this.labelFrequency.Name = "labelFrequency";
             this.labelFrequency.Size = new System.Drawing.Size(57, 13);
             this.labelFrequency.TabIndex = 3;
@@ -209,7 +198,7 @@
             this.tableLayoutPanelDatesSequence.Controls.Add(this.expressionEndDate, 1, 2);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.labelFrequency, 0, 3);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.comboBoxFrequency, 1, 3);
-            this.tableLayoutPanelDatesSequence.Controls.Add(this.labelVectorRef, 0, 4);
+            this.tableLayoutPanelDatesSequence.Controls.Add(labelVectorRef, 0, 4);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.expressionVectorRef, 1, 4);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.labelSkipPeriodsArray, 0, 5);
             this.tableLayoutPanelDatesSequence.Controls.Add(this.expressionSkipPeriodsArray, 1, 5);
@@ -227,6 +216,7 @@
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28816F));
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
             this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanelDatesSequence.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanelDatesSequence.Size = new System.Drawing.Size(385, 191);
             this.tableLayoutPanelDatesSequence.TabIndex = 13;
             // 
@@ -237,34 +227,110 @@
             this.expressionStartDate.Location = new System.Drawing.Point(115, 3);
             this.expressionStartDate.Multiline = false;
             this.expressionStartDate.Name = "expressionStartDate";
-            this.expressionStartDate.Size = new System.Drawing.Size(267, 20);
+            this.expressionStartDate.Size = new System.Drawing.Size(267, 18);
             this.expressionStartDate.TabIndex = 6;
             this.expressionStartDate.Text = "";
             this.expressionStartDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // labelSkipPeriods
+            // 
+            this.labelSkipPeriods.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelSkipPeriods.AutoSize = true;
+            this.labelSkipPeriods.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSkipPeriods.Location = new System.Drawing.Point(3, 29);
+            this.labelSkipPeriods.Name = "labelSkipPeriods";
+            this.labelSkipPeriods.Size = new System.Drawing.Size(66, 13);
+            this.labelSkipPeriods.TabIndex = 21;
+            this.labelSkipPeriods.Text = "Skip Periods";
             // 
             // expressionSkipPeriods
             // 
             this.expressionSkipPeriods.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.expressionSkipPeriods.KeyboardEventsEnabled = true;
-            this.expressionSkipPeriods.Location = new System.Drawing.Point(115, 30);
+            this.expressionSkipPeriods.Location = new System.Drawing.Point(115, 27);
             this.expressionSkipPeriods.Multiline = false;
             this.expressionSkipPeriods.Name = "expressionSkipPeriods";
-            this.expressionSkipPeriods.Size = new System.Drawing.Size(267, 20);
+            this.expressionSkipPeriods.Size = new System.Drawing.Size(267, 18);
             this.expressionSkipPeriods.TabIndex = 7;
             this.expressionSkipPeriods.Text = "";
             this.expressionSkipPeriods.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // expressionEndDate
+            // 
+            this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.expressionEndDate.KeyboardEventsEnabled = true;
+            this.expressionEndDate.Location = new System.Drawing.Point(115, 51);
+            this.expressionEndDate.Multiline = false;
+            this.expressionEndDate.Name = "expressionEndDate";
+            this.expressionEndDate.Size = new System.Drawing.Size(267, 18);
+            this.expressionEndDate.TabIndex = 14;
+            this.expressionEndDate.Text = "";
+            this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // comboBoxFrequency
+            // 
+            this.comboBoxFrequency.FormattingEnabled = true;
+            this.comboBoxFrequency.Location = new System.Drawing.Point(115, 75);
+            this.comboBoxFrequency.Name = "comboBoxFrequency";
+            this.comboBoxFrequency.Size = new System.Drawing.Size(267, 24);
+            this.comboBoxFrequency.TabIndex = 15;
+            // 
+            // expressionVectorRef
+            // 
+            this.expressionVectorRef.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.expressionVectorRef.KeyboardEventsEnabled = true;
+            this.expressionVectorRef.Location = new System.Drawing.Point(115, 99);
+            this.expressionVectorRef.Multiline = false;
+            this.expressionVectorRef.Name = "expressionVectorRef";
+            this.expressionVectorRef.Size = new System.Drawing.Size(267, 18);
+            this.expressionVectorRef.TabIndex = 23;
+            this.expressionVectorRef.Text = "";
+            this.expressionVectorRef.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // labelSkipPeriodsArray
+            // 
+            this.labelSkipPeriodsArray.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelSkipPeriodsArray.AutoSize = true;
+            this.labelSkipPeriodsArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.labelSkipPeriodsArray.Location = new System.Drawing.Point(3, 125);
+            this.labelSkipPeriodsArray.Name = "labelSkipPeriodsArray";
+            this.labelSkipPeriodsArray.Size = new System.Drawing.Size(66, 13);
+            this.labelSkipPeriodsArray.TabIndex = 22;
+            this.labelSkipPeriodsArray.Text = "Skip Periods";
             // 
             // expressionSkipPeriodsArray
             // 
             this.expressionSkipPeriodsArray.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.expressionSkipPeriodsArray.KeyboardEventsEnabled = true;
-            this.expressionSkipPeriodsArray.Location = new System.Drawing.Point(115, 30);
+            this.expressionSkipPeriodsArray.Location = new System.Drawing.Point(115, 123);
             this.expressionSkipPeriodsArray.Multiline = false;
             this.expressionSkipPeriodsArray.Name = "expressionSkipPeriodsArray";
-            this.expressionSkipPeriodsArray.Size = new System.Drawing.Size(267, 20);
+            this.expressionSkipPeriodsArray.Size = new System.Drawing.Size(267, 18);
             this.expressionSkipPeriodsArray.TabIndex = 7;
             this.expressionSkipPeriodsArray.Text = "";
             this.expressionSkipPeriodsArray.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // checkBoxFollowFrequency
+            // 
+            this.checkBoxFollowFrequency.AutoSize = true;
+            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxFollowFrequency, 3);
+            this.checkBoxFollowFrequency.Location = new System.Drawing.Point(3, 147);
+            this.checkBoxFollowFrequency.Name = "checkBoxFollowFrequency";
+            this.checkBoxFollowFrequency.Size = new System.Drawing.Size(177, 18);
+            this.checkBoxFollowFrequency.TabIndex = 18;
+            this.checkBoxFollowFrequency.Text = "Exact frequency following";
+            this.checkBoxFollowFrequency.UseVisualStyleBackColor = true;
+            // 
+            // labelDatesGeneration
+            // 
+            this.labelDatesGeneration.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.labelDatesGeneration.AutoSize = true;
+            this.labelDatesGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDatesGeneration.Location = new System.Drawing.Point(3, 172);
+            this.labelDatesGeneration.Name = "labelDatesGeneration";
+            this.labelDatesGeneration.Size = new System.Drawing.Size(106, 15);
+            this.labelDatesGeneration.TabIndex = 20;
+            this.labelDatesGeneration.Text = "Generation versus";
             // 
             // comboBoxDatesGeneration
             // 
@@ -274,75 +340,10 @@
             this.comboBoxDatesGeneration.Items.AddRange(new object[] {
             "Forward",
             "Backward"});
-            this.comboBoxDatesGeneration.Location = new System.Drawing.Point(115, 165);
+            this.comboBoxDatesGeneration.Location = new System.Drawing.Point(115, 171);
             this.comboBoxDatesGeneration.Name = "comboBoxDatesGeneration";
             this.comboBoxDatesGeneration.Size = new System.Drawing.Size(267, 24);
             this.comboBoxDatesGeneration.TabIndex = 19;
-            // 
-            // labelDatesGeneration
-            // 
-            this.labelDatesGeneration.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelDatesGeneration.AutoSize = true;
-            this.labelDatesGeneration.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDatesGeneration.Location = new System.Drawing.Point(3, 169);
-            this.labelDatesGeneration.Name = "labelDatesGeneration";
-            this.labelDatesGeneration.Size = new System.Drawing.Size(106, 15);
-            this.labelDatesGeneration.TabIndex = 20;
-            this.labelDatesGeneration.Text = "Generation versus";
-            // 
-            // checkBoxFollowFrequency
-            // 
-            this.checkBoxFollowFrequency.AutoSize = true;
-            this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxFollowFrequency, 3);
-            this.checkBoxFollowFrequency.Location = new System.Drawing.Point(3, 138);
-            this.checkBoxFollowFrequency.Name = "checkBoxFollowFrequency";
-            this.checkBoxFollowFrequency.Size = new System.Drawing.Size(177, 20);
-            this.checkBoxFollowFrequency.TabIndex = 18;
-            this.checkBoxFollowFrequency.Text = "Exact frequency following";
-            this.checkBoxFollowFrequency.UseVisualStyleBackColor = true;
-            // 
-            // comboBoxFrequency
-            // 
-            this.comboBoxFrequency.FormattingEnabled = true;
-            this.comboBoxFrequency.Location = new System.Drawing.Point(115, 84);
-            this.comboBoxFrequency.Name = "comboBoxFrequency";
-            this.comboBoxFrequency.Size = new System.Drawing.Size(267, 24);
-            this.comboBoxFrequency.TabIndex = 15;
-            // 
-            // expressionEndDate
-            // 
-            this.expressionEndDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.expressionEndDate.KeyboardEventsEnabled = true;
-            this.expressionEndDate.Location = new System.Drawing.Point(115, 57);
-            this.expressionEndDate.Multiline = false;
-            this.expressionEndDate.Name = "expressionEndDate";
-            this.expressionEndDate.Size = new System.Drawing.Size(267, 20);
-            this.expressionEndDate.TabIndex = 14;
-            this.expressionEndDate.Text = "";
-            this.expressionEndDate.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // labelSkipPeriods
-            // 
-            this.labelSkipPeriods.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.labelSkipPeriods.AutoSize = true;
-            this.labelSkipPeriods.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSkipPeriods.Location = new System.Drawing.Point(3, 34);
-            this.labelSkipPeriods.Name = "labelSkipPeriods";
-            this.labelSkipPeriods.Size = new System.Drawing.Size(66, 13);
-            this.labelSkipPeriods.TabIndex = 21;
-            this.labelSkipPeriods.Text = "Skip Periods";
-            // 
-            // expressionVectorRef
-            // 
-            this.expressionVectorRef.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.expressionVectorRef.KeyboardEventsEnabled = true;
-            this.expressionVectorRef.Location = new System.Drawing.Point(115, 111);
-            this.expressionVectorRef.Multiline = false;
-            this.expressionVectorRef.Name = "expressionVectorRef";
-            this.expressionVectorRef.Size = new System.Drawing.Size(267, 20);
-            this.expressionVectorRef.TabIndex = 23;
-            this.expressionVectorRef.Text = "";
-            this.expressionVectorRef.TextAlignment = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // groupBoxParameterInfo
             // 
@@ -460,6 +461,8 @@
             this.publishingInfoControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.publishingInfoControl.Location = new System.Drawing.Point(3, 3);
             this.publishingInfoControl.Name = "publishingInfoControl";
+            this.publishingInfoControl.PublishAsInput = false;
+            this.publishingInfoControl.PublishAsOutput = false;
             this.publishingInfoControl.Size = new System.Drawing.Size(685, 285);
             this.publishingInfoControl.TabIndex = 0;
             // 
@@ -622,7 +625,6 @@
         private System.Windows.Forms.Label labelSkipPeriods;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelDefinition;
         private ExpressionTypyingHelper.OneLineExpressionControl expressionVectorRef;
-        private System.Windows.Forms.Label labelVectorRef;
         private System.Windows.Forms.Label labelSkipPeriodsArray;
         private ExpressionTypyingHelper.OneLineExpressionControl expressionSkipPeriodsArray;
     }
