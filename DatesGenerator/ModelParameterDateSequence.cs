@@ -420,10 +420,22 @@ namespace DatesGenerator
                     {
                         return true;
                     }
-
-                    var arrayReference = GetVectorRef();
                     this.Values = new List<RightValue>();
-                    this.Values.AddRange(arrayReference.Values.Skip(skipPeriodsArrayParsed));
+                    ModelParameterArray[] references = GetVectorRef();
+                    for(int i = 0; i < references.Length; i++)
+                    {
+                        var reference = references[i];
+                        //applica lo skip solo al primo vettore
+                        if(i == 0)
+                        {
+                            this.Values.AddRange(reference.Values.Skip(skipPeriodsArrayParsed));
+                        } 
+                        else
+                        {
+                            this.Values.AddRange(reference.Values);
+                        }
+                    }
+                    
                     return false;
                 }
                 else
@@ -606,26 +618,36 @@ namespace DatesGenerator
 
         #region Helper methods
 
-        private ModelParameterArray GetVectorRef()
+        private ModelParameterArray[] GetVectorRef()
         {
-            var arrayReference = Engine.Parser.EvaluateAsReference(this.VectorReferenceExpr) as ModelParameterArray;
-            return arrayReference;
+            var arrayReference = Engine.Parser.EvaluateAsReference(this.VectorReferenceExpr);
+            var multipleReference = arrayReference as object[];
+            var singleReference = arrayReference as ModelParameterArray;
+            ModelParameterArray[] toReturn = null;
+            if(multipleReference != null)
+            {
+                toReturn = multipleReference.Select(x => x as ModelParameterArray).ToArray();
+            }
+            else
+            {
+                toReturn = new ModelParameterArray[] { singleReference };
+            }
+            
+            return toReturn;
         }
 
         private bool ValidVectorRef()
         {
-            bool useVector = false;
-            ModelParameterArray arrayReference = null;
-            if (!string.IsNullOrEmpty(this.VectorReferenceExpr))
+            bool existVectorReference = !string.IsNullOrEmpty(this.VectorReferenceExpr);
+            if(!existVectorReference)
             {
-                arrayReference = GetVectorRef();
-                if (!Engine.Parser.GetParserError() && arrayReference != null && arrayReference.Values.Count > 0)
-                {
-                    useVector = true;
-                }
+                return false;
             }
-
-            return useVector;
+            
+            ModelParameterArray[] vectorRef = GetVectorRef();
+            bool areReferencesOk = !Engine.Parser.GetParserError() &&
+                                   !vectorRef.Any( x => x as ModelParameterArray == null);
+            return areReferencesOk;
         }
 
         /// <summary>
@@ -864,9 +886,21 @@ namespace DatesGenerator
             {
                 if (ValidVectorRef())
                 {
-                    var arrayReference = GetVectorRef();
                     this.Values = new List<RightValue>();
-                    this.Values.AddRange(arrayReference.Values.Skip(skipPeriodsArrayParsed));
+                    var vectorRef = GetVectorRef();
+                    for (int i = 0; i < vectorRef.Length; i++)
+                    {
+                        var reference = vectorRef[i];
+                        //applica lo skip solo al primo vettore
+                        if (i == 0)
+                        {
+                            this.Values.AddRange(reference.Values.Skip(skipPeriodsArrayParsed));
+                        }
+                        else
+                        {
+                            this.Values.AddRange(reference.Values);
+                        }
+                    }
                     return false;
                 }
                 else
