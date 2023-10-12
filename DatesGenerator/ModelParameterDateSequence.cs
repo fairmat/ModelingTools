@@ -435,7 +435,29 @@ namespace DatesGenerator
                             this.Values.AddRange(reference.Values);
                         }
                     }
-                    
+
+                    var datesArray = this.Values.Select(x => x as RightValueDate).ToArray();
+                    for (int index = 1; index < datesArray.Length; index++)
+                    {
+                        var previousDate = datesArray[index - 1]?.m_Date;
+                        var date = datesArray[index]?.m_Date;
+
+                        if (date == null || previousDate == null)
+                        {
+                            p_Context.AddError($"{VectorReferenceExpr} some values are not dates.");
+                            return true;
+                        }
+
+                        bool areDuplicatesOrNotSorted = previousDate.Value >= date.Value;
+                        if (areDuplicatesOrNotSorted)
+                        {
+                            string errorMessage = $"{VectorReferenceExpr} has duplicated or unordered dates.";
+                            p_Context.AddError(errorMessage);
+                            return true;
+                        }
+
+                    }
+
                     return false;
                 }
                 else
@@ -646,7 +668,7 @@ namespace DatesGenerator
             
             ModelParameterArray[] vectorRef = GetVectorRef();
             bool areReferencesOk = !Engine.Parser.GetParserError() &&
-                                   !vectorRef.Any( x => x as ModelParameterArray == null);
+                                   !vectorRef.Any( x => x as ModelParameterArray == null || x.Values.Count == 0);
             return areReferencesOk;
         }
 
@@ -900,6 +922,28 @@ namespace DatesGenerator
                         {
                             this.Values.AddRange(reference.Values);
                         }
+                    }
+
+                    var datesArray = this.Values.Select(x => x as RightValueDate).ToArray();
+                    for(int index = 1; index < datesArray.Length; index++)
+                    {
+                        var previousDate = datesArray[index - 1]?.m_Date;
+                        var date = datesArray[index]?.m_Date;
+
+                        if(date == null || previousDate == null)
+                        {
+                            p_Context.AddError($"{VectorReferenceExpr} some values are not dates.");
+                            return true;
+                        }
+
+                        bool areDuplicatesOrNotSorted = previousDate.Value >= date.Value;
+                        if (areDuplicatesOrNotSorted)
+                        {
+                            string errorMessage = $"{VectorReferenceExpr} has duplicated or unordered dates." ;
+                            p_Context.AddError(errorMessage);
+                            return true;
+                        }
+
                     }
                     return false;
                 }
