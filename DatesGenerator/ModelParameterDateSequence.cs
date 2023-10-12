@@ -377,7 +377,7 @@ namespace DatesGenerator
                     SkipPeriods = (ModelParameter)info.GetValue("_SkipPeriods", typeof(ModelParameter));
                 }
 
-                if(serialializedVersion < 6)
+                if (serialializedVersion < 6)
                 {
                     VectorReferenceExpr = string.Empty;
                 }
@@ -392,6 +392,51 @@ namespace DatesGenerator
         #endregion // Constructor
 
         #region Overrided methods
+
+        /// <summary>
+        /// Parse the Vector References and checks data consistency.
+        /// </summary>
+        /// <param name="p_Context"></param>
+        /// <returns>True if there are errors, false otherwise.</returns>
+        private bool ParseVectorReferences(IProject p_Context)
+        {
+            ModelParameterArray[] references = GetVectorRef();
+            for (int i = 0; i < references.Length; i++)
+            {
+                var reference = references[i];
+                if (i == 0)
+                {
+                    this.Values.AddRange(reference.Values.Skip(skipPeriodsArrayParsed));
+                }
+                else
+                {
+                    this.Values.AddRange(reference.Values);
+                }
+            }
+
+            var datesArray = this.Values.Select(x => x as RightValueDate).ToArray();
+            for (int index = 1; index < datesArray.Length; index++)
+            {
+                var previousDate = datesArray[index - 1]?.m_Date;
+                var date = datesArray[index]?.m_Date;
+
+                if (date == null || previousDate == null)
+                {
+                    p_Context.AddError($"{VectorReferenceExpr} some values are not dates.");
+                    return true;
+                }
+
+                bool areDuplicatesOrNotSorted = previousDate.Value >= date.Value;
+                if (areDuplicatesOrNotSorted)
+                {
+                    string errorMessage = $"{VectorReferenceExpr} has duplicated or unordered dates.";
+                    p_Context.AddError(errorMessage);
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Parses the object.
@@ -421,44 +466,7 @@ namespace DatesGenerator
                         return true;
                     }
                     this.Values = new List<RightValue>();
-                    ModelParameterArray[] references = GetVectorRef();
-                    for(int i = 0; i < references.Length; i++)
-                    {
-                        var reference = references[i];
-                        //applica lo skip solo al primo vettore
-                        if(i == 0)
-                        {
-                            this.Values.AddRange(reference.Values.Skip(skipPeriodsArrayParsed));
-                        } 
-                        else
-                        {
-                            this.Values.AddRange(reference.Values);
-                        }
-                    }
-
-                    var datesArray = this.Values.Select(x => x as RightValueDate).ToArray();
-                    for (int index = 1; index < datesArray.Length; index++)
-                    {
-                        var previousDate = datesArray[index - 1]?.m_Date;
-                        var date = datesArray[index]?.m_Date;
-
-                        if (date == null || previousDate == null)
-                        {
-                            p_Context.AddError($"{VectorReferenceExpr} some values are not dates.");
-                            return true;
-                        }
-
-                        bool areDuplicatesOrNotSorted = previousDate.Value >= date.Value;
-                        if (areDuplicatesOrNotSorted)
-                        {
-                            string errorMessage = $"{VectorReferenceExpr} has duplicated or unordered dates.";
-                            p_Context.AddError(errorMessage);
-                            return true;
-                        }
-
-                    }
-
-                    return false;
+                    return ParseVectorReferences(p_Context);
                 }
                 else
                 {
@@ -646,7 +654,7 @@ namespace DatesGenerator
             var multipleReference = arrayReference as object[];
             var singleReference = arrayReference as ModelParameterArray;
             ModelParameterArray[] toReturn = null;
-            if(multipleReference != null)
+            if (multipleReference != null)
             {
                 toReturn = multipleReference.Select(x => x as ModelParameterArray).ToArray();
             }
@@ -654,21 +662,21 @@ namespace DatesGenerator
             {
                 toReturn = new ModelParameterArray[] { singleReference };
             }
-            
+
             return toReturn;
         }
 
         private bool ValidVectorRef()
         {
             bool existVectorReference = !string.IsNullOrEmpty(this.VectorReferenceExpr);
-            if(!existVectorReference)
+            if (!existVectorReference)
             {
                 return false;
             }
-            
+
             ModelParameterArray[] vectorRef = GetVectorRef();
             bool areReferencesOk = !Engine.Parser.GetParserError() &&
-                                   !vectorRef.Any( x => x as ModelParameterArray == null || x.Values.Count == 0);
+                                   !vectorRef.Any(x => x as ModelParameterArray == null || x.Values.Count == 0);
             return areReferencesOk;
         }
 
@@ -909,43 +917,7 @@ namespace DatesGenerator
                 if (ValidVectorRef())
                 {
                     this.Values = new List<RightValue>();
-                    var vectorRef = GetVectorRef();
-                    for (int i = 0; i < vectorRef.Length; i++)
-                    {
-                        var reference = vectorRef[i];
-                        //applica lo skip solo al primo vettore
-                        if (i == 0)
-                        {
-                            this.Values.AddRange(reference.Values.Skip(skipPeriodsArrayParsed));
-                        }
-                        else
-                        {
-                            this.Values.AddRange(reference.Values);
-                        }
-                    }
-
-                    var datesArray = this.Values.Select(x => x as RightValueDate).ToArray();
-                    for(int index = 1; index < datesArray.Length; index++)
-                    {
-                        var previousDate = datesArray[index - 1]?.m_Date;
-                        var date = datesArray[index]?.m_Date;
-
-                        if(date == null || previousDate == null)
-                        {
-                            p_Context.AddError($"{VectorReferenceExpr} some values are not dates.");
-                            return true;
-                        }
-
-                        bool areDuplicatesOrNotSorted = previousDate.Value >= date.Value;
-                        if (areDuplicatesOrNotSorted)
-                        {
-                            string errorMessage = $"{VectorReferenceExpr} has duplicated or unordered dates." ;
-                            p_Context.AddError(errorMessage);
-                            return true;
-                        }
-
-                    }
-                    return false;
+                    return ParseVectorReferences(p_Context);
                 }
                 else
                 {
