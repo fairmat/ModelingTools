@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DVPForms">
-      <HintPath>..\..\DVPLReferences\DVPForms.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="DVPLDOM">
       <HintPath>..\..\DVPLReferences\DVPLDOM.dll</HintPath>
       <Private>False</Private>
@@ -75,31 +71,15 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="UIBase">
-      <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateFrequencyExport.cs" />
     <Compile Include="DateFrequency.cs" />
     <Compile Include="DateFrequencyUtility.cs" />
-    <Compile Include="DateSequenceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DateSequenceForm.Designer.cs">
-      <DependentUpon>DateSequenceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DatesGeneratorContextItem.cs" />
     <Compile Include="DatesSequenceSymbolChoice.cs" />
     <Compile Include="Freq2Period.cs" />
     <Compile Include="ModelParameterDateSequence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DateSequenceForm.resx">
-      <DependentUpon>DateSequenceForm.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

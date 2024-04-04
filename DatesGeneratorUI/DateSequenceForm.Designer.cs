@@ -316,7 +316,7 @@
             this.tableLayoutPanelDatesSequence.SetColumnSpan(this.checkBoxFollowFrequency, 3);
             this.checkBoxFollowFrequency.Location = new System.Drawing.Point(3, 147);
             this.checkBoxFollowFrequency.Name = "checkBoxFollowFrequency";
-            this.checkBoxFollowFrequency.Size = new System.Drawing.Size(177, 18);
+            this.checkBoxFollowFrequency.Size = new System.Drawing.Size(176, 18);
             this.checkBoxFollowFrequency.TabIndex = 18;
             this.checkBoxFollowFrequency.Text = "Exact frequency following";
             this.checkBoxFollowFrequency.UseVisualStyleBackColor = true;
@@ -460,11 +460,15 @@
             this.publishingInfoControl.Description = "";
             this.publishingInfoControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.publishingInfoControl.Location = new System.Drawing.Point(3, 3);
+            this.publishingInfoControl.Mergeable = false;
             this.publishingInfoControl.Name = "publishingInfoControl";
+            this.publishingInfoControl.NumericStyle = "";
+            this.publishingInfoControl.NumericType = "";
             this.publishingInfoControl.PublishAsInput = false;
             this.publishingInfoControl.PublishAsOutput = false;
             this.publishingInfoControl.Size = new System.Drawing.Size(685, 285);
             this.publishingInfoControl.TabIndex = 0;
+            this.publishingInfoControl.Load += new System.EventHandler(this.publishingInfoControl_Load);
             // 
             // tableLayoutPanelMain
             // 

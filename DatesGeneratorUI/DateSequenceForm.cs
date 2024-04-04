@@ -623,6 +623,12 @@ namespace DatesGenerator
             }
         }
 
+
         #endregion // Helper methods
+
+        private void publishingInfoControl_Load(object sender, EventArgs e)
+        {
+            MessageBox.Show("SONO DATEGENERATOR UI");
+        }
     }
 }

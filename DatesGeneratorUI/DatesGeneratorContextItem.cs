@@ -17,11 +17,12 @@
 
 using System;
 using System.Collections.Generic;
+using DatesGenerator;
 using DVPLDOM;
 using DVPLI;
 using Mono.Addins;
 
-namespace DatesGenerator
+namespace DatesGeneratorUI
 {
     /// <summary>
     /// Represents the context menu item for the dates vector generator.
