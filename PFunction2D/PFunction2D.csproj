@@ -85,10 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CPointFunction2D.cs" />
-    <Compile Include="EditPFunction2DForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Function2DImportUtility.cs" />
     <Compile Include="PFunction2D.cs" />
     <Compile Include="PFunction2DSymbolChoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,11 +1,17 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGenerator", "DatesGenerator\DatesGenerator.csproj", "{86C0D51D-B82C-40E9-8784-3EB614396B3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2D", "PFunction2D\PFunction2D.csproj", "{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingTools.Tests", "ModelingTools.Tests\ModelingTools.Tests.csproj", "{E056296C-95D8-4A2B-A228-83B5FB28A1BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGeneratorUI", "DatesGeneratorUI\DatesGeneratorUI.csproj", "{B6224600-E81C-43B3-8AFD-A87DB0A50402}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2DUI", "PFunction2DUI\PFunction2DUI.csproj", "{96498F51-FB8B-400C-AB1A-104779463580}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,8 +31,19 @@ Global
 		{E056296C-95D8-4A2B-A228-83B5FB28A1BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E056296C-95D8-4A2B-A228-83B5FB28A1BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E056296C-95D8-4A2B-A228-83B5FB28A1BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6224600-E81C-43B3-8AFD-A87DB0A50402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6224600-E81C-43B3-8AFD-A87DB0A50402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6224600-E81C-43B3-8AFD-A87DB0A50402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6224600-E81C-43B3-8AFD-A87DB0A50402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96498F51-FB8B-400C-AB1A-104779463580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96498F51-FB8B-400C-AB1A-104779463580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96498F51-FB8B-400C-AB1A-104779463580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96498F51-FB8B-400C-AB1A-104779463580}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14D7DADA-6437-4428-9B7A-42F3AB07C172}
 	EndGlobalSection
 EndGlobal

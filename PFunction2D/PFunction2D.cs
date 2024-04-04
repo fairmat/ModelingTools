@@ -299,7 +299,7 @@ namespace PFunction2D
         /// <remarks>
         /// To be used only internally, use Evaluate to get the value at any coordinate.
         /// </remarks>
-        internal IRightValue[] Xcoordinates
+        public IRightValue[] Xcoordinates
         {
             get
             {
@@ -313,7 +313,7 @@ namespace PFunction2D
         /// <remarks>
         /// To be used only internally, use Evaluate to get the value at any coordinate.
         /// </remarks>
-        internal IRightValue[] Ycoordinates
+        public IRightValue[] Ycoordinates
         {
             get
             {
@@ -385,7 +385,7 @@ namespace PFunction2D
         /// To be used only internally, in order to set the wanted
         /// leastSquaresCoefficients and get what the current one.
         /// </remarks>
-        internal int LeastSquaresCoefficients
+        public int LeastSquaresCoefficients
         {
             get
             {
@@ -414,7 +414,7 @@ namespace PFunction2D
         /// on the values.
         /// </param>
         /// <returns>The requested RightValue at the position.</returns>
-        internal IRightValue this[int x, int y]
+        public IRightValue this[int x, int y]
         {
             get
             {
@@ -484,7 +484,7 @@ namespace PFunction2D
         /// <remarks>Anything stored is lost.</remarks>
         /// <param name="x">The size in the x dimension.</param>
         /// <param name="y">The size in the y dimension.</param>
-        internal void SetSizes(int x, int y)
+        public void SetSizes(int x, int y)
         {
             this.coordinatesX = new RightValue[x];
             this.coordinatesY = new RightValue[y];
@@ -498,7 +498,7 @@ namespace PFunction2D
         /// Anything stored in the other object is overwritten.
         /// </remarks>
         /// <param name="other">The object where to copy this object to.</param>
-        internal void CopyTo(PFunction2D other)
+        public void CopyTo(PFunction2D other)
         {
             other.SetSizes(this.coordinatesX.Length, this.coordinatesY.Length);
             other.coordinatesX = (IRightValue[])this.coordinatesX.Clone();
