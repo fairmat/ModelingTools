@@ -57,7 +57,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UIBase">
-      <HintPath>..\..\plugins\DVPLReferences\UIBase.dll</HintPath>
+      <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
