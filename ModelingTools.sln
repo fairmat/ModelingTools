@@ -1,11 +1,16 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGenerator", "DatesGenerator\DatesGenerator.csproj", "{86C0D51D-B82C-40E9-8784-3EB614396B3B}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatesGenerator", "DatesGenerator\DatesGenerator.csproj", "{86C0D51D-B82C-40E9-8784-3EB614396B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2D", "PFunction2D\PFunction2D.csproj", "{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PFunction2D", "PFunction2D\PFunction2D.csproj", "{61982E89-DAB3-4E01-BBE7-1BD5E3C71297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingTools.Tests", "ModelingTools.Tests\ModelingTools.Tests.csproj", "{E056296C-95D8-4A2B-A228-83B5FB28A1BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingTools.Tests", "ModelingTools.Tests\ModelingTools.Tests.csproj", "{E056296C-95D8-4A2B-A228-83B5FB28A1BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGeneratorGui", "DatesGeneratorGui\DatesGeneratorGui.csproj", "{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2DGui", "PFunction2DGui\PFunction2DGui.csproj", "{D8CF708F-3C72-4B79-8F91-66F09524382E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,8 +30,19 @@ Global
 		{E056296C-95D8-4A2B-A228-83B5FB28A1BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E056296C-95D8-4A2B-A228-83B5FB28A1BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E056296C-95D8-4A2B-A228-83B5FB28A1BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8CF708F-3C72-4B79-8F91-66F09524382E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8CF708F-3C72-4B79-8F91-66F09524382E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8CF708F-3C72-4B79-8F91-66F09524382E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8CF708F-3C72-4B79-8F91-66F09524382E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C38DDDC-9EEF-4109-B5A7-4B6D63EDE90A}
 	EndGlobalSection
 EndGlobal
