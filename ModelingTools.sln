@@ -8,9 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PFunction2D", "PFunction2D\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelingTools.Tests", "ModelingTools.Tests\ModelingTools.Tests.csproj", "{E056296C-95D8-4A2B-A228-83B5FB28A1BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGeneratorGui", "DatesGeneratorGui\DatesGeneratorGui.csproj", "{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatesGenerator.Gui", "DatesGeneratorGui\DatesGenerator.Gui.csproj", "{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2DGui", "PFunction2DGui\PFunction2DGui.csproj", "{D8CF708F-3C72-4B79-8F91-66F09524382E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PFunction2D.Gui", "PFunction2DGui\PFunction2D.Gui.csproj", "{D8CF708F-3C72-4B79-8F91-66F09524382E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>PFunction2DGui</_Parameter1>
+      <_Parameter1>PFunction2D.Gui</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 </Project>
