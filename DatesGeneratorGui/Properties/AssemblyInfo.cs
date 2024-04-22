@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using Mono.Addins;
 using System.Runtime.InteropServices;
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -9,3 +8,8 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("e2f0ed13-2030-42ef-b033-f6ac90e5ebae")]
+
+// Plugin information
+[assembly: Addin("Dates Generator", "1.0.29", Category = "Modeling Tools")]
+[assembly: AddinDependency("Fairmat", "1.0")]
+[assembly: AddinAuthor("Fairmat SRL")]
