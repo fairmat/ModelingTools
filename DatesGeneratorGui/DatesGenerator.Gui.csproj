@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{E2F0ED13-2030-42EF-B033-F6AC90E5EBAE}</ProjectGuid>
     <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>DatesGeneratorGui</AssemblyTitle>
     <Product>DatesGeneratorGui</Product>
     <Copyright>Copyright ©  2024</Copyright>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DVPForms">
