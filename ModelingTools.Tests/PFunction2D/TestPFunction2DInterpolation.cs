@@ -75,7 +75,7 @@ namespace PFunction2D
             PFunction2D func = SetTestData1();
             func.Interpolation = EInterpolationType.LINEAR;
             func.Parse(null);
-            Assert.AreEqual(50, func.Evaluate(50, 50));
+            Assert.That(50, Is.EqualTo(func.Evaluate(50, 50)));
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace PFunction2D
             PFunction2D func = SetTestData1();
             func.Interpolation = EInterpolationType.ZERO_ORDER;
             func.Parse(null);
-            Assert.AreEqual(100, func.Evaluate(50, 50));
+            Assert.That(100, Is.EqualTo(func.Evaluate(50, 50)));
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace PFunction2D
             PFunction2D func = SetTestData1();
             func.Interpolation = EInterpolationType.ZERO_ORDER_LEFT;
             func.Parse(null);
-            Assert.AreEqual(0, func.Evaluate(50, 50));
+            Assert.That(0, Is.EqualTo(func.Evaluate(50, 50)));
         }
     }
 }
