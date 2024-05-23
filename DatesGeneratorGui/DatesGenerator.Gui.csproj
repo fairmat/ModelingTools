@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
     <AssemblyTitle>DatesGeneratorGui</AssemblyTitle>
     <Product>DatesGeneratorGui</Product>
     <Copyright>Copyright ©  2024</Copyright>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -27,7 +28,6 @@
     <Reference Include="DVPLUtils">
       <HintPath>..\..\DVPLReferences\DVPLUtils.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="UIBase">
       <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
     </Reference>

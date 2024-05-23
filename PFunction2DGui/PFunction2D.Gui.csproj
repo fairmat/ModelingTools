@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{D8CF708F-3C72-4B79-8F91-66F09524382E}</ProjectGuid>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
     <AssemblyTitle>PFunction2DGui</AssemblyTitle>
     <Product>PFunction2DGui</Product>
     <Copyright>Copyright ©  2024</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -29,7 +30,6 @@
     <Reference Include="DVPLUtils">
       <HintPath>..\..\DVPLReferences\DVPLUtils.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="UIBase">
       <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
     </Reference>

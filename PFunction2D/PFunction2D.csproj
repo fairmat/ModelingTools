@@ -3,7 +3,7 @@
     <TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
+    <!--<UseWindowsForms>true</UseWindowsForms>-->
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>
