@@ -16,6 +16,7 @@
  */
 
 using DVPLDOM;
+using DVPLDOM.VectorFunctions;
 using DVPLI;
 using DVPLUtils;
 using System;
@@ -400,42 +401,22 @@ namespace DatesGenerator
         /// <returns>True if there are errors, false otherwise.</returns>
         private bool ParseVectorReferences(IProject p_Context)
         {
-            ModelParameterArray[] references = GetVectorRef();
-            for (int i = 0; i < references.Length; i++)
-            {
-                var reference = references[i];
-                if (i == 0)
-                {
-                    this.Values.AddRange(reference.Values.Skip(skipPeriodsArrayParsed));
-                }
-                else
-                {
-                    this.Values.AddRange(reference.Values);
-                }
-            }
-
-            var datesArray = this.Values.Select(x => x as RightValueDate).ToArray();
-            for (int index = 1; index < datesArray.Length; index++)
-            {
-                var previousDate = datesArray[index - 1]?.m_Date;
-                var date = datesArray[index]?.m_Date;
-
-                if (date == null || previousDate == null)
-                {
-                    p_Context.AddError($"{VectorReferenceExpr} some values are not dates.");
-                    return true;
-                }
-
-                bool areDuplicatesOrNotSorted = previousDate.Value >= date.Value;
-                if (areDuplicatesOrNotSorted)
-                {
-                    string errorMessage = $"{VectorReferenceExpr} has duplicated or unordered dates.";
-                    p_Context.AddError(errorMessage);
-                    return true;
-                }
-            }
-
+            var datesVectorParser = new DatesVectorReferenceParser(Engine.Parser);
+            (_, var references) = datesVectorParser.GetAndValidateModelParameterArrays(VectorReferenceExpr);
+            this.Values = datesVectorParser.GetDateValues(references);
+            this.Values = datesVectorParser.CleanUp(this.Values);
             return false;
+        }
+
+        /// <summary>
+        /// Checks if the vector reference is valid.
+        /// </summary>
+        /// <returns>true if valid, false otherwise.</returns>
+        private bool ValidVectorRef()
+        {
+            var datesVectorParser = new DatesVectorReferenceParser(Engine.Parser);
+            (var validVectorRef, _) = datesVectorParser.GetAndValidateModelParameterArrays(VectorReferenceExpr);
+            return validVectorRef;
         }
 
         /// <summary>
@@ -647,38 +628,6 @@ namespace DatesGenerator
         #endregion // Overridden methods
 
         #region Helper methods
-
-        private ModelParameterArray[] GetVectorRef()
-        {
-            var arrayReference = Engine.Parser.EvaluateAsReference(this.VectorReferenceExpr);
-            var multipleReference = arrayReference as object[];
-            var singleReference = arrayReference as ModelParameterArray;
-            ModelParameterArray[] toReturn = null;
-            if (multipleReference != null)
-            {
-                toReturn = multipleReference.Select(x => x as ModelParameterArray).ToArray();
-            }
-            else
-            {
-                toReturn = new ModelParameterArray[] { singleReference };
-            }
-
-            return toReturn;
-        }
-
-        private bool ValidVectorRef()
-        {
-            bool existVectorReference = !string.IsNullOrEmpty(this.VectorReferenceExpr);
-            if (!existVectorReference)
-            {
-                return false;
-            }
-
-            ModelParameterArray[] vectorRef = GetVectorRef();
-            bool areReferencesOk = !Engine.Parser.GetParserError() &&
-                                   !vectorRef.Any(x => x as ModelParameterArray == null || x.Values.Count == 0);
-            return areReferencesOk;
-        }
 
         /// <summary>
         /// Validates the data of the object.
