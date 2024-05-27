@@ -405,6 +405,7 @@ namespace DatesGenerator
             (_, var references) = datesVectorParser.GetAndValidateModelParameterArrays(VectorReferenceExpr);
             this.Values = datesVectorParser.GetDateValues(references);
             this.Values = datesVectorParser.CleanUp(this.Values);
+            this.Values = this.Values.Skip(skipPeriodsArrayParsed).ToList();
             return false;
         }
 
