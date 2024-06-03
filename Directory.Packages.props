@@ -1,0 +1,33 @@
+<Project>
+
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <IncludeLatestPreRelease>true</IncludeLatestPreRelease>
+        <CentralPackageFloatingVersionsEnabled>true</CentralPackageFloatingVersionsEnabled>
+        <FairmatDepsVersion>*-build*</FairmatDepsVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <FairmatDepsVersion>*</FairmatDepsVersion>
+    </PropertyGroup>
+
+    <ItemGroup Label="FairmatDeps">
+        <!-- Inser here the Fairmat dependencies -->
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
+        <PackageVersion Include="System.Data.DataSetExtensions" Version="4.5.0" />
+        <PackageVersion Include="NUnit" Version="4.1.0" />
+        <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageVersion Include="Mono.Addins" Version="1.4.1" />
+        <PackageVersion Include="System.Buffers" Version="4.5.1" />
+        <PackageVersion Include="System.Collections.Immutable" Version="8.0.0" />
+        <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+        <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+        <PackageVersion Include="System.Memory" Version="4.5.5" />
+        <PackageVersion Include="System.Net.Http" Version="4.3.4" />
+        <PackageVersion Include="System.Reflection.Emit" Version="4.7.0" />
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    </ItemGroup>
+    
+</Project>

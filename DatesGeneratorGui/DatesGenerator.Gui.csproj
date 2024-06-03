@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
-    <AssemblyTitle>DatesGeneratorGui</AssemblyTitle>
-    <Product>DatesGeneratorGui</Product>
-    <Copyright>Copyright ©  2024</Copyright>
+    <Title>DatesGenerator.Gui</Title>
+    <PackageId>$(BasePackageId).$(Title)</PackageId>
+    <AssemblyTitle>$(Title)</AssemblyTitle>
+    <Product>$(Title)</Product>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -13,21 +14,33 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <!-- TODO: This reference will be a nuget package soon, these lines below are temporary -->
+    <None Include="..\..\DVPLReferences\DVPForms.dll" Pack="true" PackagePath="lib" />
     <Reference Include="DVPForms">
       <HintPath>..\..\DVPLReferences\DVPForms.dll</HintPath>
     </Reference>
+    <!-- TODO: This reference will be a nuget package soon, these lines below are temporary -->
+    <None Include="..\..\DVPLReferences\DVPLDOM.dll" Pack="true" PackagePath="lib" />
     <Reference Include="DVPLDOM">
       <HintPath>..\..\DVPLReferences\DVPLDOM.dll</HintPath>
     </Reference>
+    <!-- TODO: This reference will be a nuget package soon, these lines below are temporary -->
+    <None Include="..\..\DVPLReferences\DVPLI.dll" Pack="true" PackagePath="lib" />
     <Reference Include="DVPLI">
       <HintPath>..\..\DVPLReferences\DVPLI.dll</HintPath>
     </Reference>
+    <!-- TODO: This reference will be a nuget package soon, these lines below are temporary -->
+    <None Include="..\..\DVPLReferences\DVPLInterfaces.dll" Pack="true" PackagePath="lib" />
     <Reference Include="DVPLInterfaces">
       <HintPath>..\..\DVPLReferences\DVPLInterfaces.dll</HintPath>
     </Reference>
+    <!-- TODO: This reference will be a nuget package soon, these lines below are temporary -->
+    <None Include="..\..\DVPLReferences\DVPLUtils.dll" Pack="true" PackagePath="lib" />
     <Reference Include="DVPLUtils">
       <HintPath>..\..\DVPLReferences\DVPLUtils.dll</HintPath>
     </Reference>
+    <!-- TODO: This reference will be a nuget package soon, these lines below are temporary -->
+    <None Include="..\..\DVPLReferences\UIBase.dll" Pack="true" PackagePath="lib" />
     <Reference Include="UIBase">
       <HintPath>..\..\DVPLReferences\UIBase.dll</HintPath>
     </Reference>
@@ -46,10 +59,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Mono.Addins" Version="1.4.1" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="System.Data.DataSetExtensions" />
+    <PackageReference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatesGenerator\DatesGenerator.csproj" />
