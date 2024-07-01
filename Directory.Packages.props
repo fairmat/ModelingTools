@@ -11,7 +11,19 @@
     </PropertyGroup>
 
     <ItemGroup Label="FairmatDeps">
-        <!-- Inser here the Fairmat dependencies -->
+        <!-- Fairmat references -->
+        <PackageVersion Include="FairmatDesktop.UI.DVPForms" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="FairmatDesktop.UI.UIBase" Version="$(FairmatDepsVersion)" />
+        
+        <!-- DVPL references -->
+        <PackageVersion Include="Fairmat.Dvpl.CoreExtensions" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.DVPLDOM" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.DVPLDOME" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.DVPLI" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.DVPLInterfaces" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.DVPLUtils" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.Fairmat.Optimization" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="Fairmat.Dvpl.DVPLSolverC" Version="$(FairmatDepsVersion)" />
     </ItemGroup>
 
     <ItemGroup>
