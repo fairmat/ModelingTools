@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Mono.Addins;
 
 // The following lines tell that the assembly is an addin.
@@ -5,3 +6,4 @@ using Mono.Addins;
 [assembly: AddinDependency("Fairmat", "1.0")]
 [assembly: AddinAuthor("Fairmat SRL")]
 [assembly: AddinDescription("A 2D function defined by interpolating or fitting data.")]
+[assembly: InternalsVisibleTo("PFunction2D.Gui")]

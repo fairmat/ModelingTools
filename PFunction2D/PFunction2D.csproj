@@ -5,32 +5,26 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+    <Title>PFunction2D</Title>
+    <!-- This project is used in both the solution ModelingTools and the solution EquityModels therefore I need to specify the BasePackageId property --> 
+    <BasePackageId>Fairmat.Plugins.ModelingTools</BasePackageId>
+    <PackageId>$(BasePackageId).$(Title)</PackageId>
+    <AssemblyName>$(Title)</AssemblyName>
+    <AssemblyTitle>$(Title)</AssemblyTitle>
+    <Description>A 2D function defined by interpolating or fitting data.</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>portable</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DVPLDOM">
-      <HintPath>..\..\DVPLReferences\DVPLDOM.dll</HintPath>
-    </Reference>
-    <Reference Include="DVPLI">
-      <HintPath>..\..\DVPLReferences\DVPLI.dll</HintPath>
-    </Reference>
-    <Reference Include="DVPLInterfaces">
-      <HintPath>..\..\DVPLReferences\DVPLInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="DVPLUtils">
-      <HintPath>..\..\DVPLReferences\DVPLUtils.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Fairmat.Optimization">
-      <HintPath>..\..\DVPLReferences\Fairmat.Optimization.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Mono.Addins" Version="1.4.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>PFunction2D.Gui</_Parameter1>
-    </AssemblyAttribute>
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="Fairmat.Dvpl.DVPLDOM" />
+    <PackageReference Include="Fairmat.Dvpl.DVPLI" />
+    <PackageReference Include="Fairmat.Dvpl.DVPLInterfaces" />
+    <PackageReference Include="Fairmat.Dvpl.DVPLUtils" />
+    <PackageReference Include="Fairmat.Dvpl.Fairmat.Optimization" />
   </ItemGroup>
 </Project>
