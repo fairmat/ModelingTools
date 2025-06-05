@@ -523,7 +523,7 @@ namespace DatesGenerator
 
             // Add the dates from the designated start date adding the interval each time
             DateTime tempDate = StartDate;
-            int datesSkipped = 0;            
+            int datesSkipped = 0;
 
             while (tempDate.CompareTo(EndDate) < 0)
             {
@@ -538,7 +538,6 @@ namespace DatesGenerator
                 }
 
                 tempDate = AddPeriod(Frequency, StartDate, ++i, GenerateSequenceFromStartDate);
-
             }
 
             if (tempDate.Equals(EndDate))
