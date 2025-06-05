@@ -24,6 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\PFunction2D\PFunction2D.csproj" />
+	<ProjectReference Include="..\DatesGenerator\DatesGenerator.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
 	<PackageReference Include="Microsoft.NET.Test.Sdk" />

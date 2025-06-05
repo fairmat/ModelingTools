@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using DVPLI;
+using Mono.Addins;
+
 namespace TestCommon
 {
     /// <summary>
@@ -27,10 +30,10 @@ namespace TestCommon
         /// </summary>
         public static void CommonInitialization()
         {
-            DVPLI.PluginsManager.Init();
-            Mono.Addins.AddinManager.Registry.ResetConfiguration();
-            Mono.Addins.AddinManager.Registry.Update(new Mono.Addins.ConsoleProgressStatus(0));
-
+            PluginsManager.Init(); 
+            AddinManager.Registry.ResetConfiguration(); 
+            AddinManager.Registry.Update(null);
+        
             // Since some of the variables of the tests are thread specific reinitialize the parser
             // on each test (NUnit might launch different tests on different threads)
             // This should also ensure that the parser is clean on each test
