@@ -697,6 +697,15 @@ namespace DatesGenerator
                     p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antecede 'End Date'");
                 }
 
+                // if skip > 1 and Frequency is NoFrequency, then the sequence is not valid
+                if(Frequency is DateFrequency.NoFrequency && skipPeriodsParsed > 1)
+                {
+                    if (p_Context != null)
+                    {
+                        p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Skip Periods' must be 0 or 1 when 'Frequency' is 'No Frequency'");
+                    }
+                }
+
                 return valid;
             }
         }
