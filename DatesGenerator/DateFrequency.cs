@@ -25,57 +25,62 @@ namespace DatesGenerator
         /// <summary>
         /// One day.
         /// </summary>
-        Daily,
+        Daily = 0,
 
         /// <summary>
         /// One week.
         /// </summary>
-        Weekly,
+        Weekly = 1,
 
         /// <summary>
         /// Two weeks.
         /// </summary>
-        BiWeekly,
+        BiWeekly = 2,
 
         /// <summary>
         /// One month.
         /// </summary>
-        Monthly,
+        Monthly = 3,
 
         /// <summary>
         /// Three months.
         /// </summary>
-        Quarterly,
+        Quarterly = 4,
 
         /// <summary>
         /// Six months.
         /// </summary>
-        Semiannual,
+        Semiannual = 5,
 
         /// <summary>
         /// One year.
         /// </summary>
-        Annual,
+        Annual = 6,
 
         /// <summary>
         /// Four months.
         /// </summary>
-        ThreePerAnnum,
+        ThreePerAnnum = 7,
 
         /// <summary>
         /// Every Two Years.
         /// </summary>
-        EveryTwoYears,
+        EveryTwoYears = 8,
 
         /// <summary>
         /// Every Three Years.
         /// </summary>
-        EveryThreeYears,
+        EveryThreeYears = 9,
 
         /// <summary>
         /// Two months periods.
         /// </summary>
-        EveryTwoMonths
+        EveryTwoMonths = 10,
+
+        /// <summary>
+        /// No Frequency
+        /// </summary>
+        NoFrequency = 11
 
     }
 }
