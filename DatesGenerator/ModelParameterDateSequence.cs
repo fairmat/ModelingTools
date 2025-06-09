@@ -473,7 +473,7 @@ namespace DatesGenerator
 
 
         /// <summary>
-        /// Generates the list of dates from the start date in case of NoFrrequency
+        /// Generates the list of dates in case of NoFrequency
         /// </summary>
         /// <returns>The generated dates list.</returns>
         private List<RightValue> GenerateDatesNoFrequency(ref List<RightValue> dates)
