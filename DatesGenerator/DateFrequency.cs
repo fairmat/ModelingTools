@@ -80,7 +80,7 @@ namespace DatesGenerator
         /// <summary>
         /// No Frequency
         /// </summary>
-        NoFrequency = 11
+        NoFrequency = 99
 
     }
 }
