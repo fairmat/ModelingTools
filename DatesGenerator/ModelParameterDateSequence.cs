@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 
+
 namespace DatesGenerator
 {
     /// <summary>
@@ -470,6 +471,39 @@ namespace DatesGenerator
             return true;
         }
 
+
+        /// <summary>
+        /// Generates the list of dates in case of NoFrequency
+        /// </summary>
+        /// <returns>The generated dates list.</returns>
+        private List<RightValue> GenerateDatesNoFrequency(ref List<RightValue> dates)
+        {
+            dates ??= [];
+
+            // cases in which we return an empty list
+            if (StartDate.CompareTo(EndDate) > 0 || skipPeriodsParsed > 1)
+            {
+                // The start date is after the end date so no dates can be generated
+                return dates;
+            }
+
+            // allow only skip = 0, skip = 1
+            if (skipPeriodsParsed == 0)
+            {
+                dates.Add(RightValue.ConvertFrom(StartDate, true));
+            }
+
+            // Only add EndDate if it's different from StartDate or skipPeriodsParsed == 1
+            if (dates.Count == 0 || !StartDate.Equals(EndDate))
+            {
+                dates.Add(RightValue.ConvertFrom(EndDate, true));
+            }
+
+            return dates;
+
+        }
+
+
         /// <summary>
         /// Generates the list of dates from the start date.
         /// </summary>
@@ -477,6 +511,13 @@ namespace DatesGenerator
         private List<RightValue> GenerateForward()
         {
             List<RightValue> dates = new List<RightValue>();
+
+            if (Frequency is DateFrequency.NoFrequency)
+            {
+                // No frequency so generate only the start and end dates
+                return GenerateDatesNoFrequency(ref dates);
+            }
+
             int i = 0;
             RightValue rv;
 
@@ -541,6 +582,13 @@ namespace DatesGenerator
         private List<RightValue> GenerateBackward()
         {
             List<RightValue> dates = new List<RightValue>();
+
+            if (Frequency is DateFrequency.NoFrequency)
+            {
+                // No frequency so generate only the start and end dates
+                return GenerateDatesNoFrequency(ref dates);
+            }
+
             RightValue rv;
             int i = 0;
 
@@ -647,6 +695,15 @@ namespace DatesGenerator
                 if (!valid && p_Context != null)
                 {
                     p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Start Date' must antecede 'End Date'");
+                }
+
+                // if skip > 1 and Frequency is NoFrequency, then the sequence is not valid
+                if(Frequency is DateFrequency.NoFrequency && skipPeriodsParsed > 1)
+                {
+                    if (p_Context != null)
+                    {
+                        p_Context.AddError("Date Sequence " + VarName + " is not valid: 'Skip Periods' must be 0 or 1 when 'Frequency' is 'No Frequency'");
+                    }
                 }
 
                 return valid;
