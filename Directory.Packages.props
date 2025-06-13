@@ -7,7 +7,7 @@
         <FairmatDepsVersion>*-build*</FairmatDepsVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <FairmatDepsVersion>*</FairmatDepsVersion>
+        <FairmatDepsVersion>1.74.4</FairmatDepsVersion>
     </PropertyGroup>
 
     <ItemGroup Label="FairmatDeps">
