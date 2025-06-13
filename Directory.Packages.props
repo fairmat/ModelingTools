@@ -12,8 +12,8 @@
 
     <ItemGroup Label="FairmatDeps">
         <!-- Fairmat references -->
-        <PackageVersion Include="FairmatDesktop.UI.DVPForms" Version="$(FairmatDepsVersion)" />
-        <PackageVersion Include="FairmatDesktop.UI.UIBase" Version="$(FairmatDepsVersion)" />
+        <PackageVersion Include="FairmatDesktop.UI.DVPForms" Version="1.1.7" />
+        <PackageVersion Include="FairmatDesktop.UI.UIBase" Version="1.1.7" />
         
         <!-- DVPL references -->
         <PackageVersion Include="Fairmat.Dvpl.CoreExtensions" Version="$(FairmatDepsVersion)" />
