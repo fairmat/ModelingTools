@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup Label="OtherFairmat">
-    <PackageVersion Include="FairmatDesktop.UI.DVPForms" Version="1.2.0" />
-    <PackageVersion Include="FairmatDesktop.UI.UIBase" Version="1.2.0" />
+    <PackageVersion Include="FairmatDesktop.UI.DVPForms" Version="1.1.7" />
+    <PackageVersion Include="FairmatDesktop.UI.UIBase" Version="1.1.7" />
   </ItemGroup>
 
   <ItemGroup>
