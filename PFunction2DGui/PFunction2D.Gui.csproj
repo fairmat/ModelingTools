@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{D8CF708F-3C72-4B79-8F91-66F09524382E}</ProjectGuid>
-    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <Title>PFunction2D.Gui</Title>
     <PackageId>$(BasePackageId).$(Title)</PackageId>
     <AssemblyName>$(Title)</AssemblyName>
@@ -22,16 +22,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" />
-    <PackageReference Include="Mono.Addins" />
-    <PackageReference Include="System.Data.DataSetExtensions" />
-    <PackageReference Include="System.Net.Http" />
-    <PackageReference Include="FairmatDesktop.UI.DVPForms" />
     <PackageReference Include="Fairmat.Dvpl.DVPLDOM" />
     <PackageReference Include="Fairmat.Dvpl.DVPLI" />
     <PackageReference Include="Fairmat.Dvpl.DVPLInterfaces" />
     <PackageReference Include="Fairmat.Dvpl.DVPLUtils" />
+    <PackageReference Include="Fairmat.Dvpl.Fairmat.Optimization" />
+    <PackageReference Include="FairmatDesktop.UI.DVPForms" />
     <PackageReference Include="FairmatDesktop.UI.UIBase" />
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="System.Data.DataSetExtensions" />
+    <PackageReference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PFunction2D\PFunction2D.csproj" />
