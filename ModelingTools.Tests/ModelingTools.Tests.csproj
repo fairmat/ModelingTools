@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net48</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Title>ModelingTools.Tests</Title>
@@ -26,15 +26,7 @@
     <ProjectReference Include="..\PFunction2D\PFunction2D.csproj" />
 	<ProjectReference Include="..\DatesGenerator\DatesGenerator.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-	<PackageReference Include="Microsoft.NET.Test.Sdk" />
-  </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Addins" />
-    <PackageReference Include="NUnit" />
-    <PackageReference Include="NUnit3TestAdapter" />
-    <PackageReference Include="System.Collections.Immutable" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     <PackageReference Include="Fairmat.Dvpl.CoreExtensions" />
     <PackageReference Include="Fairmat.Dvpl.DVPLDOM" />
     <PackageReference Include="Fairmat.Dvpl.DVPLDOME" />
@@ -42,5 +34,11 @@
     <PackageReference Include="Fairmat.Dvpl.DVPLInterfaces" />
     <PackageReference Include="Fairmat.Dvpl.DVPLUtils" />
     <PackageReference Include="Fairmat.Dvpl.DVPLSolverC" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Mono.Addins" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="System.Collections.Immutable" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
   </ItemGroup>
 </Project>
