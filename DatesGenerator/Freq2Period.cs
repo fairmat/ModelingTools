@@ -39,6 +39,8 @@ namespace DatesGenerator
         {
             switch (df)
             {
+                case DateFrequency.NoFrequency:
+                    return 0; 
                 case DateFrequency.Annual:
                     return 1;
                 case DateFrequency.Semiannual:
