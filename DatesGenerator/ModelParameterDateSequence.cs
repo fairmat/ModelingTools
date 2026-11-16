@@ -32,7 +32,7 @@ namespace DatesGenerator
     /// Implements a model parameter that represents a sequence of dates.
     /// </summary>
     [Serializable]
-    public class ModelParameterDateSequence : ModelParameterArray, IExportableContainer
+    public class ModelParameterDateSequence : ModelParameterArray, IExportableContainer, IModelParameterTransformExpressions
     {
         #region Fields
 
@@ -223,6 +223,24 @@ namespace DatesGenerator
                 }
             }
         }
+
+        /// <summary>
+        /// Gets every expression the sequence reads while parsing.
+        /// </summary>
+        /// <remarks>
+        /// The symbol list orders the symbols by these expressions instead of <see cref="Expr"/>, which does not
+        /// carry the vector reference and its skip: without them a sequence built on another vector
+        /// (e.g. <c>@odPlus</c>) could be parsed before that vector and copy its stale values.
+        /// </remarks>
+        public string[] TransformExpressions =>
+        [
+            Convert.ToString(StartDateExpression?.Expr.GetValue(0, 0), CultureInfo.InvariantCulture),
+            Convert.ToString(EndDateExpression?.Expr.GetValue(0, 0), CultureInfo.InvariantCulture),
+            FrequencyExpression,
+            Convert.ToString(SkipPeriods?.Expr.GetValue(0, 0), CultureInfo.InvariantCulture),
+            VectorReferenceExpr,
+            Convert.ToString(SkipPeriodsArray?.Expr.GetValue(0, 0), CultureInfo.InvariantCulture),
+        ];
 
         /// <summary>
         /// Gets the array of dates generated in the sequence.
@@ -437,17 +455,18 @@ namespace DatesGenerator
             if (SkipPeriods.Parse(p_Context))
                 return true;
 
+            // Before InitializeObject, which reads its value: parsed afterwards the skip of the previous parse was used.
+            bool isVectorReference = ValidVectorRef();
+            if (isVectorReference && SkipPeriodsArray.Parse(p_Context))
+                return true;
+
             if (InitializeObject(p_Context as Project))
                 return true;
 
             if (Validation(p_Context))
             {
-                if (ValidVectorRef())
+                if (isVectorReference)
                 {
-                    if (SkipPeriodsArray.Parse(p_Context))
-                    {
-                        return true;
-                    }
                     this.Values = new List<RightValue>();
                     return ParseVectorReferences(p_Context);
                 }
