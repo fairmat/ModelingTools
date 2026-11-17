@@ -173,6 +173,113 @@ namespace ModelingTools.Tests.DateSequence
             Assert.That(resultingDates, Is.EqualTo(expectedDates));
         }
 
+        /// <summary>
+        /// Verifies that a sequence referencing another vector gets that vector's dates without the skipped
+        /// ones, whatever the order in which the two sequences were added to the project.
+        /// </summary>
+        [TestCase(true)]
+        [TestCase(false)]
+        public void TestVectorReference_ParsedAfterReferencedSequence(bool referencedAddedFirst)
+        {
+            ProjectROV prj = CreateVectorReferenceProject(referencedAddedFirst, autocallStart: 4);
+
+            prj.Parse();
+
+            Assert.That(prj.HasErrors, Is.False);
+            Assert.That(GetDates(prj, ReferencingName), Is.EqualTo(MonthlyDates(2020, firstMonth: 4)));
+        }
+
+        /// <summary>
+        /// Verifies that the skip of a vector reference is taken from the current value of its expression,
+        /// not from the one of the previous parse.
+        /// </summary>
+        [Test]
+        public void TestVectorReference_SkipPeriodsArrayUsesCurrentValue()
+        {
+            ProjectROV prj = CreateVectorReferenceProject(referencedAddedFirst: true, autocallStart: 4);
+            prj.Parse();
+
+            ModelParameter autocallStart = prj.GetModelParameter(["AutocallStart"]);
+            autocallStart.m_Value = (RightValue)2.0;
+            prj.Parse();
+
+            Assert.That(GetDates(prj, ReferencingName), Is.EqualTo(MonthlyDates(2020, firstMonth: 2)));
+        }
+
+        /// <summary>
+        /// Verifies that the expressions used to order the symbols include the vector reference and its skip.
+        /// </summary>
+        [Test]
+        public void TestTransformExpressions_IncludeVectorReferenceAndSkip()
+        {
+            ModelParameterDateSequence ds = new("StrikeDate", "LastObservation", "FrequencyCoupon")
+            {
+                SkipPeriods = new ModelParameter("PlusStart"),
+                VectorReferenceExpr = "@odPlus",
+                SkipPeriodsArray = new ModelParameter("AutocallStart-1"),
+            };
+
+            Assert.That(ds.TransformExpressions, Is.SupersetOf(new[]
+            {
+                "StrikeDate", "LastObservation", "FrequencyCoupon", "PlusStart", "@odPlus", "AutocallStart-1",
+            }));
+        }
+
+        private const string ReferencedName = "odPlus";
+        private const string ReferencingName = "odFreq";
+
+        /// <summary>
+        /// Creates a project with a monthly sequence for 2020 and a sequence referencing it that skips
+        /// <c>AutocallStart-1</c> dates.
+        /// </summary>
+        /// <remarks>
+        /// The referencing sequence has its own (NoFrequency) dates: they are used when the reference cannot be
+        /// resolved, so a wrong parse order shows up as a wrong result.
+        /// </remarks>
+        private static ProjectROV CreateVectorReferenceProject(bool referencedAddedFirst, double autocallStart)
+        {
+            Document d = new();
+            ProjectROV prj = new(d);
+            d.Part.Add(prj);
+
+            ModelParameterDateSequence referenced = new(new DateTime(2020, 1, 1), new DateTime(2020, 12, 1), DateFrequency.Monthly)
+            {
+                Name = ReferencedName,
+                Description = ReferencedName,
+            };
+
+            ModelParameterDateSequence referencing = new(new DateTime(2020, 1, 1), new DateTime(2020, 1, 10), DateFrequency.NoFrequency)
+            {
+                Name = ReferencingName,
+                Description = ReferencingName,
+                VectorReferenceExpr = "@" + ReferencedName,
+                SkipPeriodsArray = new ModelParameter("AutocallStart-1"),
+            };
+
+            prj.Symbols.Add(new ModelParameter(autocallStart, "", "AutocallStart"));
+            if (referencedAddedFirst)
+            {
+                prj.Symbols.Add(referenced);
+                prj.Symbols.Add(referencing);
+            }
+            else
+            {
+                prj.Symbols.Add(referencing);
+                prj.Symbols.Add(referenced);
+            }
+
+            return prj;
+        }
+
+        private static IEnumerable<DateTime> GetDates(ProjectROV prj, string name)
+        {
+            ModelParameterDateSequence sequence = (ModelParameterDateSequence)prj.GetModelParameter([name]);
+            return sequence.Values.Select(x => ((RightValueDate)x).m_Date.Date);
+        }
+
+        private static IEnumerable<DateTime> MonthlyDates(int year, int firstMonth) =>
+            Enumerable.Range(firstMonth, 12 - firstMonth + 1).Select(month => new DateTime(year, month, 1));
+
 
     }
 }
